@@ -11,13 +11,12 @@ import {useSafePlayer} from './config/Context';
 import remoteConfig from "@react-native-firebase/remote-config";
 import MusicControl, {Command} from 'react-native-music-control'
 import {useEffect} from "react";
-import VolumeSlider from "./volume/slider";
 import AlignCenter from "../../../resources/v1/styles/view/AlignCenter";
 import JustifyCenter from "../../../resources/v1/styles/view/JustifyCenter";
 import FlexColumn from "../../../resources/v1/styles/view/FlexColumn";
 import LiveLabel from "./livelabel";
-import JustifyEnd from "../../../resources/v1/styles/view/JustifyEnd";
 import AlignEnd from "../../../resources/v1/styles/view/AlignEnd";
+import Slider from "@react-native-community/slider";
 
 const BasicPlayer = () => {
   const player = useSafePlayer();
@@ -176,7 +175,17 @@ const BasicPlayer = () => {
                       // backgroundColor: 'yellow'
                   }
               ]}>
-              <VolumeSlider player={player} isVisible={player.state.isVolumeLongPress} />
+              <Slider
+                  style={{flex: 1}}
+                  minimumValue={0}
+                  maximumValue={10}
+                  value={player.state.volume}
+                  onValueChange={(value) => player.actions.volume.updateVolume(value)}
+                  minimumTrackTintColor={remoteConfig().getString('player_slider_minimum_track_color')}
+                  maximumTrackTintColor={remoteConfig().getString('player_slider_maximum_track_color')}
+                  thumbTintColor={remoteConfig().getString('player_slider_button_color')}
+                  tapToSeek={true}
+              />
           </View>
         <View
           style={[

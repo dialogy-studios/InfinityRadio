@@ -19,7 +19,10 @@ const remoteConfigDefaults = {
     player_genre: 'Techno',
     player_description: 'Infinity 2022',
     player_color: 0xffffff,
-    is_live: false
+    is_live: false,
+    player_slider_minimum_track_color: 'white',
+    player_slider_maximum_track_color: 'black',
+    player_slider_button_color: 'white'
 
 }
 

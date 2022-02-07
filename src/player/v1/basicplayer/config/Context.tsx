@@ -15,12 +15,7 @@ interface PlayerState {
   isVolumeLongPress: boolean,
 }
 
-interface SliderAction {
-  updateVolume: (dx: number, width: number) => void
-}
-
 interface VolumeActions {
-  slider: SliderAction,
   updateVolume: (newVolume: number) => void;
   increase: () => void;
   decrease: () => void;
@@ -90,20 +85,6 @@ function usePlayer(): Player {
     setLongPressing(false);
   }, [setLongPressing]);
 
-  const updateSliderVolume = useCallback((dx: number, width: number) => {
-    let newDiff = Math.floor((dx / width) * maxVolume);
-
-    if (previousDiff != newDiff) {
-      if (newDiff > 0) {
-        increaseVolume()
-      } else {
-        decreaseVolume()
-      }
-      setPreviousDiff(newDiff);
-    }
-
-  }, [volume, maxVolume, setVolume, previousDiff, setPreviousDiff]);
-
   return useMemo(
     () => ({
       state: {
@@ -124,13 +105,10 @@ function usePlayer(): Player {
           startLongPressing,
           exitLongPressing,
           updateVolume,
-          slider: {
-            updateVolume: updateSliderVolume
-          }
         },
       },
     }),
-    [updateSliderVolume, updateVolume, startLongPressing, exitLongPressing, longPressing, increaseVolume, decreaseVolume, volume, paused, muted, mute, pause, play],
+    [updateVolume, startLongPressing, exitLongPressing, longPressing, increaseVolume, decreaseVolume, volume, paused, muted, mute, pause, play],
   );
 }
 
