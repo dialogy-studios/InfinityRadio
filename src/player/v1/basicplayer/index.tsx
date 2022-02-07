@@ -15,6 +15,9 @@ import VolumeSlider from "./volume/slider";
 import AlignCenter from "../../../resources/v1/styles/view/AlignCenter";
 import JustifyCenter from "../../../resources/v1/styles/view/JustifyCenter";
 import FlexColumn from "../../../resources/v1/styles/view/FlexColumn";
+import LiveLabel from "./livelabel";
+import JustifyEnd from "../../../resources/v1/styles/view/JustifyEnd";
+import AlignEnd from "../../../resources/v1/styles/view/AlignEnd";
 
 const BasicPlayer = () => {
   const player = useSafePlayer();
@@ -104,13 +107,21 @@ const BasicPlayer = () => {
             // backgroundColor: 'yellow',
           },
         ]}>
-        <Image
-          style={[Square250]}
-          source={{
-            uri: remoteConfig().getString('player_avatar'),
-          }}
-          resizeMode={'stretch'}
-        />
+
+          <View style={[
+              AlignEnd
+          ]}>
+              <Image
+                  style={[
+                      Square250
+                  ]}
+                  source={{
+                      uri: remoteConfig().getString('player_avatar'),
+                  }}
+                  resizeMode={'stretch'}
+              />
+              <LiveLabel isLive={remoteConfig().getBoolean('is_live')} />
+          </View>
       </View>
       <View
         style={[
