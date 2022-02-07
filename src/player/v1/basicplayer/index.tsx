@@ -83,7 +83,7 @@ const BasicPlayer = () => {
     useEffect(() => {
         MusicControl.updatePlayback({
             volume: player.state.volume,
-            maxVolume: 10
+            maxVolume: player.state.maxVolume
         })
     }, [player.state.volume])
 
@@ -127,6 +127,7 @@ const BasicPlayer = () => {
           playWhenInactive={true}
           ignoreSilentSwitch={'ignore'}
           paused={player.state.paused}
+          // paused={true}
           muted={player.state.muted}
           volume={player.state.volume / 10}
           ref={() => {

@@ -10,13 +10,20 @@ interface PlayerState {
   paused: boolean;
   muted: boolean;
   volume: number;
+  maxVolume: number,
+  minVolume: number,
   isVolumeLongPress: boolean,
 }
 
+interface SliderAction {
+  updateVolume: (dx: number, width: number) => void
+}
+
 interface VolumeActions {
+  slider: SliderAction,
   updateVolume: (newVolume: number) => void;
-  increase: (value?: number) => void;
-  decrease: (value?: number) => void;
+  increase: () => void;
+  decrease: () => void;
   startLongPressing: () => void,
   exitLongPressing: () => void,
 }
@@ -40,6 +47,9 @@ function usePlayer(): Player {
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(10);
   const [longPressing, setLongPressing] = useState(false);
+  const [maxVolume, setMaxVolume] = useState(10);
+  const [minVolume, setMinVolume] = useState(0);
+  const [previousDiff, setPreviousDiff] = useState(0);
 
   const pause = useCallback(() => {
     setPaused(!paused);
@@ -54,37 +64,23 @@ function usePlayer(): Player {
     setMuted(!muted);
   }, [muted, setMuted]);
 
-  const increaseVolume = useCallback((value?: number) => {
-    if (value != null && value != volume) {
-      const finalVolume = Math.floor(volume + value/10);
-      if (finalVolume >= 0 && finalVolume <= 10 && finalVolume != volume) {
-        if (value > 0) {
-          setVolume(volume + 1);
-        } else {
-          setVolume(volume + -1);
-        }
-      }
-    } else {
-      if (volume < 10) {
-        setVolume(volume + 1);
-      }
+  const increaseVolume = useCallback(() => {
+    if (volume < 10) {
+      setVolume(volume + 1);
     }
-
   }, [volume, setVolume]);
 
-  const decreaseVolume = useCallback((value?: number) => {
-    if (value != null) {
-      console.log("hello from decrease!");
-    } else {
-      if (volume > 0) {
-        setVolume(volume - 1);
-      }
+  const decreaseVolume = useCallback(() => {
+    if (volume > 0) {
+      setVolume(volume - 1);
     }
   }, [volume, setVolume]);
 
   const updateVolume = useCallback((volume: number) => {
-    setVolume(volume);
-  }, [setVolume])
+    if (volume >= 0 && volume <= 10) {
+      setVolume(volume);
+    }
+  }, [setVolume]);
 
   const startLongPressing = useCallback(() => {
     setLongPressing(true);
@@ -92,7 +88,21 @@ function usePlayer(): Player {
 
   const exitLongPressing = useCallback(() => {
     setLongPressing(false);
-  }, [setLongPressing])
+  }, [setLongPressing]);
+
+  const updateSliderVolume = useCallback((dx: number, width: number) => {
+    let newDiff = Math.floor((dx / width) * maxVolume);
+
+    if (previousDiff != newDiff) {
+      if (newDiff > 0) {
+        increaseVolume()
+      } else {
+        decreaseVolume()
+      }
+      setPreviousDiff(newDiff);
+    }
+
+  }, [volume, maxVolume, setVolume, previousDiff, setPreviousDiff]);
 
   return useMemo(
     () => ({
@@ -100,6 +110,8 @@ function usePlayer(): Player {
         paused,
         muted,
         volume,
+        maxVolume,
+        minVolume,
         isVolumeLongPress: longPressing
       },
       actions: {
@@ -111,11 +123,14 @@ function usePlayer(): Player {
           decrease: decreaseVolume,
           startLongPressing,
           exitLongPressing,
-          updateVolume
+          updateVolume,
+          slider: {
+            updateVolume: updateSliderVolume
+          }
         },
       },
     }),
-    [updateVolume, startLongPressing, exitLongPressing, longPressing, increaseVolume, decreaseVolume, volume, paused, muted, mute, pause, play],
+    [updateSliderVolume, updateVolume, startLongPressing, exitLongPressing, longPressing, increaseVolume, decreaseVolume, volume, paused, muted, mute, pause, play],
   );
 }
 

@@ -1,9 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Animated, PanResponder, View} from "react-native";
+import {Animated, PanResponder, PanResponderGestureState, View} from "react-native";
 import {Player} from "../../config/Context";
 import FlexColumn from "../../../../../resources/v1/styles/view/FlexColumn";
 import JustifyCenter from "../../../../../resources/v1/styles/view/JustifyCenter";
-import AlignCenter from "../../../../../resources/v1/styles/view/AlignCenter";
 
 interface Props {
     isVisible: boolean,
@@ -16,7 +15,7 @@ const VolumeSlider: React.FC<Props> = ({isVisible, player}) => {
     const [dx, setDx] = useState<number | null>(null);
     const rootRef = useRef<View | null>();
     const opacity = useRef(new Animated.Value(1)).current;
-    const sliderPosition = useRef(new Animated.ValueXY({x: player.state.volume * 8, y: 0})).current;
+    const sliderPosition = useRef(new Animated.ValueXY()).current;
 
     const panResponder = React.useRef(
         PanResponder.create({
@@ -28,14 +27,17 @@ const VolumeSlider: React.FC<Props> = ({isVisible, player}) => {
             onMoveShouldSetPanResponderCapture: (evt, gestureState) =>
                 true,
             onPanResponderGrant: () => {
-                /*sliderPosition
+               /* sliderPosition
                     .setOffset({
                         x: sliderPosition.x._value,
                         y: sliderPosition.y._value,
                     })*/
             },
             onPanResponderMove: (event, gestureState) => {
+                // setGestureState(gestureState);
+
                 setDx(gestureState.dx);
+                // console.log('state => ', gestureState);
             },
             onPanResponderTerminationRequest: (evt, gestureState) =>
                 true,
@@ -91,9 +93,9 @@ const VolumeSlider: React.FC<Props> = ({isVisible, player}) => {
 
     useEffect(() => {
         if (dx) {
-            player.actions.volume.increase(Math.round(Math.floor(dx)/5));
+            player.actions.volume.slider.updateVolume(dx, width)
         }
-    }, [dx])
+    }, [dx, player.state.volume])
 
     useEffect(() => {
         sliderPosition.x.setValue(
@@ -122,7 +124,7 @@ const VolumeSlider: React.FC<Props> = ({isVisible, player}) => {
             >
                 <View style={[
                     {
-                        width: (width/10)*player.state.volume,
+                        width: (width/player.state.maxVolume)*player.state.volume,
                         height: 10,
                         backgroundColor: 'white',
                         borderRadius: 20,
