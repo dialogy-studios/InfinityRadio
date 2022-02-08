@@ -1,7 +1,7 @@
 import React, {
   createContext,
   useCallback,
-  useContext,
+  useContext, useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -57,7 +57,7 @@ function usePlayer(): Player {
 
   const mute = useCallback(() => {
     setMuted(!muted);
-  }, [muted, setMuted]);
+  }, [muted, setVolume]);
 
   const increaseVolume = useCallback(() => {
     if (volume < 10) {
@@ -84,6 +84,15 @@ function usePlayer(): Player {
   const exitLongPressing = useCallback(() => {
     setLongPressing(false);
   }, [setLongPressing]);
+
+  useEffect(() => {
+    if (volume == 0) {
+      setMuted(true);
+    } else if (muted) {
+      setMuted(false);
+    }
+
+  }, [volume]);
 
   return useMemo(
     () => ({

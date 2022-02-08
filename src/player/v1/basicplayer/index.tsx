@@ -179,7 +179,7 @@ const BasicPlayer = () => {
                   style={{flex: 1}}
                   minimumValue={0}
                   maximumValue={10}
-                  value={player.state.volume}
+                  value={player.state.muted ? 0 : player.state.volume}
                   onValueChange={(value) => player.actions.volume.updateVolume(value)}
                   minimumTrackTintColor={remoteConfig().getString('player_slider_minimum_track_color')}
                   maximumTrackTintColor={remoteConfig().getString('player_slider_maximum_track_color')}

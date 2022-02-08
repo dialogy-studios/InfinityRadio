@@ -3,8 +3,6 @@ import VolumeUp from './up';
 import VolumeOff from './off';
 import VolumeDown from './down';
 import {Player} from '../config/Context';
-import {View} from "react-native";
-import FlexRow from "../../../../resources/v1/styles/view/FlexRow";
 
 interface Props {
   player: Player;

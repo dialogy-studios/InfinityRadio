@@ -3,6 +3,7 @@ import {StyleProp, TouchableOpacity, ViewStyle} from 'react-native';
 import VolumeOffIcon from '../../../../../resources/v1/icons/VolumeOffIcon';
 import {Player} from '../../config/Context';
 import remoteConfig from "@react-native-firebase/remote-config";
+import VolumeUpIcon from "../../../../../resources/v1/icons/VolumeUpIcon";
 
 interface Props {
     player: Player;
@@ -14,7 +15,13 @@ const VolumeOff: React.FC<Props> = ({player, style}) => {
     <TouchableOpacity
         style={style}
         onPress={player.actions.mute}>
-      <VolumeOffIcon size={remoteConfig().getNumber('volume_mute_size')} color={remoteConfig().getString('volume_mute_color')} />
+        {
+            player.state.muted ?
+                <VolumeUpIcon size={remoteConfig().getNumber('volume_mute_size')} color={remoteConfig().getString('volume_mute_color')} />
+                :
+                <VolumeOffIcon size={remoteConfig().getNumber('volume_mute_size')} color={remoteConfig().getString('volume_mute_color')} />
+        }
+
     </TouchableOpacity>
   );
 };
