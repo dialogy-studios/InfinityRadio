@@ -35,12 +35,6 @@ const LiveLabel: React.FC<Props> = ({isLive}) => {
                 FlexRow,
                 AlignCenter,
                 JustifyCenter,
-                {
-                    flex: .2,
-                    // width: 70,
-                    // backgroundColor: 'white',
-                    // position: 'absolute',
-                }
             ]}
         >
             <View

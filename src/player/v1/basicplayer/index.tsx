@@ -23,7 +23,7 @@ const BasicPlayer = () => {
   const remoteURL =
     'https://urbanradioireland.out.airtime.pro:8000/urbanradioireland_c?_ga=2.35923040.1587061543.1641428521-1929476278.1640869959';
 
-  useEffect(() => {
+    useEffect(() => {
       MusicControl.enableBackgroundMode(true);
       // MusicControl.handleAudioInterruptions(true);
       // Basic Controls
@@ -107,7 +107,19 @@ const BasicPlayer = () => {
             // backgroundColor: 'yellow',
           },
         ]}>
-          <View style={[
+            <View
+                style={[
+                    {
+                        flex: .2,
+                        // backgroundColor: 'white',
+                        marginBottom: 10
+                    }
+                ]}
+
+            >
+                <LiveLabel isLive={remoteConfig().getBoolean('is_live')} />
+            </View>
+            <View style={[
               AlignEnd
           ]}>
               <Image

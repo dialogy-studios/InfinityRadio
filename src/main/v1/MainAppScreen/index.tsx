@@ -11,7 +11,6 @@ const MainAppScreen: React.FC<any> = () => {
   return (
     <SafeAreaView style={[[{flex: 1}]]}>
       <HeaderBasic />
-        <LiveLabel isLive={remoteConfig().getBoolean('is_live')} />
         <PlayerProvider>
         <BasicPlayer />
       </PlayerProvider>
