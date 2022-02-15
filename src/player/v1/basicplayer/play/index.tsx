@@ -10,7 +10,14 @@ interface Props {
 
 const Play: React.FC<Props> = ({player}) => {
   return (
-    <TouchableOpacity onPress={player.actions.play}>
+    <TouchableOpacity
+        onPress={player.actions.play}
+        style={[
+            {
+                marginHorizontal: 10
+            }
+        ]}
+    >
       <PlayIcon size={remoteConfig().getNumber('play_size')} color={remoteConfig().getString('play_color')} />
     </TouchableOpacity>
   );

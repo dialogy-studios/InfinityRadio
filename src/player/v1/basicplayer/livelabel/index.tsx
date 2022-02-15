@@ -4,6 +4,7 @@ import FlexRow from "../../../../resources/v1/styles/view/FlexRow";
 import AlignCenter from "../../../../resources/v1/styles/view/AlignCenter";
 import JustifyAround from "../../../../resources/v1/styles/view/JustifyAround";
 import JustifyBetween from "../../../../resources/v1/styles/view/JustifyBetween";
+import JustifyCenter from "../../../../resources/v1/styles/view/JustifyCenter";
 
 interface Props {
     isLive: boolean
@@ -33,21 +34,20 @@ const LiveLabel: React.FC<Props> = ({isLive}) => {
             style={[
                 FlexRow,
                 AlignCenter,
-                JustifyBetween,
+                JustifyCenter,
                 {
-                    marginTop: 15,
-                    marginRight: 10,
-                    height: 20,
-                    width: 70,
+                    flex: .2,
+                    // width: 70,
                     // backgroundColor: 'white',
-                    position: 'absolute',
+                    // position: 'absolute',
                 }
             ]}
         >
             <View
                 style={[
                     FlexRow,
-                    JustifyAround,
+                    // JustifyAround,
+                    JustifyCenter,
                     {
                         // backgroundColor: 'pink',
                     }
@@ -71,6 +71,7 @@ const LiveLabel: React.FC<Props> = ({isLive}) => {
                         {
                             height: 20,
                             width: 20,
+                            marginRight: 10,
                             borderRadius: 20,
                             backgroundColor: 'red',
                             shadowColor: 'black',

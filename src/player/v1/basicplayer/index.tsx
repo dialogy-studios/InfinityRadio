@@ -98,15 +98,15 @@ const BasicPlayer = () => {
           // backgroundColor: 'pink',
         },
       ]}>
-      <View
+        <View
         style={[
+            FlexColumn,
           {
             flex: 3,
             justifyContent: 'center',
             // backgroundColor: 'yellow',
           },
         ]}>
-
           <View style={[
               AlignEnd
           ]}>
@@ -119,7 +119,6 @@ const BasicPlayer = () => {
                   }}
                   resizeMode={'stretch'}
               />
-              <LiveLabel isLive={remoteConfig().getBoolean('is_live')} />
           </View>
       </View>
       <View

@@ -15,7 +15,13 @@ const Links: (props: Props) => any = ({linkList}) => {
             return (
                 <TouchableOpacity
                     onPress={() => openLink(link.url, link.browserColor)}
-                    style={[MarginEnd10]} key={link.icon}>
+                    style={
+                        [
+                            {
+                                marginHorizontal: 15
+                            }
+                        ]
+                    } key={link.icon}>
                     <Image
                         style={[
                             LinkEffect,
@@ -27,7 +33,7 @@ const Links: (props: Props) => any = ({linkList}) => {
                         source={{
                             uri: link.icon,
                         }}
-                        resizeMode={'cover'}
+                        resizeMode={'contain'}
                     />
                 </TouchableOpacity>
             )

@@ -10,7 +10,16 @@ interface Props {
 
 const Pause: React.FC<Props> = ({player}) => {
   return (
-    <TouchableOpacity onPress={player.actions.pause}>
+    <TouchableOpacity
+        onPress={player.actions.pause}
+        style={
+            [
+                {
+                    marginHorizontal: 10
+                }
+            ]
+        }
+    >
       <PauseIcon size={remoteConfig().getNumber("pause_size")} color={remoteConfig().getString("pause_color")} />
     </TouchableOpacity>
   );

@@ -11,9 +11,9 @@ interface Props {
 const VolumeButtons: React.FC<Props> = ({player}) => {
   return (
       <>
-          <VolumeUp style={[{marginEnd: 10}]} player={player} />
-          <VolumeOff style={[{marginEnd: 10}]} player={player} />
+          <VolumeUp style={[{marginEnd: 15}]} player={player} />
           <VolumeDown style={[{marginEnd: 10}]} player={player} />
+          <VolumeOff style={[{marginEnd: 15}]} player={player} />
       </>
   );
 };
