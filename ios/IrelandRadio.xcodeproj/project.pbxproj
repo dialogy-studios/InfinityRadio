@@ -517,6 +517,7 @@
 			baseConfigurationReference = C0A881CF5CF3F2B244570E2A /* Pods-IrelandRadio.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = IrelandRadio/IrelandRadio.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
@@ -544,6 +545,7 @@
 			baseConfigurationReference = D00AAFFCFCFDA5787532823F /* Pods-IrelandRadio.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = IrelandRadio/IrelandRadio.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
