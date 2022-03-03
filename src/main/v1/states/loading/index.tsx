@@ -1,6 +1,6 @@
 import React from "react";
 import {ActivityIndicator, View} from "react-native";
-import Centered from "../../../resources/v1/styles/view/Centered";
+import Centered from "../../../../resources/v1/styles/view/Centered";
 
 const Loading: React.FC<any> = () => {
     return (

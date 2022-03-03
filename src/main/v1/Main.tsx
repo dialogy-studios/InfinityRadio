@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 import remoteConfigDefaults from "../../firebase/v1/remoteconfig/remoteConfigDefaults";
-import Normal from "./states/Normal";
-import Loading from "./states/Loading";
-import Error from "./states/Error";
+import Normal from "./states/normal";
+import Loading from "./states/loading";
+import Error from "./states/error";
 enum State {
     NORMAL,
     LOADING,
@@ -12,6 +12,7 @@ enum State {
 
 const App = () => {
     const [state, setState] = useState<State>(State.LOADING);
+    const [errorMsg, setErrorMessage] = useState<string>("")
 
     const setup = async () => {
         try {
@@ -19,8 +20,9 @@ const App = () => {
             await remoteConfig().fetchAndActivate()
             await remoteConfig().fetch(0)
             setState(State.NORMAL)
-        } catch (error) {
+        } catch (error: Error) {
             setState(State.ERROR)
+            setErrorMessage(error.message)
         }
     }
 
@@ -33,7 +35,7 @@ const App = () => {
     const renderByState: {[state: number]: any} = {
         [State.NORMAL]: () => (<Normal />),
         [State.LOADING]: () => (<Loading />),
-        [State.ERROR]: () => (<Error />)
+        [State.ERROR]: () => (<Error message={errorMsg} />)
     }
 
     const renderer = renderByState[state];

@@ -1,8 +1,12 @@
 import React from "react";
 import {Text, View} from 'react-native';
-import Centered from "../../../resources/v1/styles/view/Centered";
+import Centered from "../../../../resources/v1/styles/view/Centered";
 
-const Error: React.FC<any> = () => {
+interface Props {
+    message: string
+}
+
+const Error: React.FC<Props> = ({message}) => {
     return (
         <View
             style={[
@@ -14,6 +18,9 @@ const Error: React.FC<any> = () => {
         >
             <Text>
                 Error on initialize app
+            </Text>
+            <Text>
+                Message: ${message}
             </Text>
 
         </View>
