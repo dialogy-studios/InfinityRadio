@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {ActivityIndicator, Animated, ImageBackground, StatusBar, useWindowDimensions, View} from 'react-native';
 import MainAppScreen from "../../MainAppScreen";
 import remoteConfig from "@react-native-firebase/remote-config";
@@ -8,6 +8,7 @@ import TimingAnimationConfig = Animated.TimingAnimationConfig;
 
 const Content = () => {
     const context = useSafeMainContext()
+    const [shouldHideLoading, setShouldHideLoading] = useState(true)
     const normalUiOpacity = useRef(new Animated.Value(0)).current
     const loadingUiOpacity = useRef(new Animated.Value(1)).current
     const dimensions = useWindowDimensions()
@@ -53,6 +54,13 @@ const Content = () => {
             .start()
     }, [context.state.ui])
 
+
+    loadingUiOpacity.addListener(({value}) => {
+        if (value == 0) {
+            setShouldHideLoading(false)
+        }
+    })
+
     return (
         <View
             style={[{
@@ -80,6 +88,7 @@ const Content = () => {
                     opacity: loadingUiOpacity,
                     width: dimensions.width,
                     height: dimensions.height,
+                    display: shouldHideLoading ? 'flex' : 'none',
                     position: 'absolute',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -97,7 +106,7 @@ const Content = () => {
 const Normal: React.FC<any> = () => {
     return (
         <MainContextProvider>
-            <Content/>
+            <Content />
         </MainContextProvider>
     )
 }
