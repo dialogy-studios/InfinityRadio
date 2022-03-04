@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import Video from 'react-native-video';
 import {Image, View} from 'react-native';
 import Square250 from '../../../styles/images/v1/config/Square250';
@@ -10,16 +11,17 @@ import Centered from '../../../resources/v1/styles/view/Centered';
 import {useSafePlayer} from './config/Context';
 import remoteConfig from "@react-native-firebase/remote-config";
 import MusicControl, {Command} from 'react-native-music-control'
-import {useEffect} from "react";
 import AlignCenter from "../../../resources/v1/styles/view/AlignCenter";
 import JustifyCenter from "../../../resources/v1/styles/view/JustifyCenter";
 import FlexColumn from "../../../resources/v1/styles/view/FlexColumn";
 import LiveLabel from "./livelabel";
 import AlignEnd from "../../../resources/v1/styles/view/AlignEnd";
 import Slider from "@react-native-community/slider";
+import {UiState, useSafeMainContext} from "../../../main/v1/config/MainContext";
 
 const BasicPlayer = () => {
   const player = useSafePlayer();
+  const mainContext = useSafeMainContext();
   const remoteURL =
     'https://urbanradioireland.out.airtime.pro:8000/urbanradioireland_c?_ga=2.35923040.1587061543.1641428521-1929476278.1640869959';
 
@@ -155,6 +157,7 @@ const BasicPlayer = () => {
             // this.player = ref;
           }} // Store reference
           onLoad={() => {
+              mainContext.methods.updateUiState(UiState.NORMAL)
               MusicControl.setNowPlaying({
                   title: remoteConfig().getString('player_title'),
                   artwork: remoteConfig().getString('player_image'), // URL or RN's image require()

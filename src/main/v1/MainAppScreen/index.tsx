@@ -8,15 +8,15 @@ import LiveLabel from "../../../player/v1/basicplayer/livelabel";
 import remoteConfig from "@react-native-firebase/remote-config";
 
 const MainAppScreen: React.FC<any> = () => {
-  return (
-    <SafeAreaView style={[[{flex: 1}]]}>
-      <HeaderBasic />
-        <PlayerProvider>
-        <BasicPlayer />
-      </PlayerProvider>
-      <SocialBottom />
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView style={[[{flex: 1}]]}>
+            <HeaderBasic/>
+            <PlayerProvider>
+                <BasicPlayer/>
+            </PlayerProvider>
+            <SocialBottom/>
+        </SafeAreaView>
+    );
 };
 
 export default MainAppScreen;

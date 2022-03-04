@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 import remoteConfigDefaults from "../../firebase/v1/remoteconfig/remoteConfigDefaults";
-import Normal from "./states/normal";
 import Loading from "./states/loading";
 import Error from "./states/error";
+import Normal from "./states/normal"
+
 enum State {
     NORMAL,
     LOADING,
