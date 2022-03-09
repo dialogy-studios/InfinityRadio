@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "^8.1.0",
     "@react-native-community/slider": "^4.2.0",
     "@react-native-firebase/analytics": "^14.3.0",
     "@react-native-firebase/app": "^14.3.0",

@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
 import remoteConfigDefaults from "../../firebase/v1/remoteconfig/remoteConfigDefaults";
 import Loading from "./states/loading";
 import Error from "./states/error";
 import Normal from "./states/normal"
+import NetInfo, {NetInfoState} from "@react-native-community/netinfo";
 
 enum State {
     NORMAL,
@@ -17,6 +18,7 @@ const App = () => {
 
     const setup = async () => {
         try {
+            setState(State.LOADING);
             await remoteConfig().setDefaults(remoteConfigDefaults)
             await remoteConfig().fetchAndActivate()
             await remoteConfig().fetch(0)
@@ -27,10 +29,17 @@ const App = () => {
         }
     }
 
+    const handleNetState = useCallback((state: NetInfoState) => {
+        if (state.isConnected) {
+            setup()
+        } else {
+            setState(State.ERROR)
+        }
+    }, [setState])
+
     useEffect(() => {
-        setState(State.LOADING);
-        // requestUserPermission()
-        setup()
+        const unsubscribe = NetInfo.addEventListener(handleNetState)
+        return unsubscribe
     }, [])
 
     const renderByState: {[state: number]: any} = {
