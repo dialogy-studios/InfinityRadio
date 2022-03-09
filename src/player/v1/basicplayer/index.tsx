@@ -90,7 +90,6 @@ const BasicPlayer = () => {
             maxVolume: player.state.maxVolume
         })
 
-        console.log("volume => ", player.state.volume)
     }, [player.state.volume])
 
   return (

@@ -36,10 +36,7 @@ const App = () => {
     const renderByState: {[state: number]: any} = {
         [State.NORMAL]: () => (<Normal />),
         [State.LOADING]: () => (<Loading />),
-        [State.ERROR]: () => (<Error
-            message={errorMsg}
-            retryAction={setup}
-        />)
+        [State.ERROR]: () => (<Error message={errorMsg} retryAction={setup} />)
     }
 
     const renderer = renderByState[state];
