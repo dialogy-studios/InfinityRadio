@@ -13,6 +13,12 @@ interface PlayerState {
   maxVolume: number,
   minVolume: number,
   isVolumeLongPress: boolean,
+  uiState: PlayerUiState
+}
+
+export enum PlayerUiState {
+  NORMAL,
+  ERROR
 }
 
 interface VolumeActions {
@@ -27,6 +33,7 @@ interface PlayerActions {
   pause: () => void;
   play: () => void;
   mute: () => void;
+  updateUiState: (newState: PlayerUiState) => void;
   volume: VolumeActions;
 }
 
@@ -44,7 +51,7 @@ function usePlayer(): Player {
   const [longPressing, setLongPressing] = useState(false);
   const [maxVolume, setMaxVolume] = useState(10);
   const [minVolume, setMinVolume] = useState(0);
-  const [previousDiff, setPreviousDiff] = useState(0);
+  const [playerUiState, setPlayerUiState] = useState<PlayerUiState>(PlayerUiState.NORMAL)
 
   const pause = useCallback(() => {
     setPaused(!paused);
@@ -85,6 +92,10 @@ function usePlayer(): Player {
     setLongPressing(false);
   }, [setLongPressing]);
 
+  const updateUiState = useCallback((newState: PlayerUiState) => {
+    setPlayerUiState(newState)
+  }, [setPlayerUiState])
+
   useEffect(() => {
     if (volume == 0) {
       setMuted(true);
@@ -102,12 +113,14 @@ function usePlayer(): Player {
         volume,
         maxVolume,
         minVolume,
-        isVolumeLongPress: longPressing
+        isVolumeLongPress: longPressing,
+        uiState: playerUiState
       },
       actions: {
         pause,
         play,
         mute,
+        updateUiState,
         volume: {
           increase: increaseVolume,
           decrease: decreaseVolume,
@@ -117,7 +130,22 @@ function usePlayer(): Player {
         },
       },
     }),
-    [updateVolume, startLongPressing, exitLongPressing, longPressing, increaseVolume, decreaseVolume, volume, paused, muted, mute, pause, play],
+      [
+        updateVolume,
+        startLongPressing,
+        exitLongPressing,
+        longPressing,
+        increaseVolume,
+        decreaseVolume,
+        volume,
+        paused,
+        muted,
+        mute,
+        pause,
+        play,
+        playerUiState,
+        updateUiState
+      ]
   );
 }
 
