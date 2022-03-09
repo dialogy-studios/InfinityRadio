@@ -4,6 +4,7 @@ import MainAppScreen from "../../MainAppScreen";
 import remoteConfig from "@react-native-firebase/remote-config";
 import MainContextProvider, {UiState, useSafeMainContext} from "../../config/MainContext";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
+import LoadingWithGif from "../../../../components/v1/loading";
 
 
 const Content = () => {
@@ -65,6 +66,7 @@ const Content = () => {
         <View
             style={[{
                 flex: 1,
+                backgroundColor: 'black'
             }]}>
             <Animated.View
                 style={[{
@@ -94,10 +96,7 @@ const Content = () => {
                     alignItems: 'center',
                 }]}
             >
-                <ActivityIndicator
-                    size={"large"}
-                    color={"red"}
-                />
+                <LoadingWithGif />
             </Animated.View>
         </View>
     )

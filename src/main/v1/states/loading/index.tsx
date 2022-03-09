@@ -1,7 +1,7 @@
 import React from "react";
-import {ActivityIndicator, StatusBar, View} from "react-native";
+import {ActivityIndicator, Image, StatusBar, View} from "react-native";
 import Centered from "../../../../resources/v1/styles/view/Centered";
-import remoteConfig from "@react-native-firebase/remote-config";
+import LoadingWithGif from "../../../../components/v1/loading";
 
 const Loading: React.FC<any> = () => {
     return (
@@ -14,10 +14,7 @@ const Loading: React.FC<any> = () => {
             ]}
         >
             <StatusBar barStyle={'dark-content'} translucent={true} backgroundColor={'transparent'}/>
-            <ActivityIndicator
-                size={"large"}
-                color={"red"}
-            />
+            <LoadingWithGif />
         </View>
     )
 }
