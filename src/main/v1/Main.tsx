@@ -39,7 +39,13 @@ const App = () => {
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(handleNetState)
-        return unsubscribe
+        const fetchListener = setTimeout(() => {
+            remoteConfig().fetch(0)
+        }, 60000)
+        return () => {
+            unsubscribe()
+            clearTimeout(fetchListener)
+        }
     }, [])
 
     const renderByState: {[state: number]: any} = {

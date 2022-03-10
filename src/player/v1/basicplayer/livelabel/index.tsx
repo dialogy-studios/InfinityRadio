@@ -29,72 +29,76 @@ const LiveLabel: React.FC<Props> = ({isLive}) => {
         startFadeAnimation(0)
     }, [])
 
-    return (
-        <View
-            style={[
-                FlexRow,
-                AlignCenter,
-                JustifyCenter,
-            ]}
-        >
+    if (isLive) {
+        return (
             <View
                 style={[
                     FlexRow,
-                    // JustifyAround,
+                    AlignCenter,
                     JustifyCenter,
-                    {
-                        // backgroundColor: 'pink',
-                    }
                 ]}
             >
                 <View
                     style={[
+                        FlexRow,
+                        // JustifyAround,
+                        JustifyCenter,
                         {
-                            width: 70,
-                            height: 20,
-                            marginLeft: -5,
-                            position: 'absolute',
-                            backgroundColor: 'black',
-                            borderRadius: 10,
-                            opacity: .5
-                        }
-                    ]}
-                />
-                <Animated.View
-                    style={[
-                        {
-                            height: 20,
-                            width: 20,
-                            marginRight: 10,
-                            borderRadius: 20,
-                            backgroundColor: 'red',
-                            shadowColor: 'black',
-                            shadowOffset: {
-                                width: -2,
-                                height: 2
-                            },
-                            shadowRadius: 20,
-                            shadowOpacity: 1
-                        },
-                        {
-                            opacity
-                        }
-                    ]}
-                />
-                <Text
-                    style={[
-                        {
-                            fontSize: 16,
-                            color: 'white',
-                            letterSpacing: 1
+                            // backgroundColor: 'pink',
                         }
                     ]}
                 >
-                    LIVE
-                </Text>
+                    <View
+                        style={[
+                            {
+                                width: 70,
+                                height: 20,
+                                marginLeft: -5,
+                                position: 'absolute',
+                                backgroundColor: 'black',
+                                borderRadius: 10,
+                                opacity: .5
+                            }
+                        ]}
+                    />
+                    <Animated.View
+                        style={[
+                            {
+                                height: 20,
+                                width: 20,
+                                marginRight: 10,
+                                borderRadius: 20,
+                                backgroundColor: 'red',
+                                shadowColor: 'black',
+                                shadowOffset: {
+                                    width: -2,
+                                    height: 2
+                                },
+                                shadowRadius: 20,
+                                shadowOpacity: 1
+                            },
+                            {
+                                opacity
+                            }
+                        ]}
+                    />
+                    <Text
+                        style={[
+                            {
+                                fontSize: 16,
+                                color: 'white',
+                                letterSpacing: 1
+                            }
+                        ]}
+                    >
+                        LIVE
+                    </Text>
+                </View>
             </View>
-        </View>
-    )
+        )
+    } else {
+        return null
+    }
 }
 
 export default LiveLabel;

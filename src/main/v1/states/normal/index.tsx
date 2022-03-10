@@ -5,6 +5,7 @@ import remoteConfig from "@react-native-firebase/remote-config";
 import MainContextProvider, {UiState, useSafeMainContext} from "../../config/MainContext";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import LoadingWithGif from "../../../../components/v1/loading";
+import {ConfigContextProvider} from "../../../../firebase/v1/firestore/collection/configs";
 
 
 const Content = () => {
@@ -105,7 +106,9 @@ const Content = () => {
 const Normal: React.FC<any> = () => {
     return (
         <MainContextProvider>
-            <Content />
+            <ConfigContextProvider>
+                <Content />
+            </ConfigContextProvider>
         </MainContextProvider>
     )
 }

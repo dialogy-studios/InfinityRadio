@@ -19,63 +19,68 @@ import AlignEnd from "../../../resources/v1/styles/view/AlignEnd";
 import Slider from "@react-native-community/slider";
 import {UiState, useSafeMainContext} from "../../../main/v1/config/MainContext";
 import InternetConnectionErrorScreen from "../../../main/v1/InternetConnectionErrorScreen";
+import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 
 const BasicPlayer = () => {
   const player = useSafePlayer();
   const mainContext = useSafeMainContext();
+  const config = useSafeConfigContext();
   const remoteURL =
     'https://urbanradioireland.out.airtime.pro:8000/urbanradioireland_c?_ga=2.35923040.1587061543.1641428521-1929476278.1640869959';
 
-  const retryAction = () => {
-      player.actions.updateUiState(PlayerUiState.NORMAL)
-  }
+    const retryAction = () => {
+        player.actions.updateUiState(PlayerUiState.NORMAL)
+    }
+
+    const setPlayer = () => {
+        MusicControl.enableBackgroundMode(true);
+        // MusicControl.handleAudioInterruptions(true);
+        // Basic Controls
+        MusicControl.enableControl('play', true)
+        MusicControl.enableControl('pause', true)
+        MusicControl.enableControl('stop', false)
+        MusicControl.enableControl('nextTrack', false)
+        MusicControl.enableControl('previousTrack', false)
+
+        MusicControl.enableControl('seekForward', false) // iOS only
+        MusicControl.enableControl('seekBackward', false) // iOS only
+        MusicControl.enableControl('seek', false) // Android only
+        MusicControl.enableControl('skipForward', false)
+        MusicControl.enableControl('skipBackward', false)
+
+        MusicControl.enableControl('setRating', false)
+        MusicControl.enableControl('volume', true) // Only affected when remoteVolume is enabled
+        MusicControl.enableControl('remoteVolume', true)
+
+        MusicControl.enableControl('enableLanguageOption', false)
+        MusicControl.enableControl('disableLanguageOption', false)
+
+        MusicControl.enableControl('closeNotification', true, { when: 'never' })
+
+        MusicControl.on(Command.play, ()=> {
+            player.actions.play()
+        })
+
+        MusicControl.on(Command.pause, ()=> {
+            player.actions.pause()
+        })
+
+        MusicControl.on(Command.stop, ()=> {
+            player.actions.pause()
+        })
+
+        MusicControl.on(Command.volume, (volume)=> {
+            player.actions.volume.updateVolume(volume)
+        })
+
+        MusicControl.on(Command.togglePlayPause, ()=> {
+            player.actions.play()
+        }); // iOS only
+    }
 
     useEffect(() => {
-      MusicControl.enableBackgroundMode(true);
-      // MusicControl.handleAudioInterruptions(true);
-      // Basic Controls
-      MusicControl.enableControl('play', true)
-      MusicControl.enableControl('pause', true)
-      MusicControl.enableControl('stop', false)
-      MusicControl.enableControl('nextTrack', false)
-      MusicControl.enableControl('previousTrack', false)
-
-      MusicControl.enableControl('seekForward', false) // iOS only
-      MusicControl.enableControl('seekBackward', false) // iOS only
-      MusicControl.enableControl('seek', false) // Android only
-      MusicControl.enableControl('skipForward', false)
-      MusicControl.enableControl('skipBackward', false)
-
-      MusicControl.enableControl('setRating', false)
-      MusicControl.enableControl('volume', true) // Only affected when remoteVolume is enabled
-      MusicControl.enableControl('remoteVolume', true)
-
-      MusicControl.enableControl('enableLanguageOption', false)
-      MusicControl.enableControl('disableLanguageOption', false)
-
-      MusicControl.enableControl('closeNotification', true, { when: 'never' })
-
-      MusicControl.on(Command.play, ()=> {
-          player.actions.play()
-      })
-
-      MusicControl.on(Command.pause, ()=> {
-          player.actions.pause()
-      })
-
-      MusicControl.on(Command.stop, ()=> {
-          player.actions.pause()
-      })
-
-      MusicControl.on(Command.volume, (volume)=> {
-          player.actions.volume.updateVolume(volume)
-      })
-
-      MusicControl.on(Command.togglePlayPause, ()=> {
-          player.actions.play()
-      }); // iOS only
+      setPlayer()
   }, [])
-
 
     useEffect(() => {
         if (player.state.paused) {
@@ -143,7 +148,8 @@ const BasicPlayer = () => {
                                 Square250
                             ]}
                             source={{
-                                uri: remoteConfig().getString('player_avatar'),
+                                // uri: remoteConfig().getString('player_avatar'),
+                                uri: config.state.mainScreen.player_poster
                             }}
                             resizeMode={'stretch'}
                         />
