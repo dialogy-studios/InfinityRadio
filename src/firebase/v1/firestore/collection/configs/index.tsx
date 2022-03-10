@@ -3,7 +3,18 @@ import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 import {SetObserverCallback} from "../../index";
 import {defaultConfigState} from "./default";
 import {Config} from "./repository";
-import {ConfigCollectionDocuments, ConfigsCollectionState, MainScreenConfig} from "./models";
+import {
+    ConfigCollectionDocuments,
+    ConfigsCollectionState,
+    MainScreenConfig,
+    PauseButtonConfig,
+    PlayButtonConfig,
+    PlayerLockScreenConfig,
+    PlayerSliderConfig,
+    VolumeDownButtonConfig,
+    VolumeMuteButtonConfig,
+    VolumeUpButtonConfig
+} from "./models";
 
 interface Props {
     state: ConfigsCollectionState,
@@ -30,6 +41,19 @@ interface GetConfigPayload {
 const useConfigContext = (): Props  => {
     const [config, setConfig] = useState<ConfigsCollectionState>(defaultConfigState)
 
+    const generalConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as PlayerLockScreenConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    playerLockScreen: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
     const mainScreenConfigRequestCallback: SetObserverCallback = {
         onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
             const data = doc.data() as MainScreenConfig
@@ -43,15 +67,107 @@ const useConfigContext = (): Props  => {
         onError: () => {}
     }
 
+    const playButtonConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as PlayButtonConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    play: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
+    const pauseButtonConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as PauseButtonConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    pause: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
+    const volumeUpButtonConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as VolumeUpButtonConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    volumeUp: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
+    const volumeDownButtonConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as VolumeDownButtonConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    volumeDown: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
+    const volumeMuteButtonConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as VolumeMuteButtonConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    volumeMute: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
+    const playerSliderConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as PlayerSliderConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    playerSlider: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
+    const playerLockScreenConfigRequestCallback: SetObserverCallback = {
+        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+            const data = doc.data() as PlayerLockScreenConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    playerLockScreen: data
+                }
+            })
+        },
+        onError: () => {}
+    }
+
     const configPayloadList: GetConfigPayload[] = [
+        {document: ConfigCollectionDocuments.GENERAL_CONFIG, callback: generalConfigRequestCallback},
         {document: ConfigCollectionDocuments.MAIN_SCREEN, callback: mainScreenConfigRequestCallback},
-        // {document: ConfigCollectionDocuments.PLAY, callback: mainScreenConfigRequestCallback},
-        // {document: ConfigCollectionDocuments.PAUSE, callback: mainScreenConfigRequestCallback},
-        // {document: ConfigCollectionDocuments.VOLUME_UP, callback: mainScreenConfigRequestCallback},
-        // {document: ConfigCollectionDocuments.VOLUME_DOWN, callback: mainScreenConfigRequestCallback},
-        // {document: ConfigCollectionDocuments.VOLUME_MUTE, callback: mainScreenConfigRequestCallback},
-        // {document: ConfigCollectionDocuments.PLAYER_SLIDER, callback: mainScreenConfigRequestCallback},
-        // {document: ConfigCollectionDocuments.PLAYER_LOCK_SCREEN, callback: mainScreenConfigRequestCallback},
+        {document: ConfigCollectionDocuments.PLAY, callback: playButtonConfigRequestCallback},
+        {document: ConfigCollectionDocuments.PAUSE, callback: pauseButtonConfigRequestCallback},
+        {document: ConfigCollectionDocuments.VOLUME_UP, callback: volumeUpButtonConfigRequestCallback},
+        {document: ConfigCollectionDocuments.VOLUME_DOWN, callback: volumeDownButtonConfigRequestCallback},
+        {document: ConfigCollectionDocuments.VOLUME_MUTE, callback: volumeMuteButtonConfigRequestCallback},
+        {document: ConfigCollectionDocuments.PLAYER_SLIDER, callback: playerSliderConfigRequestCallback},
+        {document: ConfigCollectionDocuments.PLAYER_LOCK_SCREEN, callback: playerLockScreenConfigRequestCallback},
     ]
 
     const getConfigs = async () => {

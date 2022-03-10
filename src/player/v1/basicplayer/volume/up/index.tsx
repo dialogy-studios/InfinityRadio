@@ -2,8 +2,8 @@ import VolumeUpIcon from '../../../../../resources/v1/icons/VolumeUpIcon';
 import React, {useCallback} from 'react';
 import {Player} from '../../config/Context';
 import LongPressTouchable from '../../../../../touchables/v1/LongPressTouchable';
-import remoteConfig from "@react-native-firebase/remote-config";
 import {StyleProp, ViewStyle} from "react-native";
+import {useSafeConfigContext} from "../../../../../firebase/v1/firestore/collection/configs";
 
 interface Props {
   player: Player;
@@ -11,6 +11,8 @@ interface Props {
 }
 
 const VolumeUp: React.FC<Props> = ({player, style}) => {
+    const config = useSafeConfigContext()
+
   const doIncrease = useCallback(() => {
     player.actions.volume.increase();
   }, [player.actions.volume]);
@@ -31,7 +33,7 @@ const VolumeUp: React.FC<Props> = ({player, style}) => {
           player.actions.volume.exitLongPressing();
       }}
     >
-      <VolumeUpIcon size={remoteConfig().getNumber('volume_up_size')} color={remoteConfig().getString('volume_up_color')} />
+      <VolumeUpIcon size={config.state.volumeUp.size} color={config.state.volumeUp.color} />
     </LongPressTouchable>
   );
 };

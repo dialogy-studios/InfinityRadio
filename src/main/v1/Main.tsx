@@ -31,7 +31,8 @@ const App = () => {
 
     const handleNetState = useCallback((state: NetInfoState) => {
         if (state.isConnected) {
-            setup()
+            // setup()
+            setState(State.NORMAL)
         } else {
             setState(State.ERROR)
         }

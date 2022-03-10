@@ -1,4 +1,7 @@
+import {StatusBarStyle} from "react-native";
+
 export enum ConfigCollectionDocuments {
+    GENERAL_CONFIG="general_config",
     MAIN_SCREEN="main_screen",
     PLAY="play",
     PAUSE="pause",
@@ -10,6 +13,7 @@ export enum ConfigCollectionDocuments {
 }
 
 export interface ConfigsCollectionState {
+    general: GeneralConfig,
     mainScreen: MainScreenConfig,
     play: PlayButtonConfig,
     pause: PauseButtonConfig,
@@ -18,6 +22,10 @@ export interface ConfigsCollectionState {
     volumeMute: VolumeMuteButtonConfig,
     playerLockScreen: PlayerLockScreenConfig,
     playerSlider: PlayerSliderConfig,
+}
+
+export interface GeneralConfig {
+    status_bar: StatusBarStyle
 }
 
 export interface MainScreenConfig {

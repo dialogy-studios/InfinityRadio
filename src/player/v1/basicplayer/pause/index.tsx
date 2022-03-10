@@ -2,13 +2,14 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import PauseIcon from '../../../../resources/v1/icons/PauseIcon';
 import {Player} from '../config/Context';
-import remoteConfig from "@react-native-firebase/remote-config";
+import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
 
 interface Props {
   player: Player;
 }
 
 const Pause: React.FC<Props> = ({player}) => {
+    const config = useSafeConfigContext()
   return (
     <TouchableOpacity
         onPress={player.actions.pause}
@@ -20,7 +21,7 @@ const Pause: React.FC<Props> = ({player}) => {
             ]
         }
     >
-      <PauseIcon size={remoteConfig().getNumber("pause_size")} color={remoteConfig().getString("pause_color")} />
+      <PauseIcon size={config.state.pause.size} color={config.state.pause.color} />
     </TouchableOpacity>
   );
 };

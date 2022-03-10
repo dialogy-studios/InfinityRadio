@@ -9,7 +9,6 @@ import Pause from './pause';
 import FlexRow from '../../../resources/v1/styles/view/FlexRow';
 import Centered from '../../../resources/v1/styles/view/Centered';
 import {PlayerUiState, useSafePlayer} from './config/Context';
-import remoteConfig from "@react-native-firebase/remote-config";
 import MusicControl, {Command} from 'react-native-music-control'
 import AlignCenter from "../../../resources/v1/styles/view/AlignCenter";
 import JustifyCenter from "../../../resources/v1/styles/view/JustifyCenter";
@@ -138,7 +137,7 @@ const BasicPlayer = () => {
                         ]}
 
                     >
-                        <LiveLabel isLive={remoteConfig().getBoolean('is_live')}/>
+                        <LiveLabel isLive={config.state.mainScreen.isLive}/>
                     </View>
                     <View style={[
                         AlignEnd
@@ -148,7 +147,6 @@ const BasicPlayer = () => {
                                 Square250
                             ]}
                             source={{
-                                // uri: remoteConfig().getString('player_avatar'),
                                 uri: config.state.mainScreen.player_poster
                             }}
                             resizeMode={'stretch'}
@@ -179,19 +177,19 @@ const BasicPlayer = () => {
                         onLoad={() => {
                             mainContext.methods.updateUiState(UiState.NORMAL)
                             MusicControl.setNowPlaying({
-                                title: remoteConfig().getString('player_title'),
-                                artwork: remoteConfig().getString('player_image'), // URL or RN's image require()
-                                artist: remoteConfig().getString('player_artist'),
-                                album: remoteConfig().getString('player_album'),
-                                genre: remoteConfig().getString('player_genre'),
+                                title: config.state.playerLockScreen.title,
+                                artwork: config.state.playerLockScreen.image, // URL or RN's image require()
+                                artist: config.state.playerLockScreen.artist,
+                                album: config.state.playerLockScreen.album,
+                                genre: config.state.playerLockScreen.genre,
                                 duration: 1000000000000000000000000, // (Seconds)
-                                description: remoteConfig().getString('player_description'), // Android Only
-                                color: remoteConfig().getNumber('player_color'), // Android Only - Notification Color
+                                description: config.state.playerLockScreen.description, // Android Only
+                                color: config.state.playerLockScreen.color, // Android Only - Notification Color
                                 colorized: true, // Android 8+ Only - Notification Color extracted from the artwork. Set to false to use the color property instead
                                 date: new Date().toISOString(), // Release Date (RFC 3339) - Android Only
                                 rating: 83, // Android Only (Boolean or Number depending on the type)
                                 notificationIcon: 'my_custom_icon', // Android Only (String), Android Drawable resource name for a custom notification icon
-                                isLiveStream: remoteConfig().getBoolean('is_live'), // iOS Only (Boolean), Show or hide Live Indicator instead of seekbar on lock screen for live streams. Default value is false.
+                                isLiveStream: config.state.mainScreen.isLive, // iOS Only (Boolean), Show or hide Live Indicator instead of seekbar on lock screen for live streams. Default value is false.
                             })
                         }}
                         onBuffer={() => {
@@ -215,9 +213,9 @@ const BasicPlayer = () => {
                             maximumValue={10}
                             value={player.state.muted ? 0 : player.state.volume}
                             onValueChange={(value) => player.actions.volume.updateVolume(value)}
-                            minimumTrackTintColor={remoteConfig().getString('player_slider_minimum_track_color')}
-                            maximumTrackTintColor={remoteConfig().getString('player_slider_maximum_track_color')}
-                            thumbTintColor={remoteConfig().getString('player_slider_button_color')}
+                            minimumTrackTintColor={config.state.playerSlider.player_slider_minimum_track_color}
+                            maximumTrackTintColor={config.state.playerSlider.player_slider_maximum_track_color}
+                            thumbTintColor={config.state.playerSlider.player_slider_button_color}
                             tapToSeek={true}
                         />
                     </View>

@@ -1,15 +1,14 @@
 import React, {useEffect, useRef, useState} from "react";
 import {ActivityIndicator, Animated, ImageBackground, StatusBar, useWindowDimensions, View} from 'react-native';
 import MainAppScreen from "../../MainAppScreen";
-import remoteConfig from "@react-native-firebase/remote-config";
 import MainContextProvider, {UiState, useSafeMainContext} from "../../config/MainContext";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import LoadingWithGif from "../../../../components/v1/loading";
-import {ConfigContextProvider} from "../../../../firebase/v1/firestore/collection/configs";
-
+import {ConfigContextProvider, useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
 
 const Content = () => {
     const context = useSafeMainContext()
+    const config = useSafeConfigContext()
     const [shouldHideLoading, setShouldHideLoading] = useState(true)
     const normalUiOpacity = useRef(new Animated.Value(0)).current
     const loadingUiOpacity = useRef(new Animated.Value(1)).current
@@ -80,9 +79,9 @@ const Content = () => {
                         flex: 1,
                     }]}
                     source={{
-                        uri: remoteConfig().getValue('background').asString(),
+                        uri: config.state.mainScreen.background,
                     }}>
-                    <StatusBar barStyle={remoteConfig().getString('status_bar') as 'light-content' | 'dark-content'} translucent={true} backgroundColor={'transparent'}/>
+                    <StatusBar barStyle={config.state.general.status_bar} translucent={true} backgroundColor={'transparent'}/>
                     <MainAppScreen />
                 </ImageBackground>
             </Animated.View>

@@ -2,13 +2,14 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import PlayIcon from '../../../../resources/v1/icons/PlayIcon';
 import {Player} from '../config/Context';
-import remoteConfig from "@react-native-firebase/remote-config";
+import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
 
 interface Props {
   player: Player;
 }
 
 const Play: React.FC<Props> = ({player}) => {
+    const config = useSafeConfigContext()
   return (
     <TouchableOpacity
         onPress={player.actions.play}
@@ -18,7 +19,7 @@ const Play: React.FC<Props> = ({player}) => {
             }
         ]}
     >
-      <PlayIcon size={remoteConfig().getNumber('play_size')} color={remoteConfig().getString('play_color')} />
+      <PlayIcon size={config.state.play.size} color={config.state.play.color} />
     </TouchableOpacity>
   );
 };

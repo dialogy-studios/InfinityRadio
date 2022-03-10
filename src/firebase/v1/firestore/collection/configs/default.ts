@@ -1,3 +1,17 @@
+import {
+    ButtonConfig, ConfigsCollectionState, GeneralConfig,
+    MainScreenConfig,
+    PauseButtonConfig,
+    PlayButtonConfig, PlayerLockScreenConfig, PlayerSliderConfig, VolumeDownButtonConfig,
+    VolumeMuteButtonConfig,
+    VolumeUpButtonConfig
+} from "./models";
+
+
+export const defaultGeneralConfig: GeneralConfig = {
+    status_bar: "light-content"
+}
+
 export const defaultMainScreenConfig: MainScreenConfig = {
     background: "",
     header_image: "",
@@ -35,6 +49,7 @@ export const defaultPlayerLockScreenConfigState: PlayerLockScreenConfig = {
 }
 
 export const defaultConfigState: ConfigsCollectionState = {
+    general: defaultGeneralConfig,
     mainScreen: defaultMainScreenConfig,
     pause: defaultPauseConfigState,
     play: defaultPlayConfigState,
