@@ -58,7 +58,7 @@ export interface PlayerLockScreenConfig {
     album: string,
     genre: string,
     description: string,
-    color: string
+    color: number
 }
 
 export interface PlayerSliderConfig {

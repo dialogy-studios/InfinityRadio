@@ -1,7 +1,6 @@
 import React from 'react';
 import HeaderContainer from './container';
 import {Image} from 'react-native';
-import remoteConfig from "@react-native-firebase/remote-config";
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 
 const Header: React.FC<any> = () => {

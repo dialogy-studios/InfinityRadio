@@ -1,21 +1,27 @@
 import React, {useEffect, useRef, useState} from "react";
-import {ActivityIndicator, Animated, ImageBackground, StatusBar, useWindowDimensions, View} from 'react-native';
+import {Animated, ImageBackground, StatusBar, useWindowDimensions, View} from 'react-native';
 import MainAppScreen from "../../MainAppScreen";
 import MainContextProvider, {UiState, useSafeMainContext} from "../../config/MainContext";
-import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import LoadingWithGif from "../../../../components/v1/loading";
 import {ConfigContextProvider, useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
+import InternetConnectionErrorScreen from "../../InternetConnectionErrorScreen";
+import TimingAnimationConfig = Animated.TimingAnimationConfig;
 
 const Content = () => {
-    const context = useSafeMainContext()
+    const mainContext = useSafeMainContext()
     const config = useSafeConfigContext()
     const [shouldHideLoading, setShouldHideLoading] = useState(true)
     const normalUiOpacity = useRef(new Animated.Value(0)).current
     const loadingUiOpacity = useRef(new Animated.Value(1)).current
     const dimensions = useWindowDimensions()
 
-    useEffect(() => {
-        const uiState: UiState = context.state.ui
+    const retryAction = () => {
+        mainContext.methods.updateUiState(UiState.LOADING)
+    }
+
+    const handleAnimationBasedOnState = (currentState: UiState) => {
+        if (currentState == UiState.ERROR) return
+        const uiState: UiState = currentState
         var loadingAnimationConfig: TimingAnimationConfig = {
             useNativeDriver: true,
             toValue: 0,
@@ -52,8 +58,13 @@ const Content = () => {
                     normalAnimation
                 ]
             )
-            .start()
-    }, [context.state.ui])
+            .start(() => {
+            })
+    }
+
+    useEffect(() => {
+        handleAnimationBasedOnState(mainContext.state.ui)
+    }, [mainContext.state.ui])
 
 
     loadingUiOpacity.addListener(({value}) => {
@@ -62,44 +73,53 @@ const Content = () => {
         }
     })
 
-    return (
-        <View
-            style={[{
-                flex: 1,
-                backgroundColor: 'black'
-            }]}>
-            <Animated.View
+    if (mainContext.state.ui == UiState.ERROR) {
+        return (
+            <InternetConnectionErrorScreen
+                message={"Error on load stream."}
+                retryAction={retryAction}
+            />
+        )
+    } else {
+        return (
+            <View
                 style={[{
                     flex: 1,
-                    opacity: normalUiOpacity
-                }]}
-            >
-                <ImageBackground
+                    backgroundColor: 'black'
+                }]}>
+                <Animated.View
                     style={[{
                         flex: 1,
+                        opacity: normalUiOpacity
                     }]}
-                    source={{
-                        uri: config.state.mainScreen.background,
-                    }}>
-                    <StatusBar barStyle={config.state.general.status_bar} translucent={true} backgroundColor={'transparent'}/>
-                    <MainAppScreen />
-                </ImageBackground>
-            </Animated.View>
-            <Animated.View
-                style={[{
-                    opacity: loadingUiOpacity,
-                    width: dimensions.width,
-                    height: dimensions.height,
-                    display: shouldHideLoading ? 'flex' : 'none',
-                    position: 'absolute',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }]}
-            >
-                <LoadingWithGif />
-            </Animated.View>
-        </View>
-    )
+                >
+                    <ImageBackground
+                        style={[{
+                            flex: 1,
+                        }]}
+                        source={{
+                            uri: config.state.mainScreen.background,
+                        }}>
+                        <StatusBar barStyle={config.state.general.status_bar} translucent={true} backgroundColor={'transparent'}/>
+                        <MainAppScreen />
+                    </ImageBackground>
+                </Animated.View>
+                <Animated.View
+                    style={[{
+                        opacity: loadingUiOpacity,
+                        width: dimensions.width,
+                        height: dimensions.height,
+                        display: shouldHideLoading ? 'flex' : 'none',
+                        position: 'absolute',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }]}
+                >
+                    <LoadingWithGif />
+                </Animated.View>
+            </View>
+        )
+    }
 }
 
 const Normal: React.FC<any> = () => {

@@ -1,16 +1,18 @@
 import Centered from "../../../resources/v1/styles/view/Centered";
 import Retry from "../../../resources/v1/icons/Retry";
-import {Text, TouchableOpacity} from "react-native";
+import {StyleProp, Text, TouchableOpacity, ViewStyle} from "react-native";
 import React from "react";
 
 interface Props {
-    onCLick: () => void
+    onCLick: () => void,
+    style?: StyleProp<ViewStyle>
 }
 
-const TryAgainBtn: React.FC<Props> = ({onCLick}) => {
+const TryAgainBtn: React.FC<Props> = ({onCLick, style}) => {
     return (
         <TouchableOpacity
             style={[
+                style,
                 {flexDirection: 'row'},
                 Centered
             ]}

@@ -17,7 +17,6 @@ import LiveLabel from "./livelabel";
 import AlignEnd from "../../../resources/v1/styles/view/AlignEnd";
 import Slider from "@react-native-community/slider";
 import {UiState, useSafeMainContext} from "../../../main/v1/config/MainContext";
-import InternetConnectionErrorScreen from "../../../main/v1/InternetConnectionErrorScreen";
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 
 const BasicPlayer = () => {
@@ -78,8 +77,8 @@ const BasicPlayer = () => {
     }
 
     useEffect(() => {
-      setPlayer()
-  }, [])
+        setPlayer()
+    }, [])
 
     useEffect(() => {
         if (player.state.paused) {
@@ -101,142 +100,145 @@ const BasicPlayer = () => {
 
     }, [player.state.volume])
 
-    if (player.state.uiState == PlayerUiState.ERROR) {
-        return (
-            <InternetConnectionErrorScreen
-                message={"There is an error on loading player."}
-                retryAction={retryAction}
-            />
-        )
-    } else {
-        return (
+    useEffect(() => {
+        if (mainContext.state.ui == UiState.ERROR) {
+            MusicControl.updatePlayback({
+                state: MusicControl.STATE_ERROR, // (STATE_ERROR, STATE_STOPPED, STATE_PLAYING, STATE_PAUSED, STATE_BUFFERING)
+            })
+        } else if (mainContext.state.ui == UiState.LOADING) {
+            MusicControl.updatePlayback({
+                state: MusicControl.STATE_BUFFERING
+            })
+        }
+    }, [player.state.uiState])
+
+    return (
+        <View
+            style={[
+                Centered,
+                {
+                    flex: 3,
+                    // backgroundColor: 'pink',
+                },
+            ]}>
             <View
                 style={[
-                    Centered,
+                    FlexColumn,
                     {
                         flex: 3,
-                        // backgroundColor: 'pink',
+                        justifyContent: 'center',
+                        // backgroundColor: 'yellow',
                     },
                 ]}>
                 <View
                     style={[
-                        FlexColumn,
                         {
-                            flex: 3,
-                            justifyContent: 'center',
-                            // backgroundColor: 'yellow',
-                        },
-                    ]}>
-                    <View
-                        style={[
-                            {
-                                flex: .2,
-                                // backgroundColor: 'white',
-                                marginBottom: 10
-                            }
-                        ]}
+                            flex: .2,
+                            // backgroundColor: 'white',
+                            marginBottom: 10
+                        }
+                    ]}
 
-                    >
-                        <LiveLabel isLive={config.state.mainScreen.isLive}/>
-                    </View>
-                    <View style={[
-                        AlignEnd
+                >
+                    <LiveLabel isLive={config.state.mainScreen.isLive}/>
+                </View>
+                <View style={[
+                    AlignEnd
+                ]}>
+                    <Image
+                        style={[
+                            Square250
+                        ]}
+                        source={{
+                            uri: config.state.mainScreen.player_poster
+                        }}
+                        resizeMode={'stretch'}
+                    />
+                </View>
+            </View>
+            <View
+                style={[
+                    FlexColumn,
+                    {
+                        // backgroundColor: 'blue',
+                    },
+                ]}>
+                <Video
+                    allowsExternalPlayback={true}
+                    audioOnly={true}
+                    source={{uri: remoteURL}} // Can be a URL or a local file.
+                    playInBackground={true}
+                    playWhenInactive={true}
+                    ignoreSilentSwitch={'ignore'}
+                    paused={player.state.paused}
+                    // paused={true}
+                    muted={player.state.muted}
+                    volume={player.state.volume / 10}
+                    ref={() => {
+                        // this.player = ref;
+                    }} // Store reference
+                    onLoad={() => {
+                        mainContext.methods.updateUiState(UiState.NORMAL)
+                        MusicControl.setNowPlaying({
+                            title: config.state.playerLockScreen.title,
+                            artwork: config.state.playerLockScreen.image, // URL or RN's image require()
+                            artist: config.state.playerLockScreen.artist,
+                            album: config.state.playerLockScreen.album,
+                            genre: config.state.playerLockScreen.genre,
+                            duration: 1000000000000000000000000, // (Seconds)
+                            description: config.state.playerLockScreen.description, // Android Only
+                            color: config.state.playerLockScreen.color, // Android Only - Notification Color
+                            colorized: true, // Android 8+ Only - Notification Color extracted from the artwork. Set to false to use the color property instead
+                            date: new Date().toISOString(), // Release Date (RFC 3339) - Android Only
+                            rating: 83, // Android Only (Boolean or Number depending on the type)
+                            notificationIcon: 'my_custom_icon', // Android Only (String), Android Drawable resource name for a custom notification icon
+                            isLiveStream: config.state.mainScreen.isLive, // iOS Only (Boolean), Show or hide Live Indicator instead of seekbar on lock screen for live streams. Default value is false.
+                        })
+                    }}
+                    onBuffer={() => {
+                    }} // Callback when remote video is buffering
+                    onError={(error: Error) => {
+                        mainContext.methods.updateUiState(UiState.ERROR)
+                    }} // Callback when video cannot be loaded
+                />
+                <View
+                    style={[
+                        {
+                            flex: 1
+                        },
+                        {
+                            // backgroundColor: 'yellow'
+                        }
                     ]}>
-                        <Image
-                            style={[
-                                Square250
-                            ]}
-                            source={{
-                                uri: config.state.mainScreen.player_poster
-                            }}
-                            resizeMode={'stretch'}
-                        />
-                    </View>
+                    <Slider
+                        style={{flex: 1}}
+                        minimumValue={0}
+                        maximumValue={10}
+                        value={player.state.muted ? 0 : player.state.volume}
+                        onValueChange={(value) => player.actions.volume.updateVolume(value)}
+                        minimumTrackTintColor={config.state.playerSlider.player_slider_minimum_track_color}
+                        maximumTrackTintColor={config.state.playerSlider.player_slider_maximum_track_color}
+                        thumbTintColor={config.state.playerSlider.player_slider_button_color}
+                        tapToSeek={true}
+                    />
                 </View>
                 <View
                     style={[
-                        FlexColumn,
+                        FlexRow,
+                        JustifyCenter,
+                        AlignCenter,
                         {
-                            // backgroundColor: 'blue',
+                            // backgroundColor: 'yellow',
                         },
                     ]}>
-                    <Video
-                        allowsExternalPlayback={true}
-                        audioOnly={true}
-                        source={{uri: remoteURL}} // Can be a URL or a local file.
-                        playInBackground={true}
-                        playWhenInactive={true}
-                        ignoreSilentSwitch={'ignore'}
-                        paused={player.state.paused}
-                        // paused={true}
-                        muted={player.state.muted}
-                        volume={player.state.volume / 10}
-                        ref={() => {
-                            // this.player = ref;
-                        }} // Store reference
-                        onLoad={() => {
-                            mainContext.methods.updateUiState(UiState.NORMAL)
-                            MusicControl.setNowPlaying({
-                                title: config.state.playerLockScreen.title,
-                                artwork: config.state.playerLockScreen.image, // URL or RN's image require()
-                                artist: config.state.playerLockScreen.artist,
-                                album: config.state.playerLockScreen.album,
-                                genre: config.state.playerLockScreen.genre,
-                                duration: 1000000000000000000000000, // (Seconds)
-                                description: config.state.playerLockScreen.description, // Android Only
-                                color: config.state.playerLockScreen.color, // Android Only - Notification Color
-                                colorized: true, // Android 8+ Only - Notification Color extracted from the artwork. Set to false to use the color property instead
-                                date: new Date().toISOString(), // Release Date (RFC 3339) - Android Only
-                                rating: 83, // Android Only (Boolean or Number depending on the type)
-                                notificationIcon: 'my_custom_icon', // Android Only (String), Android Drawable resource name for a custom notification icon
-                                isLiveStream: config.state.mainScreen.isLive, // iOS Only (Boolean), Show or hide Live Indicator instead of seekbar on lock screen for live streams. Default value is false.
-                            })
-                        }}
-                        onBuffer={() => {
-                        }} // Callback when remote video is buffering
-                        onError={(error: Error) => {
-                            console.log('error => ', error);
-                        }} // Callback when video cannot be loaded
-                    />
-                    <View
-                        style={[
-                            {
-                                flex: 1
-                            },
-                            {
-                                // backgroundColor: 'yellow'
-                            }
-                        ]}>
-                        <Slider
-                            style={{flex: 1}}
-                            minimumValue={0}
-                            maximumValue={10}
-                            value={player.state.muted ? 0 : player.state.volume}
-                            onValueChange={(value) => player.actions.volume.updateVolume(value)}
-                            minimumTrackTintColor={config.state.playerSlider.player_slider_minimum_track_color}
-                            maximumTrackTintColor={config.state.playerSlider.player_slider_maximum_track_color}
-                            thumbTintColor={config.state.playerSlider.player_slider_button_color}
-                            tapToSeek={true}
-                        />
-                    </View>
-                    <View
-                        style={[
-                            FlexRow,
-                            JustifyCenter,
-                            AlignCenter,
-                            {
-                                // backgroundColor: 'yellow',
-                            },
-                        ]}>
-                        {
-                            player.state.paused ? (<Play player={player}/>) : (<Pause player={player}/>)
-                        }
-                        <VolumeButtons player={player}/>
-                    </View>
+                    {
+                        player.state.paused ? (<Play player={player}/>) : (<Pause player={player}/>)
+                    }
+                    <VolumeButtons player={player}/>
                 </View>
             </View>
-        );
-    }
+        </View>
+    );
 };
 
 export default BasicPlayer;

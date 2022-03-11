@@ -12,12 +12,15 @@ export const defaultGeneralConfig: GeneralConfig = {
     status_bar: "light-content"
 }
 
+const imgDefault = "https://firebasestorage.googleapis.com/v0/b/irelandradio-e7c2d.appspot.com/o/player_poster%2FDaniel%20Infinity%20Radio.jpg?alt=media&token=80ee34c3-3539-4b0e-a518-6872034577a5"
+
+
 export const defaultMainScreenConfig: MainScreenConfig = {
-    background: "",
-    header_image: "",
+    background: imgDefault,
+    header_image: imgDefault,
     isLive: false,
     link_list: "",
-    player_poster: ""
+    player_poster: imgDefault
 }
 
 const defaultButtonConfig: ButtonConfig =  {color: "white", size: 46}
@@ -41,10 +44,10 @@ export const defaultPlayerSliderConfigState: PlayerSliderConfig = {
 export const defaultPlayerLockScreenConfigState: PlayerLockScreenConfig = {
     album: "#1",
     artist: "Infinity Radio",
-    color: "white",
+    color: 0,
     description: "Livestream",
     genre: "Techno",
-    image: "",
+    image: imgDefault,
     title: "Enjoy us!"
 }
 

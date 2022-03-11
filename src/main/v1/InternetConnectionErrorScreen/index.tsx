@@ -4,7 +4,7 @@ import Centered from "../../../resources/v1/styles/view/Centered";
 import TryAgainBtn from "../../../components/v1/try_again_btn";
 interface Props {
     message: string,
-    retryAction: () => void
+    retryAction: (() => void) | null
 }
 
 const InternetConnectionErrorScreen: React.FC<Props> = ({message, retryAction}) => {
@@ -15,7 +15,7 @@ const InternetConnectionErrorScreen: React.FC<Props> = ({message, retryAction}) 
             ]}
             source={require('../../../resources/v1/images/v1/background/background-1.jpg')}
         >
-            <StatusBar barStyle={"light-content"} backgroundColor={'transparent'} />
+            <StatusBar barStyle={"light-content"} backgroundColor={'transparent'}  translucent={true}/>
             <ImageBackground
                 style={[
                     {flex: 1},
@@ -33,16 +33,23 @@ const InternetConnectionErrorScreen: React.FC<Props> = ({message, retryAction}) 
                         {flex: 1}
                     ]}
                 >
-                    <TryAgainBtn
-                        onCLick={retryAction}
-                    />
                     <View
                         style={[
-                            {marginTop: 20}
+                            {marginTop: 5}
                         ]}
                     >
-                        <Text style={[{color: 'white'}]} > {message ? `Error message: ${message}` : ''}</Text>
+                        <Text style={[{color: 'white'}]}> { message }</Text>
                     </View>
+                    {
+                        retryAction != null && (
+                            <TryAgainBtn
+                                style={[
+                                    {marginTop: 20}
+                                ]}
+                                onCLick={retryAction}
+                            />
+                        )
+                    }
                 </View>
             </ImageBackground>
         </ImageBackground>

@@ -2,7 +2,7 @@ import React from "react";
 import InternetConnectionErrorScreen from "../../InternetConnectionErrorScreen";
 interface Props {
     message: string,
-    retryAction: () => void
+    retryAction: (() => void) | null
 }
 
 const Error: React.FC<Props> = (props) => {

@@ -1,4 +1,4 @@
-import {Image, View} from "react-native";
+import {Image, Platform, View} from "react-native";
 import React from "react";
 
 const LoadingWithGif: React.FC<any> = () => {
@@ -15,10 +15,10 @@ const LoadingWithGif: React.FC<any> = () => {
                     {
                         flex: 1,
                         resizeMode: 'cover',
-                        aspectRatio: 1.1
+                        aspectRatio: Platform.OS == 'ios' ? .7 : .9
                     }
                 ]}
-                resizeMode={"contain"}
+                resizeMode={"cover"}
             />
         </View>
     )
