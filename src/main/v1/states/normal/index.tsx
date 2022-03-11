@@ -2,10 +2,10 @@ import React, {useEffect, useRef, useState} from "react";
 import {Animated, ImageBackground, StatusBar, useWindowDimensions, View} from 'react-native';
 import MainAppScreen from "../../MainAppScreen";
 import MainContextProvider, {UiState, useSafeMainContext} from "../../config/MainContext";
-import LoadingWithGif from "../../../../components/v1/loading";
 import {ConfigContextProvider, useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
 import InternetConnectionErrorScreen from "../../InternetConnectionErrorScreen";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
+import LoadingAnimated from "../../../../components/v1/loading_animated";
 
 const Content = () => {
     const mainContext = useSafeMainContext()
@@ -115,7 +115,7 @@ const Content = () => {
                         alignItems: 'center',
                     }]}
                 >
-                    <LoadingWithGif />
+                    <LoadingAnimated />
                 </Animated.View>
             </View>
         )

@@ -101,16 +101,19 @@ const BasicPlayer = () => {
     }, [player.state.volume])
 
     useEffect(() => {
+        var newState = MusicControl.STATE_BUFFERING
         if (mainContext.state.ui == UiState.ERROR) {
-            MusicControl.updatePlayback({
-                state: MusicControl.STATE_ERROR, // (STATE_ERROR, STATE_STOPPED, STATE_PLAYING, STATE_PAUSED, STATE_BUFFERING)
-            })
+            newState = MusicControl.STATE_ERROR
         } else if (mainContext.state.ui == UiState.LOADING) {
-            MusicControl.updatePlayback({
-                state: MusicControl.STATE_BUFFERING
-            })
+            newState = MusicControl.STATE_BUFFERING
+        } else if (mainContext.state.ui == UiState.NORMAL) {
+            newState = MusicControl.STATE_PLAYING
         }
-    }, [player.state.uiState])
+
+        if (newState != null) {
+            MusicControl.updatePlayback({state: newState})
+        }
+    }, [mainContext.state.ui])
 
     return (
         <View
@@ -185,7 +188,7 @@ const BasicPlayer = () => {
                             artist: config.state.playerLockScreen.artist,
                             album: config.state.playerLockScreen.album,
                             genre: config.state.playerLockScreen.genre,
-                            duration: 1000000000000000000000000, // (Seconds)
+                            duration: 0, // (Seconds)
                             description: config.state.playerLockScreen.description, // Android Only
                             color: config.state.playerLockScreen.color, // Android Only - Notification Color
                             colorized: true, // Android 8+ Only - Notification Color extracted from the artwork. Set to false to use the color property instead
@@ -196,6 +199,7 @@ const BasicPlayer = () => {
                         })
                     }}
                     onBuffer={() => {
+
                     }} // Callback when remote video is buffering
                     onError={(error: Error) => {
                         mainContext.methods.updateUiState(UiState.ERROR)
