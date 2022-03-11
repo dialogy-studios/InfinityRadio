@@ -55,8 +55,7 @@ const App = () => {
         [State.ERROR]: () => (<Error message={errorMsg} retryAction={null} />)
     }
 
-    // const renderer = renderByState[state];
-    const renderer = renderByState[State.LOADING];
+    const renderer = renderByState[state];
     return renderer()
 };
 
