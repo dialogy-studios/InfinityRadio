@@ -258,3 +258,5 @@ ios/Pods
 android/.idea/
 android/.gradle/
 android/app/build/
+
+android/app/release/
