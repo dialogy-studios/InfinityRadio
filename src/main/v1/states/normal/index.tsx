@@ -6,6 +6,8 @@ import {ConfigContextProvider, useSafeConfigContext} from "../../../../firebase/
 import InternetConnectionErrorScreen from "../../InternetConnectionErrorScreen";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import LoadingAnimated from "../../../../components/v1/loading_animated";
+import Player from "../../../../components/v1/player";
+import PlayerProvider from "../../../../components/v1/player/config/Context";
 
 const Content = () => {
     const mainContext = useSafeMainContext()
@@ -80,53 +82,56 @@ const Content = () => {
                 retryAction={retryAction}
             />
         )
-    } else {
-        return (
-            <View
+    }
+
+    return (
+        <View
+            style={[{
+                flex: 1,
+                backgroundColor: 'black'
+            }]}>
+            <Animated.View
                 style={[{
                     flex: 1,
-                    backgroundColor: 'black'
-                }]}>
-                <Animated.View
+                    opacity: normalUiOpacity
+                }]}
+            >
+                <ImageBackground
                     style={[{
                         flex: 1,
-                        opacity: normalUiOpacity
                     }]}
-                >
-                    <ImageBackground
-                        style={[{
-                            flex: 1,
-                        }]}
-                        source={{
-                            uri: config.state.mainScreen.background,
-                        }}>
-                        <StatusBar barStyle={config.state.general.status_bar} translucent={true} backgroundColor={'transparent'}/>
-                        <MainAppScreen />
-                    </ImageBackground>
-                </Animated.View>
-                <Animated.View
-                    style={[{
-                        opacity: loadingUiOpacity,
-                        width: dimensions.width,
-                        height: dimensions.height,
-                        display: shouldHideLoading ? 'flex' : 'none',
-                        position: 'absolute',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }]}
-                >
-                    <LoadingAnimated />
-                </Animated.View>
-            </View>
-        )
-    }
+                    source={{
+                        uri: config.state.mainScreen.background,
+                    }}>
+                    <StatusBar barStyle={config.state.general.status_bar} translucent={true} backgroundColor={'transparent'}/>
+                    <MainAppScreen />
+                </ImageBackground>
+            </Animated.View>
+            <Animated.View
+                style={[{
+                    opacity: loadingUiOpacity,
+                    width: dimensions.width,
+                    height: dimensions.height,
+                    display: shouldHideLoading ? 'flex' : 'none',
+                    position: 'absolute',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }]}
+            >
+                <LoadingAnimated />
+            </Animated.View>
+        </View>
+    )
 }
 
 const Normal: React.FC<any> = () => {
     return (
         <MainContextProvider>
             <ConfigContextProvider>
-                <Content />
+                <PlayerProvider>
+                    <Player />
+                    <Content />
+                </PlayerProvider>
             </ConfigContextProvider>
         </MainContextProvider>
     )

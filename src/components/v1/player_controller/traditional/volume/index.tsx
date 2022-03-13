@@ -2,7 +2,7 @@ import React from 'react';
 import VolumeUp from './up';
 import VolumeOff from './off';
 import VolumeDown from './down';
-import {Player} from '../config/Context';
+import {Player} from '../../../player/config/Context';
 
 interface Props {
   player: Player;

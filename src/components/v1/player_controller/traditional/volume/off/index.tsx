@@ -1,10 +1,9 @@
 import React from 'react';
 import {StyleProp, TouchableOpacity, ViewStyle} from 'react-native';
-import VolumeOffIcon from '../../../../../resources/v1/icons/VolumeOffIcon';
-import {Player} from '../../config/Context';
-import remoteConfig from "@react-native-firebase/remote-config";
-import VolumeUpIcon from "../../../../../resources/v1/icons/VolumeUpIcon";
-import {useSafeConfigContext} from "../../../../../firebase/v1/firestore/collection/configs";
+import {Player} from '../../../../player/config/Context';
+import {useSafeConfigContext} from "../../../../../../firebase/v1/firestore/collection/configs";
+import VolumeUpIcon from "../../../../../../resources/v1/icons/VolumeUpIcon";
+import VolumeOffIcon from "../../../../../../resources/v1/icons/VolumeOffIcon";
 
 interface Props {
     player: Player;

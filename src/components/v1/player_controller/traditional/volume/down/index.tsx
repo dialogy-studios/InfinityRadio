@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
-import VolumeDownIcon from '../../../../../resources/v1/icons/VolumeDownIcon';
-import {Player} from '../../config/Context';
-import LongPressTouchable from '../../../../../touchables/v1/LongPressTouchable';
+import {Player} from '../../../../player/config/Context';
 import {StyleProp, ViewStyle} from "react-native";
-import {useSafeConfigContext} from "../../../../../firebase/v1/firestore/collection/configs";
+import {useSafeConfigContext} from "../../../../../../firebase/v1/firestore/collection/configs";
+import LongPressTouchable from "../../../../../../touchables/v1/LongPressTouchable";
+import VolumeDownIcon from "../../../../../../resources/v1/icons/VolumeDownIcon";
 
 interface Props {
     player: Player;

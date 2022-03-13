@@ -1,8 +1,8 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import PlayIcon from '../../../../resources/v1/icons/PlayIcon';
-import {Player} from '../config/Context';
-import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
+import {Player} from '../../../player/config/Context';
+import {useSafeConfigContext} from "../../../../../firebase/v1/firestore/collection/configs";
+import PlayIcon from "../../../../../resources/v1/icons/PlayIcon";
 
 interface Props {
   player: Player;

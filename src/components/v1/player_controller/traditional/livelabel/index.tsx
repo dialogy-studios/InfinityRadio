@@ -1,10 +1,8 @@
 import React, {useEffect, useRef} from "react";
 import {Animated, Text, View} from "react-native";
-import FlexRow from "../../../../resources/v1/styles/view/FlexRow";
-import AlignCenter from "../../../../resources/v1/styles/view/AlignCenter";
-import JustifyAround from "../../../../resources/v1/styles/view/JustifyAround";
-import JustifyBetween from "../../../../resources/v1/styles/view/JustifyBetween";
-import JustifyCenter from "../../../../resources/v1/styles/view/JustifyCenter";
+import FlexRow from "../../../../../resources/v1/styles/view/FlexRow";
+import AlignCenter from "../../../../../resources/v1/styles/view/AlignCenter";
+import JustifyCenter from "../../../../../resources/v1/styles/view/JustifyCenter";
 
 interface Props {
     isLive: boolean
