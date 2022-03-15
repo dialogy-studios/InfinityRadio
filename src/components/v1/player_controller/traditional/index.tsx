@@ -7,6 +7,7 @@ import PlayIcon from '../../../../resources/v2/PlayIcon';
 import VolumeDownIcon from "../../../../resources/v1/icons/VolumeDownIcon";
 import VolumeUpIcon from "../../../../resources/v1/icons/VolumeUpIcon";
 import PauseIcon from "../../../../resources/v2/PauseIcon";
+import {useEffect} from "react";
 
 const TraditionalPlayerController = () => {
   const player = useSafePlayer();
@@ -42,7 +43,7 @@ const TraditionalPlayerController = () => {
                     style={[
                         {
                             paddingVertical: 25,
-                            // backgroundColor: 'gray'
+                            backgroundColor: 'gray'
                         }
                     ]}
                 >

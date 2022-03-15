@@ -6,6 +6,7 @@ import {Animated, Dimensions, View} from "react-native";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import {useSafeWindowDimensions} from "../../dimensions/SafeDimensions";
 import DeviceInfo from "react-native-device-info";
+import LiveLabel from "../../player_controller/traditional/livelabel";
 
 interface Props {}
 interface TraditionalTemplateMethods {
@@ -55,6 +56,15 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
                 ]}
             >
                 <HeaderBasic/>
+                <View
+                    style={[
+                        {
+                            paddingVertical: 10
+                        }
+                    ]}
+                >
+                    <LiveLabel isLive={true} variant={'dark'} />
+                </View>
             </View>
             <View
                 style={[

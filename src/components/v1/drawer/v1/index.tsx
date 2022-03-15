@@ -48,7 +48,8 @@ const Drawer: React.FC<any> = ({navigation}) => {
                     <View
                         style={[
                             {
-                                flexDirection: 'row'
+                                flexDirection: 'row',
+                                alignItems: 'center'
                             }
                         ]}
                     >
@@ -61,7 +62,15 @@ const Drawer: React.FC<any> = ({navigation}) => {
                         >
                             Infinity Radio
                         </Text>
-                        <LiveLabel isLive={config.state.mainScreen.isLive} />
+                        <View
+                            style={[
+                                {
+                                    marginLeft: 10
+                                }
+                            ]}
+                        >
+                            <LiveLabel isLive={config.state.mainScreen.isLive}  variant={'light'}/>
+                        </View>
                     </View>
                 </TouchableOpacity>
             </DrawerItemContainer>

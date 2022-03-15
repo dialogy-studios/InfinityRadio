@@ -1,15 +1,15 @@
 import React, {useEffect, useRef} from "react";
 import {Animated, Text, View} from "react-native";
-import FlexRow from "../../../../../resources/v1/styles/view/FlexRow";
-import AlignCenter from "../../../../../resources/v1/styles/view/AlignCenter";
-import JustifyCenter from "../../../../../resources/v1/styles/view/JustifyCenter";
 
 interface Props {
+    variant: 'light' | 'dark',
     isLive: boolean
 }
 
-const LiveLabel: React.FC<Props> = ({isLive}) => {
+const LiveLabel: React.FC<Props> = ({isLive, variant}) => {
     const opacity = useRef(new Animated.Value(1)).current
+
+    const isDark = variant == 'dark'
 
     const startFadeAnimation = (targetOpacity: number) => {
         Animated
@@ -27,56 +27,52 @@ const LiveLabel: React.FC<Props> = ({isLive}) => {
         startFadeAnimation(0)
     }, [])
 
+
+
     if (isLive) {
         return (
             <View
                 style={[
-                    FlexRow,
+                    {
+                        paddingVertical: 5,
+                        borderRadius: 15,
+                        opacity: .5,
+                        flexDirection: 'row',
+                        backgroundColor: isDark ? 'white' : 'black'
+                    }
                 ]}
             >
-                <View
-                    style={[
-                        {
-                            height: 20,
-                            width: 100,
-                            backgroundColor: 'black',
-                            borderRadius: 10,
-                            opacity: .5
-                        }
-                    ]}
-                />
                 <Animated.View
                     style={[
                         {
-                            height: 20,
-                            width: 20,
-                            marginRight: 10,
-                            borderRadius: 20,
+                            height: 15,
+                            width: 15,
+                            borderRadius: 15,
+                            marginHorizontal: 10,
                             backgroundColor: 'red',
-                            shadowColor: 'black',
-                            shadowOffset: {
-                                width: -2,
-                                height: 2
-                            },
-                            shadowRadius: 20,
-                            shadowOpacity: 1
-                        },
-                        {
                             opacity
                         }
                     ]}
-                />
-                <Text
+                >
+
+                </Animated.View>
+                <View
                     style={[
                         {
-                            fontSize: 16,
-                            color: 'white',
-                            letterSpacing: 1
+                            marginRight: 10
                         }
                     ]}
                 >
-                    LIVE
-                </Text>
+                    <Text
+                        style={[
+                            {
+                                color: isDark ? 'black' : 'white'
+                            }
+                        ]}
+                    >
+                        LIVE
+                    </Text>
+                </View>
             </View>
         )
     } else {
