@@ -146,17 +146,17 @@ const useConfigContext = (): Props  => {
     }
 
     const playerLockScreenConfigRequestCallback: SetObserverCallback = {
-        onSuccess: useCallback((doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) => {
-        const data = doc.data() as PlayerLockScreenConfig
-        setConfig({
-            ...config,
-            playerLockScreen: {
-                ...config.playerLockScreen,
-                ...data
-            }
-        })
-    }, [config, setConfig]),
-        onError: () => {}
+        onSuccess: (doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) => {
+            const data = doc.data() as PlayerLockScreenConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    playerLockScreen: data
+                }
+            })
+        },
+        onError: () => {
+        }
     }
 
     const configPayloadList: GetConfigPayload[] = [

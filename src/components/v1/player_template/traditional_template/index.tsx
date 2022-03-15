@@ -1,6 +1,6 @@
 import HeaderBasic from "../../../../header/v1/HeaderBasic";
 import TraditionalPlayerController from "../../player_controller/traditional";
-import React, {forwardRef, useEffect, useImperativeHandle, useRef} from "react";
+import React, {forwardRef, useImperativeHandle, useRef} from "react";
 import {Animated, Dimensions, TouchableOpacity, View} from "react-native";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import DeviceInfo from "react-native-device-info";
@@ -8,7 +8,6 @@ import LiveLabel from "../../player_controller/traditional/livelabel";
 import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
 import MenuIcon from "../../../../resources/v1/icons/MenuIcon";
 import {useNavigation} from "@react-navigation/native";
-import {DrawerScreenProps} from "@react-navigation/drawer";
 import {DrawerNavigationProp} from "@react-navigation/drawer/src/types";
 
 interface Props {}
@@ -43,7 +42,7 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
     return (
         <Animated.View
             style={[{
-                height: DeviceInfo.hasNotch() ? screenDimensions.height - 50 : screenDimensions.height,
+                height: DeviceInfo.hasNotch() ? screenDimensions.height - 50 : screenDimensions.height-100,
                 width: screenDimensions.width,
                 position: 'absolute',
                 opacity,

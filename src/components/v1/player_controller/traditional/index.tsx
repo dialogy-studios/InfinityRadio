@@ -9,6 +9,7 @@ import VolumeUpIcon from "../../../../resources/v1/icons/VolumeUpIcon";
 import PauseIcon from "../../../../resources/v2/PauseIcon";
 import {useEffect} from "react";
 import VolumeDown from "./volume/down";
+import MuteIcon from "../../../../resources/v2/MuteIcon";
 
 const TraditionalPlayerController = () => {
   const player = useSafePlayer();
@@ -29,6 +30,7 @@ const TraditionalPlayerController = () => {
                         flex: 1
                     }}
                     source={{uri: config.state.mainScreen.player_poster}}
+                    resizeMode={'contain'}
                 />
             </View>
             <View
@@ -86,66 +88,77 @@ const TraditionalPlayerController = () => {
                             {
                                 flexDirection: 'row',
                                 // backgroundColor: 'red',
-                                justifyContent: 'space-evenly',
                                 alignItems: 'center'
                             }
                         ]}
                     >
-                        <TouchableOpacity
-                            disabled={player.actions.volume.isMinimum()}
-                            style={[
-                                {opacity: player.actions.volume.isMinimum() ? .5 : 1}
-                            ]}
-                            onPress={player.actions.volume.decrease}
-                        >
-                            <VolumeDownIcon
-                                size={48}
-                                color={'white'}
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={player.actions.play}
-                        >
-                            {
-                                player.state.paused ?
-                                    (
-                                        <TouchableOpacity
-                                            onPress={player.actions.play}
-                                        >
-                                            <PlayIcon
-                                                size={72}
-                                                color={'white'}
-                                            />
-                                        </TouchableOpacity>
-                                    ) :
-                                    (
-                                        <TouchableOpacity
-                                            onPress={player.actions.pause}
-                                        >
-                                            <PauseIcon
-                                                size={72}
-                                                color={'white'}
-                                            />
-                                        </TouchableOpacity>
-                                    )
-                            }
-
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            disabled={player.actions.volume.isMaximum()}
-                            style={[
+                        <View style={[{flex: 1, alignItems: 'flex-end'}]}>
+                            <TouchableOpacity
+                                disabled={player.actions.volume.isMinimum()}
+                                onPress={player.actions.volume.decrease}
+                            >
+                                <VolumeDownIcon
+                                    size={48}
+                                    color={'white'}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={[{flex: 1, alignItems: 'center'}]}>
+                            <TouchableOpacity
+                                onPress={player.actions.play}
+                            >
                                 {
-                                    opacity: player.actions.volume.isMaximum() ? .5 : 1
+                                    player.state.paused ?
+                                        (
+                                            <TouchableOpacity
+                                                onPress={player.actions.play}
+                                            >
+                                                <PlayIcon
+                                                    size={72}
+                                                    color={'white'}
+                                                />
+                                            </TouchableOpacity>
+                                        ) :
+                                        (
+                                            <TouchableOpacity
+                                                onPress={player.actions.pause}
+                                            >
+                                                <PauseIcon
+                                                    size={72}
+                                                    color={'white'}
+                                                />
+                                            </TouchableOpacity>
+                                        )
                                 }
-                            ]}
-                            onPress={player.actions.volume.increase}
-                        >
-                            <VolumeUpIcon
-                                size={48}
-                                color={'white'}
-                            />
-                        </TouchableOpacity>
+
+                            </TouchableOpacity>
+                        </View>
+                        <View style={[
+                            {
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'space-around',
+                                alignItems: 'center'
+                            }
+                        ]}>
+                            <TouchableOpacity
+                                disabled={player.actions.volume.isMaximum()}
+                                onPress={player.actions.volume.increase}
+                            >
+                                <VolumeUpIcon
+                                    size={48}
+                                    color={'white'}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={player.actions.mute}
+                            >
+                                <MuteIcon
+                                    size={28}
+                                    color={'white'}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

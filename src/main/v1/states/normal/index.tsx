@@ -107,7 +107,7 @@ const Content: React.FC<any> = () => {
                 <ImageBackground
                     style={[
                         {
-                            flex: 1
+                            flex: 1,
                         }
                     ]}
                     source={{uri: config.state.mainScreen.background}}
