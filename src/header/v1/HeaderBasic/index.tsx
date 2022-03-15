@@ -6,19 +6,17 @@ import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/co
 const Header: React.FC<any> = () => {
     const config = useSafeConfigContext()
   return (
-    <HeaderContainer>
       <Image
-        style={{
-          height: 100,
-          width: 200,
-          resizeMode: 'contain',
-        }}
-        source={{
-          uri: config.state.mainScreen.header_image
-        }}
-        resizeMode={'cover'}
+          style={{
+              height: 100,
+              width: 200,
+              resizeMode: 'contain',
+          }}
+          source={{
+              uri: config.state.mainScreen.header_image
+          }}
+          resizeMode={'cover'}
       />
-    </HeaderContainer>
   );
 };
 

@@ -8,6 +8,9 @@ import PlayerProvider from "../../../../components/v1/player/config/Context";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import MainAppScreen from "../../MainAppScreen";
 import Player from "../../../../components/v1/player";
+import { NavigationContainer } from '@react-navigation/native';
+import {AppDrawer} from "../../../../navigation/drawer/v1";
+import Drawer from "../../../../components/v1/drawer/v1";
 
 const Content: React.FC<any> = () => {
     const mainContext = useSafeMainContext()
@@ -127,14 +130,21 @@ const Content: React.FC<any> = () => {
 
 const Normal: React.FC<any> = () => {
     return (
-        <MainContextProvider>
-            <ConfigContextProvider>
-                <PlayerProvider>
-                    <Player />
-                    <Content />
-                </PlayerProvider>
-            </ConfigContextProvider>
-        </MainContextProvider>
+        <NavigationContainer>
+            <MainContextProvider>
+                <ConfigContextProvider>
+                    <PlayerProvider>
+                        <Player />
+                        <AppDrawer.Navigator
+                            screenOptions={{header: () => null}}
+                            drawerContent={Drawer}
+                        >
+                            <AppDrawer.Screen name={"Main"} component={Content} />
+                        </AppDrawer.Navigator>
+                    </PlayerProvider>
+                </ConfigContextProvider>
+            </MainContextProvider>
+        </NavigationContainer>
     )
 }
 

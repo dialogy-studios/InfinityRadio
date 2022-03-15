@@ -32,66 +32,51 @@ const LiveLabel: React.FC<Props> = ({isLive}) => {
             <View
                 style={[
                     FlexRow,
-                    AlignCenter,
-                    JustifyCenter,
                 ]}
             >
                 <View
                     style={[
-                        FlexRow,
-                        // JustifyAround,
-                        JustifyCenter,
                         {
-                            // backgroundColor: 'pink',
+                            height: 20,
+                            width: 100,
+                            backgroundColor: 'black',
+                            borderRadius: 10,
+                            opacity: .5
+                        }
+                    ]}
+                />
+                <Animated.View
+                    style={[
+                        {
+                            height: 20,
+                            width: 20,
+                            marginRight: 10,
+                            borderRadius: 20,
+                            backgroundColor: 'red',
+                            shadowColor: 'black',
+                            shadowOffset: {
+                                width: -2,
+                                height: 2
+                            },
+                            shadowRadius: 20,
+                            shadowOpacity: 1
+                        },
+                        {
+                            opacity
+                        }
+                    ]}
+                />
+                <Text
+                    style={[
+                        {
+                            fontSize: 16,
+                            color: 'white',
+                            letterSpacing: 1
                         }
                     ]}
                 >
-                    <View
-                        style={[
-                            {
-                                width: 70,
-                                height: 20,
-                                marginLeft: -5,
-                                position: 'absolute',
-                                backgroundColor: 'black',
-                                borderRadius: 10,
-                                opacity: .5
-                            }
-                        ]}
-                    />
-                    <Animated.View
-                        style={[
-                            {
-                                height: 20,
-                                width: 20,
-                                marginRight: 10,
-                                borderRadius: 20,
-                                backgroundColor: 'red',
-                                shadowColor: 'black',
-                                shadowOffset: {
-                                    width: -2,
-                                    height: 2
-                                },
-                                shadowRadius: 20,
-                                shadowOpacity: 1
-                            },
-                            {
-                                opacity
-                            }
-                        ]}
-                    />
-                    <Text
-                        style={[
-                            {
-                                fontSize: 16,
-                                color: 'white',
-                                letterSpacing: 1
-                            }
-                        ]}
-                    >
-                        LIVE
-                    </Text>
-                </View>
+                    LIVE
+                </Text>
             </View>
         )
     } else {

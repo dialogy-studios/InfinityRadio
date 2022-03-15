@@ -2,7 +2,7 @@ import HeaderBasic from "../../../../header/v1/HeaderBasic";
 import TraditionalPlayerController from "../../player_controller/traditional";
 import SocialBottom from "../../../../bottom/socialBottom/v1";
 import React, {forwardRef, useImperativeHandle, useRef} from "react";
-import {Animated, Dimensions} from "react-native";
+import {Animated, Dimensions, View} from "react-native";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import {useSafeWindowDimensions} from "../../dimensions/SafeDimensions";
 import DeviceInfo from "react-native-device-info";
@@ -46,9 +46,27 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
                     })
             }]}
         >
-            <HeaderBasic/>
-            <TraditionalPlayerController/>
-            <SocialBottom/>
+            <View
+                style={[
+                    {
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }
+                ]}
+            >
+                <HeaderBasic/>
+            </View>
+            <View
+                style={[
+                    {
+                        flex: 1,
+                        marginHorizontal: 16,
+                        // backgroundColor: 'gray'
+                    }
+                ]}
+            >
+                <TraditionalPlayerController/>
+            </View>
         </Animated.View>
     )
 })
