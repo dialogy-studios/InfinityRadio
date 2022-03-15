@@ -23,6 +23,8 @@ interface VolumeActions {
     decrease: () => void;
     startLongPressing: () => void,
     exitLongPressing: () => void,
+    isMaximum: () => boolean,
+    isMinimum: () => boolean
 }
 
 interface PlayerActions {
@@ -98,6 +100,14 @@ function usePlayer(): Player {
         setTemplate(newTemplate)
     }, [setTemplate])
 
+    const isMaximum = useCallback(() => {
+        return volume == 10
+    }, [volume])
+
+    const isMinimum = useCallback(() => {
+        return volume == 0
+    }, [volume])
+
     useEffect(() => {
         if (volume == 0) {
             setMuted(true);
@@ -131,6 +141,8 @@ function usePlayer(): Player {
                     startLongPressing,
                     exitLongPressing,
                     updateVolume,
+                    isMaximum,
+                    isMinimum
                 },
             },
         }),
@@ -151,6 +163,8 @@ function usePlayer(): Player {
             updateUiState,
             template,
             updateTemplate,
+            isMaximum,
+            isMinimum
         ]
     );
 }

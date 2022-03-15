@@ -1,20 +1,27 @@
 import HeaderBasic from "../../../../header/v1/HeaderBasic";
 import TraditionalPlayerController from "../../player_controller/traditional";
-import SocialBottom from "../../../../bottom/socialBottom/v1";
-import React, {forwardRef, useImperativeHandle, useRef} from "react";
-import {Animated, Dimensions, View} from "react-native";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef} from "react";
+import {Animated, Dimensions, TouchableOpacity, View} from "react-native";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
-import {useSafeWindowDimensions} from "../../dimensions/SafeDimensions";
 import DeviceInfo from "react-native-device-info";
 import LiveLabel from "../../player_controller/traditional/livelabel";
+import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
+import MenuIcon from "../../../../resources/v1/icons/MenuIcon";
+import {useNavigation} from "@react-navigation/native";
+import {DrawerScreenProps} from "@react-navigation/drawer";
+import {DrawerNavigationProp} from "@react-navigation/drawer/src/types";
 
 interface Props {}
 interface TraditionalTemplateMethods {
     fade: (config: TimingAnimationConfig, autoStart: boolean) => Animated.CompositeAnimation | null
 }
 
+const DEFAULT_MARGIN_HORIZONTAL = 16
+
 const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props, ref) => {
+    const config = useSafeConfigContext()
     const opacity = useRef(new Animated.Value(1)).current
+    const drawer: DrawerNavigationProp<any, any> = useNavigation()
     const screenDimensions = {
         height: Dimensions.get('screen').height,
         width: Dimensions.get('screen').width
@@ -50,6 +57,19 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
             <View
                 style={[
                     {
+                        marginHorizontal: DEFAULT_MARGIN_HORIZONTAL
+                    }
+                ]}
+            >
+                <TouchableOpacity
+                    onPress={() => drawer.openDrawer()}
+                >
+                    <MenuIcon />
+                </TouchableOpacity>
+            </View>
+            <View
+                style={[
+                    {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }
@@ -63,14 +83,14 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
                         }
                     ]}
                 >
-                    <LiveLabel isLive={true} variant={'dark'} />
+                    <LiveLabel isLive={config.state.mainScreen.isLive} variant={'dark'} />
                 </View>
             </View>
             <View
                 style={[
                     {
                         flex: 1,
-                        marginHorizontal: 16,
+                        marginHorizontal: DEFAULT_MARGIN_HORIZONTAL,
                         // backgroundColor: 'gray'
                     }
                 ]}

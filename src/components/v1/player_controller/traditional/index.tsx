@@ -8,6 +8,7 @@ import VolumeDownIcon from "../../../../resources/v1/icons/VolumeDownIcon";
 import VolumeUpIcon from "../../../../resources/v1/icons/VolumeUpIcon";
 import PauseIcon from "../../../../resources/v2/PauseIcon";
 import {useEffect} from "react";
+import VolumeDown from "./volume/down";
 
 const TraditionalPlayerController = () => {
   const player = useSafePlayer();
@@ -43,7 +44,7 @@ const TraditionalPlayerController = () => {
                     style={[
                         {
                             paddingVertical: 25,
-                            backgroundColor: 'gray'
+                            // backgroundColor: 'gray'
                         }
                     ]}
                 >
@@ -91,6 +92,10 @@ const TraditionalPlayerController = () => {
                         ]}
                     >
                         <TouchableOpacity
+                            disabled={player.actions.volume.isMinimum()}
+                            style={[
+                                {opacity: player.actions.volume.isMinimum() ? .5 : 1}
+                            ]}
                             onPress={player.actions.volume.decrease}
                         >
                             <VolumeDownIcon
@@ -128,6 +133,12 @@ const TraditionalPlayerController = () => {
 
                         </TouchableOpacity>
                         <TouchableOpacity
+                            disabled={player.actions.volume.isMaximum()}
+                            style={[
+                                {
+                                    opacity: player.actions.volume.isMaximum() ? .5 : 1
+                                }
+                            ]}
                             onPress={player.actions.volume.increase}
                         >
                             <VolumeUpIcon

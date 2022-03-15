@@ -5,7 +5,7 @@ import {defaultConfigState} from "./default";
 import {Config} from "./repository";
 import {
     ConfigCollectionDocuments,
-    ConfigsCollectionState,
+    ConfigsCollectionState, GeneralConfig,
     MainScreenConfig,
     PauseButtonConfig,
     PlayButtonConfig,
@@ -43,11 +43,11 @@ const useConfigContext = (): Props  => {
 
     const generalConfigRequestCallback: SetObserverCallback = {
         onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
-            const data = doc.data() as PlayerLockScreenConfig
+            const data = doc.data() as GeneralConfig
             setConfig((prevState) => {
                 return {
                     ...prevState,
-                    playerLockScreen: data
+                    general: data
                 }
             })
         },
