@@ -33,7 +33,8 @@ export interface MainScreenConfig {
     player_poster: string,
     header_image: string,
     link_list: string, // JSON stringified
-    isLive: boolean
+    isLive: boolean,
+    animate: string
 }
 
 export interface ButtonConfig {

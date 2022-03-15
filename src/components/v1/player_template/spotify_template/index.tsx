@@ -1,6 +1,7 @@
-import {Animated, useWindowDimensions, View} from "react-native";
+import {Animated, Dimensions, View} from "react-native";
 import React, {forwardRef, useImperativeHandle, useRef} from "react";
-
+import {useSafeWindowDimensions} from "../../dimensions/SafeDimensions";
+import DeviceInfo from "react-native-device-info";
 interface Props {}
 
 export interface SpotifyTemplateMethods {
@@ -8,9 +9,9 @@ export interface SpotifyTemplateMethods {
 }
 
 const SpotifyTemplate = forwardRef<SpotifyTemplateMethods, Props>((props, ref) => {
-    const dimensions = useWindowDimensions()
     const opacity = useRef(new Animated.Value(0)).current
-
+    const screenHeight = Dimensions.get('screen').height
+    const screenWidth = Dimensions.get('screen').width
     useImperativeHandle(ref, () => ({
         fade: (config: Animated.TimingAnimationConfig, autoStart: boolean): Animated.CompositeAnimation | null => {
             const animation = Animated
@@ -29,9 +30,14 @@ const SpotifyTemplate = forwardRef<SpotifyTemplateMethods, Props>((props, ref) =
             style={[
                 {
                     position: 'absolute',
-                    height: dimensions.height,
-                    width: dimensions.width,
-                    opacity
+                    height: DeviceInfo.hasNotch() ? screenHeight - 50 : screenHeight,
+                    width: screenWidth,
+                    opacity,
+                    zIndex: opacity
+                        .interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [-999, 999]
+                        })
                 }
             ]}
         >
@@ -39,7 +45,6 @@ const SpotifyTemplate = forwardRef<SpotifyTemplateMethods, Props>((props, ref) =
                 style={[
                     {
                         flex: 1,
-                        backgroundColor: 'red'
                     }
                 ]}
             >
@@ -48,7 +53,6 @@ const SpotifyTemplate = forwardRef<SpotifyTemplateMethods, Props>((props, ref) =
                         {
                             flex: 1,
                             flexDirection: 'row',
-                            backgroundColor: 'pink',
                             alignItems: 'flex-end'
                         }
                     ]}
@@ -56,15 +60,46 @@ const SpotifyTemplate = forwardRef<SpotifyTemplateMethods, Props>((props, ref) =
                     <View
                         style={[
                             {
-                                height: 50,
+                                height: 75,
                                 flex: 1,
-                                backgroundColor: 'blue'
+                                flexDirection: 'row',
+                                // backgroundColor: 'white'
                             }
                         ]}
-                    />
+                    >
+                        <View
+                            style={[
+                                {
+                                    height: 40,
+                                    width: 40,
+                                    // backgroundColor: 'red',
+                                    marginLeft: 10,
+                                    marginTop: 10,
+                                }
+                            ]}
+                        />
+                        <View
+                            style={[
+                                {
+                                    flex: 1,
+                                    // backgroundColor: 'pink'
+                                }
+                            ]}
+                        />
+                        <View
+                            style={[
+                                {
+                                    height: 40,
+                                    width: 40,
+                                    // backgroundColor: 'blue',
+                                    marginRight: 10,
+                                    marginTop: 10
+                                }
+                            ]}
+                        />
 
+                    </View>
                 </View>
-
             </View>
         </Animated.View>
     )

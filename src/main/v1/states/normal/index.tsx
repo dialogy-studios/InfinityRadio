@@ -1,21 +1,19 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Animated, ImageBackground, StatusBar, useWindowDimensions, View} from 'react-native';
-import MainAppScreen from "../../MainAppScreen";
+import React, {useEffect, useRef} from "react";
+import {Animated, Dimensions, ImageBackground, View, Text} from 'react-native';
 import MainContextProvider, {UiState, useSafeMainContext} from "../../config/MainContext";
 import {ConfigContextProvider, useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
 import InternetConnectionErrorScreen from "../../InternetConnectionErrorScreen";
-import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import LoadingAnimated from "../../../../components/v1/loading_animated";
-import Player from "../../../../components/v1/player";
 import PlayerProvider from "../../../../components/v1/player/config/Context";
+import TimingAnimationConfig = Animated.TimingAnimationConfig;
+import MainAppScreen from "../../MainAppScreen";
+import Player from "../../../../components/v1/player";
 
-const Content = () => {
+const Content: React.FC<any> = () => {
     const mainContext = useSafeMainContext()
     const config = useSafeConfigContext()
-    const [shouldHideLoading, setShouldHideLoading] = useState(true)
     const normalUiOpacity = useRef(new Animated.Value(0)).current
     const loadingUiOpacity = useRef(new Animated.Value(1)).current
-    const dimensions = useWindowDimensions()
 
     const retryAction = () => {
         mainContext.methods.updateUiState(UiState.LOADING)
@@ -53,6 +51,7 @@ const Content = () => {
                 normalUiOpacity,
                 normalAnimationConfig
             )
+
         Animated
             .sequence(
                 [
@@ -60,20 +59,12 @@ const Content = () => {
                     normalAnimation
                 ]
             )
-            .start(() => {
-            })
+            .start(() => {})
     }
 
     useEffect(() => {
         handleAnimationBasedOnState(mainContext.state.ui)
     }, [mainContext.state.ui])
-
-
-    loadingUiOpacity.addListener(({value}) => {
-        if (value == 0) {
-            setShouldHideLoading(false)
-        }
-    })
 
     if (mainContext.state.ui == UiState.ERROR) {
         return (
@@ -84,35 +75,13 @@ const Content = () => {
         )
     }
 
-    return (
-        <View
-            style={[{
-                flex: 1,
-                backgroundColor: 'black'
-            }]}>
-            <Animated.View
-                style={[{
-                    flex: 1,
-                    opacity: normalUiOpacity
-                }]}
-            >
-                <ImageBackground
-                    style={[{
-                        flex: 1,
-                    }]}
-                    source={{
-                        uri: config.state.mainScreen.background,
-                    }}>
-                    <StatusBar barStyle={config.state.general.status_bar} translucent={true} backgroundColor={'transparent'}/>
-                    <MainAppScreen />
-                </ImageBackground>
-            </Animated.View>
+    const renderLoading = () => {
+        return (
             <Animated.View
                 style={[{
                     opacity: loadingUiOpacity,
-                    width: dimensions.width,
-                    height: dimensions.height,
-                    display: shouldHideLoading ? 'flex' : 'none',
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').height,
                     position: 'absolute',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -120,6 +89,38 @@ const Content = () => {
             >
                 <LoadingAnimated />
             </Animated.View>
+        )
+    }
+
+    const renderNormal = () => {
+        return (
+            <Animated.View
+                style={[{
+                    height: Dimensions.get('screen').height,
+                    width: Dimensions.get('screen').width,
+                    position: 'absolute',
+                    opacity: normalUiOpacity
+                }]}>
+                <ImageBackground
+                    style={[
+                        {
+                            flex: 1
+                        }
+                    ]}
+                    source={{uri: config.state.mainScreen.background}}
+                >
+                    <MainAppScreen />
+                </ImageBackground>
+            </Animated.View>
+        )
+    }
+
+    return (
+        <View
+            style={[{flex: 1, backgroundColor: 'black'}]}
+        >
+            {renderLoading()}
+            {renderNormal()}
         </View>
     )
 }

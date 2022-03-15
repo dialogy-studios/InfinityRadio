@@ -1,12 +1,16 @@
-import {SafeAreaView, TouchableWithoutFeedback, View} from 'react-native';
 import React from 'react';
 import PlayerTemplateRenderer, {PlayerTemplate} from "../../../components/v1/player_template";
 import {useSafePlayer} from "../../../components/v1/player/config/Context";
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {TouchableHighlight} from "react-native";
+import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 
 const MainAppScreen: React.FC<any> = () => {
     const player = useSafePlayer()
+    const config = useSafeConfigContext()
 
     const updateTemplate = () => {
+        if (!config.state.mainScreen.animate) return
         const stateUpdater: {[currentTemplate: number]: PlayerTemplate} = {
             [PlayerTemplate.TRADITIONAL]: PlayerTemplate.SPOTIFY,
             [PlayerTemplate.SPOTIFY]: PlayerTemplate.TRADITIONAL
@@ -17,31 +21,17 @@ const MainAppScreen: React.FC<any> = () => {
 
     return (
         <SafeAreaView
-            style={
-                [
-                    {
-                        flex: 1
-                    }
-                ]
-            }
-        >
-            <TouchableWithoutFeedback
-                style={[{
+            style={[
+                {
                     flex: 1,
-                    zIndex: -999
-                }]}
+                }
+            ]}
+        >
+            <TouchableHighlight
                 onPress={updateTemplate}
             >
-                <View
-                    style={[
-                        {
-                            flex: 1
-                        }
-                    ]}
-                >
-                    <PlayerTemplateRenderer template={player.state.template} />
-                </View>
-            </TouchableWithoutFeedback>
+                <PlayerTemplateRenderer template={player.state.template}/>
+            </TouchableHighlight>
         </SafeAreaView>
     );
 };

@@ -8,6 +8,10 @@ export enum PlayerTemplate {
     SPOTIFY
 }
 
+interface Props {
+    template: PlayerTemplate
+}
+
 const PlayerTemplateRenderer: React.FC<Props> = ({template}) => {
     const spotifyTemplateRef = useRef<SpotifyTemplateMethods | null>(null)
     const traditionalTemplateRef = useRef<SpotifyTemplateMethods | null>(null)
@@ -41,20 +45,21 @@ const PlayerTemplateRenderer: React.FC<Props> = ({template}) => {
         } else if (template == PlayerTemplate.SPOTIFY) {
             startSpotifyTemplateAnimation(1)
             startTraditionalTemplateAnimation(0)
-
         }
     }, [template])
 
     return (
-        <>
+        <View
+            style={[
+                {
+                    flex: 1
+                }
+            ]}
+        >
             <TraditionalTemplate ref={traditionalTemplateRef} />
             <SpotifyTemplate ref={spotifyTemplateRef} />
-        </>
+        </View>
     )
-}
-
-interface Props {
-    template: PlayerTemplate
 }
 
 export default PlayerTemplateRenderer
