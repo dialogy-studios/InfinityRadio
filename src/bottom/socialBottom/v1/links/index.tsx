@@ -18,7 +18,7 @@ const Links: (props: Props) => any = ({linkList}) => {
                     style={
                         [
                             {
-                                marginHorizontal: 15
+                                marginHorizontal: 15,
                             }
                         ]
                     } key={link.icon}>

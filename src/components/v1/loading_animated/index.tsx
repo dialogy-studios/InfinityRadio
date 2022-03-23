@@ -48,7 +48,7 @@ const LoadingAnimated: React.FC<any> = () => {
                     style={[
                         {
                             // backgroundColor: 'brown',
-                            maxWidth: Dimensions.get('window').width - 100,
+                            maxWidth: Dimensions.get('window').width - 200,
                             justifyContent: 'flex-start',
                         }
                     ]}

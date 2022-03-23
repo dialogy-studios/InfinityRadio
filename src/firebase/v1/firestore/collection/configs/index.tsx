@@ -1,11 +1,11 @@
-import React, {createContext, useContext, useEffect, useMemo, useState} from "react";
+import React, {createContext, useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 import {SetObserverCallback} from "../../index";
 import {defaultConfigState} from "./default";
 import {Config} from "./repository";
 import {
     ConfigCollectionDocuments,
-    ConfigsCollectionState,
+    ConfigsCollectionState, GeneralConfig,
     MainScreenConfig,
     PauseButtonConfig,
     PlayButtonConfig,
@@ -43,11 +43,11 @@ const useConfigContext = (): Props  => {
 
     const generalConfigRequestCallback: SetObserverCallback = {
         onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
-            const data = doc.data() as PlayerLockScreenConfig
+            const data = doc.data() as GeneralConfig
             setConfig((prevState) => {
                 return {
                     ...prevState,
-                    playerLockScreen: data
+                    general: data
                 }
             })
         },
@@ -146,7 +146,7 @@ const useConfigContext = (): Props  => {
     }
 
     const playerLockScreenConfigRequestCallback: SetObserverCallback = {
-        onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
+        onSuccess: (doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) => {
             const data = doc.data() as PlayerLockScreenConfig
             setConfig((prevState) => {
                 return {
@@ -155,7 +155,8 @@ const useConfigContext = (): Props  => {
                 }
             })
         },
-        onError: () => {}
+        onError: () => {
+        }
     }
 
     const configPayloadList: GetConfigPayload[] = [

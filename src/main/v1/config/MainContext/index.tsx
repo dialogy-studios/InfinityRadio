@@ -7,7 +7,7 @@ export enum UiState {
 }
 
 interface State {
-    ui: UiState
+    ui: UiState,
 }
 
 interface Methods {

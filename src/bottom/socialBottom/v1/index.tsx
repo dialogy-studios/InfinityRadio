@@ -11,19 +11,10 @@ export interface Link {
 }
 
 const SocialBottom: React.FC<any> = () => {
-    const [linkList, setLinkList] = useState<Link[]>([])
-    const config = useSafeConfigContext()
-
-    useEffect(() => {
-        const linkListStringfied = config.state.mainScreen.link_list
-        if (linkListStringfied.length > 0) {
-            setLinkList(JSON.parse(linkListStringfied))
-        }
-    }, [config.state.mainScreen.link_list])
 
   return (
     <SocialContainer>
-        <Links linkList={linkList}/>
+
     </SocialContainer>
   );
 };
