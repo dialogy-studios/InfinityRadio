@@ -4,7 +4,7 @@ import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/co
 import MusicControl, {Command} from "react-native-music-control";
 import {Platform, View} from "react-native";
 import Video from 'react-native-video';
-import {useSafePlayer} from "./config/Context";
+import {PlayerUiState, useSafePlayer} from "./config/Context";
 
 
 const Player: React.FC<any> = () => {
@@ -101,6 +101,8 @@ const Player: React.FC<any> = () => {
         }
     }, [mainContext.state.ui])
 
+    if (player.state.uiState == PlayerUiState.ERROR) return null
+
     return (
         <View
             style={[{
@@ -143,7 +145,6 @@ const Player: React.FC<any> = () => {
 
                 }} // Callback when remote video is buffering
                 onError={(error: Error) => {
-                    console.log('error => ', error)
                     mainContext.methods.updateUiState(UiState.ERROR)
                 }} // Callback when video cannot be loaded
             />

@@ -7,13 +7,14 @@ import PlayIcon from '../../../../resources/v2/PlayIcon';
 import VolumeDownIcon from "../../../../resources/v1/icons/VolumeDownIcon";
 import VolumeUpIcon from "../../../../resources/v1/icons/VolumeUpIcon";
 import PauseIcon from "../../../../resources/v2/PauseIcon";
-import {useEffect} from "react";
-import VolumeDown from "./volume/down";
 import MuteIcon from "../../../../resources/v2/MuteIcon";
+import ShareIcon from "../../../../resources/v2/ShareIcon";
+import {useShare} from "../../../../domain/share";
 
 const TraditionalPlayerController = () => {
   const player = useSafePlayer();
   const config = useSafeConfigContext();
+  const share = useShare()
 
     return (
         <>
@@ -92,7 +93,18 @@ const TraditionalPlayerController = () => {
                             }
                         ]}
                     >
-                        <View style={[{flex: 1, alignItems: 'flex-end'}]}>
+                        <View style={[{
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-around',
+                        }]}>
+                            <TouchableOpacity
+                                onPress={share.sharePlayerPoster}
+                            >
+                                <ShareIcon />
+                            </TouchableOpacity>
+
                             <TouchableOpacity
                                 disabled={player.actions.volume.isMinimum()}
                                 onPress={player.actions.volume.decrease}

@@ -155,6 +155,7 @@ function usePlayer(): Player {
             decreaseVolume,
             volume,
             paused,
+            setMuted,
             muted,
             mute,
             pause,

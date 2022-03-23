@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from "react";
 import TraditionalTemplate from "./traditional_template";
 import SpotifyTemplate, {SpotifyTemplateMethods} from "./spotify_template";
 import {Animated, View} from "react-native";
+import Slider from "@react-native-community/slider";
 
 export enum PlayerTemplate {
     TRADITIONAL,

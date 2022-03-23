@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from "react";
-import {Animated, Dimensions, ImageBackground, View, Text} from 'react-native';
+import React, {useEffect, useRef, useState} from "react";
+import {Animated, Dimensions, ImageBackground, View} from 'react-native';
 import MainContextProvider, {UiState, useSafeMainContext} from "../../config/MainContext";
 import {ConfigContextProvider, useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
 import InternetConnectionErrorScreen from "../../InternetConnectionErrorScreen";
@@ -17,6 +17,7 @@ const Content: React.FC<any> = () => {
     const config = useSafeConfigContext()
     const normalUiOpacity = useRef(new Animated.Value(0)).current
     const loadingUiOpacity = useRef(new Animated.Value(1)).current
+    const [shouldHideLoading, setHideLoading] = useState(false)
 
     const retryAction = () => {
         mainContext.methods.updateUiState(UiState.LOADING)
@@ -69,6 +70,18 @@ const Content: React.FC<any> = () => {
         handleAnimationBasedOnState(mainContext.state.ui)
     }, [mainContext.state.ui])
 
+
+    useEffect(() => {
+        /*loadingUiOpacity.addListener((value) => {
+            if (value.value == 0) {
+                setHideLoading(true)
+            }
+        })
+        return () => {
+            loadingUiOpacity.removeAllListeners()
+        }*/
+    }, [])
+
     if (mainContext.state.ui == UiState.ERROR) {
         return (
             <InternetConnectionErrorScreen
@@ -79,6 +92,13 @@ const Content: React.FC<any> = () => {
     }
 
     const renderLoading = () => {
+
+        const shouldRender = loadingUiOpacity
+            .interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1]
+            })
+
         return (
             <Animated.View
                 style={[{

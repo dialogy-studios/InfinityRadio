@@ -2,13 +2,12 @@ import React from 'react';
 import PlayerTemplateRenderer, {PlayerTemplate} from "../../../components/v1/player_template";
 import {useSafePlayer} from "../../../components/v1/player/config/Context";
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableHighlight} from "react-native";
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
+import {Dimensions, ScrollView, View} from "react-native";
 
 const MainAppScreen: React.FC<any> = () => {
     const player = useSafePlayer()
     const config = useSafeConfigContext()
-
     const updateTemplate = () => {
         if (!config.state.mainScreen.animate) return
         const stateUpdater: {[currentTemplate: number]: PlayerTemplate} = {
@@ -27,11 +26,17 @@ const MainAppScreen: React.FC<any> = () => {
                 }
             ]}
         >
-            <TouchableHighlight
-                onPress={updateTemplate}
+            <ScrollView
             >
-                <PlayerTemplateRenderer template={player.state.template}/>
-            </TouchableHighlight>
+                <View
+                    style={[{
+                        height: Dimensions.get('screen').height,
+                        width: Dimensions.get('screen').width,
+                    }]}
+                >
+                    <PlayerTemplateRenderer template={player.state.template}/>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
