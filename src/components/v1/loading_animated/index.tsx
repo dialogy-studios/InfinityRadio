@@ -41,6 +41,7 @@ const LoadingAnimated: React.FC<any> = () => {
             <StatusBar barStyle={'light-content'} translucent={true} backgroundColor={'transparent'}/>
             <View
                 style={[{
+                    // backgroundColor: 'blue'
                 }]}
             >
                 <Image
@@ -57,15 +58,17 @@ const LoadingAnimated: React.FC<any> = () => {
             </View>
             <View
                 style={[{
+                    marginTop: -100,
                     flexDirection: 'row',
+                    // backgroundColor: 'red'
                 }]}
             >
                 <View style={[
                     {
                         flex: 1,
                         flexDirection: 'row',
+                        justifyContent: 'center'
                     },
-                    Centered
                 ]}>
                     <Animated.View
                         style={[

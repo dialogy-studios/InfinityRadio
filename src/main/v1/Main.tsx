@@ -3,6 +3,7 @@ import Loading from "./states/loading";
 import Error from "./states/error";
 import Normal from "./states/normal"
 import NetInfo, {NetInfoState} from "@react-native-community/netinfo";
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 enum State {
     NORMAL,
@@ -26,6 +27,8 @@ const App = () => {
         /*const fetchListener = setTimeout(() => {
             remoteConfig().fetch(0)
         }, 60000)*/
+
+        changeNavigationBarColor("black", false, true);
         return () => {
             unsubscribe()
             // clearTimeout(fetchListener)
