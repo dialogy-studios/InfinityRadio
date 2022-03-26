@@ -1,4 +1,5 @@
 import { InAppBrowser } from 'react-native-inappbrowser-reborn'
+import {Linking} from "react-native";
 const openLink = async (url: string, color: string) => {
     try {
         await InAppBrowser
@@ -33,8 +34,13 @@ const openLink = async (url: string, color: string) => {
                 headers: {
                 }
             })
-        // await Linking.openURL(url)
+        return
     } catch(error) {
+        console.log(error)
+    }
+    try {
+        await Linking.openURL(url)
+    } catch (error) {
 
     }
 }

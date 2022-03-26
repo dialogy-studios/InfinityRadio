@@ -53,7 +53,7 @@ const MainAppScreen: React.FC<any> = () => {
             >
                 <View
                     style={[{
-                        height: Dimensions.get('screen').height - 100,
+                        height: Dimensions.get('window').height,
                         width: Dimensions.get('screen').width,
                     }]}
                 >
