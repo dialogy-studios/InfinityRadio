@@ -75,13 +75,13 @@ const Thumb: React.FC<Props> = (props) => {
                     style={[
                         {
                             marginTop: 20,
-                            // backgroundColor: 'pink',
+                            backgroundColor: 'transparent',
                             alignItems: 'center'
                         }
                     ]}
                 >
-                    <TitleLabel/>
-                    <DescriptionLabel/>
+                    <TitleLabel size={32}/>
+                    <DescriptionLabel size={28} />
                 </View>
             </View>
         )

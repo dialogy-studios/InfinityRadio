@@ -54,15 +54,14 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
         try {
             setUiState(UiState.LOADING)
             const stickImage = await onRequestURI()
-            console.log(stickImage)
             if (stickImage == null) {
                 setUiState(UiState.ERROR)
                 return
             }
             const instagramConfig: ShareSingleOptions = {
                 social: SocialShare.InstagramStories,
-                backgroundBottomColor: '#fff',
-                backgroundTopColor: '#000',
+                backgroundBottomColor: 'white',
+                backgroundTopColor: 'black',
                 stickerImage: stickImage
             }
             await share.actions.shareInstagram(instagramConfig)

@@ -13,7 +13,6 @@ interface Props {
 
 const ShareScreen: React.FC<Props> = () => {
     const viewShot = useRef<ViewShot | null>(null)
-    const share = useSafeShareContext()
 
     const shareSocialList = [
         Social.INSTAGRAM,
@@ -59,10 +58,11 @@ const ShareScreen: React.FC<Props> = () => {
                 >
                     <ViewShot
                         ref={viewShot}
-                        options={{ format: "jpg", quality: 0.9 }}
+                        options={{ format: "png", quality: 0.9 }}
                         style={[
                             {
-                                flex: 1
+                                flex: 1,
+                                backgroundColor: 'transparent'
                             }
                         ]}
                     >
