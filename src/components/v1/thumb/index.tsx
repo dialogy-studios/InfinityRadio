@@ -7,7 +7,8 @@ import DescriptionLabel from "../description_label";
 type Variants = 'thumb-only' | 'thumb-with-title' | 'thumb-with-description' | 'thumb-with-title-and-description' | 'share-thumb'
 
 interface Props {
-    variant: Variants
+    variant: Variants,
+    onLoadEnd?: () => void
 }
 
 const Thumb: React.FC<Props> = (props) => {
@@ -19,6 +20,7 @@ const Thumb: React.FC<Props> = (props) => {
                 style={{
                     flex: 1
                 }}
+                onLoadEnd={props.onLoadEnd}
                 source={{uri: config.state.mainScreen.player_poster}}
                 resizeMode={'contain'}
             />

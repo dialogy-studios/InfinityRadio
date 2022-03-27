@@ -13,6 +13,7 @@ import {AppDrawer} from "../../../../navigation/drawer/v1";
 import Drawer from "../../../../components/v1/drawer/v1";
 import ShareScreen from "../../ShareScreen";
 import {ScreensNames} from "../../../../navigation/drawer/v1/models";
+import {ShareContextProvider} from "../../../../domain/share";
 
 const Content: React.FC<any> = () => {
     const mainContext = useSafeMainContext()
@@ -135,16 +136,18 @@ const Normal: React.FC<any> = () => {
         <NavigationContainer>
             <MainContextProvider>
                 <ConfigContextProvider>
-                    <PlayerProvider>
-                        <Player />
-                        <AppDrawer.Navigator
-                            screenOptions={{header: () => null}}
-                            drawerContent={Drawer}
-                        >
-                            <AppDrawer.Screen name={ScreensNames.MAIN} component={Content} />
-                            <AppDrawer.Screen name={ScreensNames.SHARE} component={ShareScreen} />
-                        </AppDrawer.Navigator>
-                    </PlayerProvider>
+                    <ShareContextProvider>
+                        <PlayerProvider>
+                            <Player />
+                            <AppDrawer.Navigator
+                                screenOptions={{header: () => null}}
+                                drawerContent={Drawer}
+                            >
+                                <AppDrawer.Screen name={ScreensNames.MAIN} component={Content} />
+                                <AppDrawer.Screen name={ScreensNames.SHARE} component={ShareScreen} />
+                            </AppDrawer.Navigator>
+                        </PlayerProvider>
+                    </ShareContextProvider>
                 </ConfigContextProvider>
             </MainContextProvider>
         </NavigationContainer>

@@ -6,8 +6,6 @@ import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import DeviceInfo from "react-native-device-info";
 import LiveLabel from "../../player_controller/traditional/livelabel";
 import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
-import {useShare} from "../../../../domain/share";
-import {useArtist} from "../../../../domain/artist";
 
 interface Props {}
 interface TraditionalTemplateMethods {
@@ -18,8 +16,6 @@ const DEFAULT_MARGIN_HORIZONTAL = 16
 
 const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props, ref) => {
     const config = useSafeConfigContext()
-    const share = useShare()
-    const artist = useArtist()
     const opacity = useRef(new Animated.Value(1)).current
     const screenDimensions = {
         height: Dimensions.get('screen').height,

@@ -1,5 +1,6 @@
 import {TouchableOpacity, Text, View} from "react-native";
 import React from "react";
+import GoBackIcon from "../../../resources/v1/icons/GoBackIcon";
 
 interface Props {
     onPress?: () => void
@@ -7,7 +8,8 @@ interface Props {
 
 const GoBackBtn: React.FC<Props> = ({onPress}) => {
     return (
-        <View>
+        <View
+        >
             <TouchableOpacity
                 onPress={onPress}
                 style={[
@@ -16,8 +18,13 @@ const GoBackBtn: React.FC<Props> = ({onPress}) => {
                     }
                 ]}
             >
-                <GoBackBtn />
-                <Text>Go Back</Text>
+                <GoBackIcon />
+                <Text style={[
+                    {
+                        fontSize: 18,
+                        color: 'white',
+                    }
+                ]}>Go Back</Text>
             </TouchableOpacity>
         </View>
     )

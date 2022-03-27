@@ -1,13 +1,11 @@
 import React, {ReactNode, useCallback, useState} from "react";
 import {ActivityIndicator, TouchableOpacity, View, Text} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import {getBase64Image} from "../../../domain/blob";
 import {ShareSingleOptions, Social as SocialShare} from "react-native-share";
 import InstagramIcon from "../../../resources/v1/icons/InstagramIcon";
 import TwitterIcon from "../../../resources/v1/icons/TwitterIcon";
-import {useShare} from "../../../domain/share";
-import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 import GoBackBtn from "../go_back_btn";
+import {useSafeShareContext} from "../../../domain/share";
 
 export enum Social {
     INSTAGRAM = 'instagram',
@@ -19,7 +17,8 @@ interface ShareSocialItemConfig {
 }
 
 interface Props {
-    shareOptionList: Social[]
+    shareOptionList: Social[],
+    onRequestURI: () => Promise<string | null>
 }
 
 enum UiState {
@@ -43,33 +42,35 @@ function getShareOptionDataById(id: Social): ShareSocialItemConfig | null {
     }
 }
 
-const ShareOptions: React.FC<Props> = ({shareOptionList}) => {
+const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
     const [uiState, setUiState] = useState(UiState.NORMAL)
-    const share = useShare()
-    const config = useSafeConfigContext()
+    const share = useSafeShareContext()
 
     const shareTwitter = () => {
 
     }
 
-    const shareInstagram = async () => {
-        setUiState(UiState.ERROR)
-        return
+    const shareInstagram = useCallback(async () => {
         try {
             setUiState(UiState.LOADING)
-            const stickImage = await getBase64Image(config.state.mainScreen.player_poster)
+            const stickImage = await onRequestURI()
+            console.log(stickImage)
+            if (stickImage == null) {
+                setUiState(UiState.ERROR)
+                return
+            }
             const instagramConfig: ShareSingleOptions = {
                 social: SocialShare.InstagramStories,
                 backgroundBottomColor: '#fff',
                 backgroundTopColor: '#000',
                 stickerImage: stickImage
             }
-            await share.shareInstagram(instagramConfig)
+            await share.actions.shareInstagram(instagramConfig)
             setUiState(UiState.NORMAL)
         } catch (error) {
             setUiState(UiState.ERROR)
         }
-    }
+    }, [setUiState])
 
     const renderShareOptions = () => {
         return shareOptionList
@@ -131,15 +132,22 @@ const ShareOptions: React.FC<Props> = ({shareOptionList}) => {
                 <Text
                     style={[
                         {
-                            color: 'white'
+                            color: 'white',
+                            fontSize: 24
                         }
                     ]}
                 >
                     Oops, something went wrong.
                 </Text>
-                <View>
+                <View
+                    style={[
+                        {
+                            marginTop: 24
+                        }
+                    ]}
+                >
                     <GoBackBtn
-                        onPress={() => null}
+                        onPress={() => setUiState(UiState.NORMAL)}
                     />
                 </View>
             </View>

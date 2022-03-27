@@ -9,9 +9,8 @@ import VolumeUpIcon from "../../../../resources/v1/icons/VolumeUpIcon";
 import PauseIcon from "../../../../resources/v2/PauseIcon";
 import MuteIcon from "../../../../resources/v2/MuteIcon";
 import ShareIcon from "../../../../resources/v2/ShareIcon";
-import {useShare} from "../../../../domain/share";
 import Thumb from "../../thumb";
-import {MainScreenNavigationProps, ScreensNames} from "../../../../navigation/drawer/v1/models";
+import {ScreensNames} from "../../../../navigation/drawer/v1/models";
 import {useNavigation} from "@react-navigation/native";
 
 const TraditionalPlayerController: React.FC<any> = () => {
