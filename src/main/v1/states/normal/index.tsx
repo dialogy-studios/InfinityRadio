@@ -11,6 +11,8 @@ import Player from "../../../../components/v1/player";
 import { NavigationContainer } from '@react-navigation/native';
 import {AppDrawer} from "../../../../navigation/drawer/v1";
 import Drawer from "../../../../components/v1/drawer/v1";
+import ShareScreen from "../../ShareScreen";
+import {ScreensNames} from "../../../../navigation/drawer/v1/models";
 
 const Content: React.FC<any> = () => {
     const mainContext = useSafeMainContext()
@@ -139,7 +141,8 @@ const Normal: React.FC<any> = () => {
                             screenOptions={{header: () => null}}
                             drawerContent={Drawer}
                         >
-                            <AppDrawer.Screen name={"Main"} component={Content} />
+                            <AppDrawer.Screen name={ScreensNames.MAIN} component={Content} />
+                            <AppDrawer.Screen name={ScreensNames.SHARE} component={ShareScreen} />
                         </AppDrawer.Navigator>
                     </PlayerProvider>
                 </ConfigContextProvider>

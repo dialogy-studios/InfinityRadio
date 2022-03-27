@@ -6,8 +6,6 @@ import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import DeviceInfo from "react-native-device-info";
 import LiveLabel from "../../player_controller/traditional/livelabel";
 import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
-import {useNavigation} from "@react-navigation/native";
-import {DrawerNavigationProp} from "@react-navigation/drawer/src/types";
 import {useShare} from "../../../../domain/share";
 import {useArtist} from "../../../../domain/artist";
 
@@ -83,7 +81,7 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
                     }
                 ]}
             >
-                <TraditionalPlayerController/>
+                <TraditionalPlayerController />
             </View>
         </Animated.View>
     )

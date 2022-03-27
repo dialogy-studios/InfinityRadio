@@ -1,15 +1,15 @@
 import {ShareOptions} from "react-native-share/src/types";
-import Share from "react-native-share";
+import Share, {ShareSingleOptions} from "react-native-share";
 import {useArtist} from "../artist";
-import {getBase64} from "../blob";
+import {getBase64Image} from "../blob";
 import {useSafeConfigContext} from "../../firebase/v1/firestore/collection/configs";
 import {useCallback, useMemo} from "react";
 
 interface ShareProps {
     share: (shareOptions: ShareOptions) => Promise<void>,
-    sharePlayerPoster: () => Promise<void>
+    sharePlayerPoster: () => Promise<void>,
+    shareInstagram: (config: ShareSingleOptions) => Promise<void>
 }
-
 
 export const useShare = (): ShareProps => {
     const artist = useArtist()
@@ -20,13 +20,13 @@ export const useShare = (): ShareProps => {
     }
 
     const sharePlayerPoster = useCallback(async () => {
-        const base64: string | null = await getBase64(config.state.mainScreen.player_poster)
-        if (base64 == null) return
+        const imageBase64: string | null = await getBase64Image(config.state.mainScreen.player_poster)
+        if (imageBase64 == null) return
         const shareOptions: ShareOptions = {
             message: artist.getDescription(),
             title: "Share to",
             type: "image/*",
-            url: `data:image/png;base64,${base64}`
+            url: imageBase64
         }
 
         try {
@@ -36,15 +36,21 @@ export const useShare = (): ShareProps => {
         }
     }, [share])
 
+    const shareInstagram = async (config: ShareSingleOptions) => {
+        await Share.shareSingle(config)
+    }
+
     return useMemo(() => (
             {
                 share,
-                sharePlayerPoster
+                sharePlayerPoster,
+                shareInstagram
             }
         ),
         [
             share,
-            sharePlayerPoster
+            sharePlayerPoster,
+            shareInstagram
         ]
     )
 }

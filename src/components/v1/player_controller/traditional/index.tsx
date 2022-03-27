@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import {useSafePlayer} from '../../player/config/Context';
 import Slider from "@react-native-community/slider";
 import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
@@ -10,11 +10,18 @@ import PauseIcon from "../../../../resources/v2/PauseIcon";
 import MuteIcon from "../../../../resources/v2/MuteIcon";
 import ShareIcon from "../../../../resources/v2/ShareIcon";
 import {useShare} from "../../../../domain/share";
+import Thumb from "../../thumb";
+import {MainScreenNavigationProps, ScreensNames} from "../../../../navigation/drawer/v1/models";
+import {useNavigation} from "@react-navigation/native";
 
-const TraditionalPlayerController = () => {
+const TraditionalPlayerController: React.FC<any> = () => {
   const player = useSafePlayer();
   const config = useSafeConfigContext();
-  const share = useShare()
+  const navigation = useNavigation()
+
+    const goToShareScreen = () => {
+        navigation.navigate(ScreensNames.SHARE)
+    }
 
     return (
         <>
@@ -22,17 +29,11 @@ const TraditionalPlayerController = () => {
                 style={[
                     {
                         // backgroundColor: 'red',
-                        flex: 1.5
+                        flex: 3
                     }
                 ]}
             >
-                <Image
-                    style={{
-                        flex: 1
-                    }}
-                    source={{uri: config.state.mainScreen.player_poster}}
-                    resizeMode={'contain'}
-                />
+                <Thumb variant={"thumb-with-title-and-description"} />
             </View>
             <View
                 style={[
@@ -42,18 +43,6 @@ const TraditionalPlayerController = () => {
                     }
                 ]}
             >
-
-                <View
-                    style={[
-                        {
-                            paddingVertical: 25,
-                            // backgroundColor: 'gray'
-                        }
-                    ]}
-                >
-                    <Text style={{color: 'white', fontSize: 24}}>{config.state.playerLockScreen.artist}</Text>
-                    <Text style={{color: 'white', fontSize: 16, opacity: .5}}>{config.state.playerLockScreen.description}</Text>
-                </View>
                 <View
                     style={[
                         {
@@ -100,7 +89,8 @@ const TraditionalPlayerController = () => {
                             justifyContent: 'space-around',
                         }]}>
                             <TouchableOpacity
-                                onPress={share.sharePlayerPoster}
+                                // onPress={share.sharePlayerPoster}
+                                onPress={goToShareScreen}
                             >
                                 <ShareIcon />
                             </TouchableOpacity>
