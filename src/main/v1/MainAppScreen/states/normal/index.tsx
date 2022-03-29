@@ -1,7 +1,6 @@
-import React, {useEffect, useRef} from "react";
-import {Animated} from 'react-native';
+import React from "react";
 import MainContextProvider, {UiState, useSafeMainContext} from "../../../config/MainContext";
-import {ConfigContextProvider, useSafeConfigContext} from "../../../../../firebase/v1/firestore/collection/configs";
+import {ConfigContextProvider} from "../../../../../firebase/v1/firestore/collection/configs";
 import InternetConnectionErrorScreen from "../../../InternetConnectionErrorScreen";
 import PlayerProvider from "../../../../../components/v1/player/config/Context";
 import Player from "../../../../../components/v1/player";
@@ -11,8 +10,6 @@ import Drawer from "../../../../../components/v1/drawer/v1";
 import ShareScreen from "../../../ShareScreen";
 import {ScreensNames} from "../../../../../navigation/drawer/v1/models";
 import {ShareContextProvider} from "../../../../../domain/share";
-import Main from "../../../Main";
-import MainAppScreen from "../../../PlayerScreen";
 import PlayerScreen from "../../../PlayerScreen";
 
 const Content: React.FC<any> = () => {
@@ -30,8 +27,6 @@ const Content: React.FC<any> = () => {
             />
         )
     }
-
-    // return <PlayerScreen />
 
     return (
         <MainScreenStack.Navigator
