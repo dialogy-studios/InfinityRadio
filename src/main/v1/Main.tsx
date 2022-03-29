@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import Loading from "./states/loading";
-import Error from "./states/error";
-import Normal from "./states/normal"
+import Loading from "./MainAppScreen/states/loading";
+import Error from "./MainAppScreen/states/error";
+import Normal from "./MainAppScreen/states/normal"
 import NetInfo, {NetInfoState} from "@react-native-community/netinfo";
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
@@ -12,7 +12,7 @@ enum State {
 }
 
 const App = () => {
-    const [state, setState] = useState<State>(State.NORMAL);
+    const [state, setState] = useState<State>(State.LOADING);
 
     const handleNetState = useCallback((state: NetInfoState) => {
         if (state.isConnected) {

@@ -17,8 +17,8 @@ const LoadingAnimated: React.FC<any> = () => {
     }, [])
 
     const circle: StyleProp<ViewStyle> = {
-        height: 15,
-        width: 15,
+        height: 10,
+        width: 10,
         margin: 10,
         // borderRadius: 25,
         backgroundColor: 'white'
@@ -66,6 +66,7 @@ const LoadingAnimated: React.FC<any> = () => {
                 <View style={[
                     {
                         flex: 1,
+                        marginTop: 10,
                         flexDirection: 'row',
                         justifyContent: 'center'
                     },

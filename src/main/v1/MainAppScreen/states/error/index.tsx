@@ -1,5 +1,5 @@
 import React from "react";
-import InternetConnectionErrorScreen from "../../InternetConnectionErrorScreen";
+import InternetConnectionErrorScreen from "../../../InternetConnectionErrorScreen";
 interface Props {
     message: string,
     retryAction: (() => void) | null
