@@ -50,7 +50,6 @@ const ShareScreen: React.FC<Props> = () => {
                 style={[
                     {
                         flex: 1,
-                        // backgroundColor: 'red'
                     }
                 ]}
                 edges={["top"]}

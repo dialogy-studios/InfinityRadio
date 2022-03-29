@@ -1,5 +1,5 @@
 import React from "react";
-import {StackHeaderProps, StackNavigationProp} from "@react-navigation/stack";
+import {StackNavigationProp} from "@react-navigation/stack";
 import {TouchableOpacity, View} from "react-native";
 import GoBackIcon from "../../../../resources/v1/icons/GoBackIcon";
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -10,30 +10,21 @@ interface Props {
 
 const ShareScreenHeader: React.FC<Props> = ({navigation}) => {
     return (
-        <SafeAreaView
+        <View
             style={[
                 {
-                    height: 50,
-                    flexDirection: 'row'
+                    marginLeft: 20,
                 }
             ]}
         >
-            <View
-                style={[
-                    {
-                        marginLeft: 20,
-                    }
-                ]}
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.goBack()
+                }}
             >
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack()
-                    }}
-                >
-                    <GoBackIcon />
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+                <GoBackIcon />
+            </TouchableOpacity>
+        </View>
     )
 }
 
