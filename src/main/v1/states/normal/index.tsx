@@ -9,11 +9,12 @@ import TimingAnimationConfig = Animated.TimingAnimationConfig;
 import MainAppScreen from "../../MainAppScreen";
 import Player from "../../../../components/v1/player";
 import { NavigationContainer } from '@react-navigation/native';
-import {AppDrawer} from "../../../../navigation/drawer/v1";
+import {AppDrawer, MainScreenStack} from "../../../../navigation/drawer/v1";
 import Drawer from "../../../../components/v1/drawer/v1";
 import ShareScreen from "../../ShareScreen";
 import {ScreensNames} from "../../../../navigation/drawer/v1/models";
 import {ShareContextProvider} from "../../../../domain/share";
+import ShareScreenHeader from "../../../../components/v1/headers/share_screen_header";
 
 const Content: React.FC<any> = () => {
     const mainContext = useSafeMainContext()
@@ -121,13 +122,33 @@ const Content: React.FC<any> = () => {
         )
     }
 
+    const Main = () => {
+        return (
+            <View
+                style={[{flex: 1, backgroundColor: 'black'}]}
+            >
+                {renderLoading()}
+                {renderNormal()}
+            </View>
+        )
+    }
+
     return (
-        <View
-            style={[{flex: 1, backgroundColor: 'black'}]}
+        <MainScreenStack.Navigator
+            initialRouteName={ScreensNames.MAIN_SCREEN}
+            screenOptions={{
+                header: () => null
+            }}
         >
-            {renderLoading()}
-            {renderNormal()}
-        </View>
+            <MainScreenStack.Screen
+                name={ScreensNames.MAIN_SCREEN}
+                component={Main}
+            />
+            <MainScreenStack.Screen
+                name={ScreensNames.SHARE}
+                component={ShareScreen}
+            />
+        </MainScreenStack.Navigator>
     )
 }
 
@@ -144,7 +165,6 @@ const Normal: React.FC<any> = () => {
                                 drawerContent={Drawer}
                             >
                                 <AppDrawer.Screen name={ScreensNames.MAIN} component={Content} />
-                                <AppDrawer.Screen name={ScreensNames.SHARE} component={ShareScreen} />
                             </AppDrawer.Navigator>
                         </PlayerProvider>
                     </ShareContextProvider>

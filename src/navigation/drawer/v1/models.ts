@@ -1,6 +1,7 @@
 import type { DrawerScreenProps } from '@react-navigation/drawer';
 
 export enum ScreensNames {
+    MAIN_SCREEN = "main_screen",
     MAIN = "Main",
     SHARE = "Share"
 }
