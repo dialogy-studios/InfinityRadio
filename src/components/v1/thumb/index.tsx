@@ -8,6 +8,7 @@ type Variants = 'thumb-only' | 'thumb-with-title' | 'thumb-with-description' | '
 
 interface Props {
     variant: Variants,
+    image?: string,
     onLoadEnd?: () => void
 }
 
@@ -21,7 +22,7 @@ const Thumb: React.FC<Props> = (props) => {
                     flex: 1
                 }}
                 onLoadEnd={props.onLoadEnd}
-                source={{uri: config.state.mainScreen.player_poster}}
+                source={{uri: props.image != null ? props.image : config.state.mainScreen.player_poster}}
                 resizeMode={'contain'}
             />
         )
@@ -69,6 +70,7 @@ const Thumb: React.FC<Props> = (props) => {
             >
                 <Thumb
                     variant={"thumb-only"}
+                    image={config.state.share.poster}
                 />
 
                 <View

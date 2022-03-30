@@ -17,8 +17,8 @@ const LoadingAnimated: React.FC<any> = () => {
     }, [])
 
     const circle: StyleProp<ViewStyle> = {
-        height: 10,
-        width: 10,
+        height: 5,
+        width: 5,
         margin: 10,
         // borderRadius: 25,
         backgroundColor: 'white'
@@ -68,7 +68,8 @@ const LoadingAnimated: React.FC<any> = () => {
                         flex: 1,
                         marginTop: 10,
                         flexDirection: 'row',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        // backgroundColor: 'red'
                     },
                 ]}>
                     <Animated.View
@@ -86,7 +87,7 @@ const LoadingAnimated: React.FC<any> = () => {
                         style={[
                             circle,
                             {
-                                marginHorizontal: 50,
+                                // marginHorizontal: 50,
                                 opacity: opacity.interpolate({
                                     inputRange: circleInterpolator.input,
                                     outputRange: [0, 0, 1, 0, 0, 0]

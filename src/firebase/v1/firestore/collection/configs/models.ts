@@ -9,7 +9,8 @@ export enum ConfigCollectionDocuments {
     VOLUME_DOWN="volumeDown",
     VOLUME_MUTE="volumeMute",
     PLAYER_SLIDER="playerSlider",
-    PLAYER_LOCK_SCREEN="playerLockScreen"
+    PLAYER_LOCK_SCREEN="playerLockScreen",
+    SHARE="share"
 }
 
 export interface ConfigsCollectionState {
@@ -22,10 +23,12 @@ export interface ConfigsCollectionState {
     volumeMute: VolumeMuteButtonConfig,
     playerLockScreen: PlayerLockScreenConfig,
     playerSlider: PlayerSliderConfig,
+    share: ShareConfig
 }
 
 export interface GeneralConfig {
-    status_bar: StatusBarStyle
+    status_bar: StatusBarStyle,
+    facebook_app_id: string
 }
 
 export interface MainScreenConfig {
@@ -34,7 +37,7 @@ export interface MainScreenConfig {
     header_image: string,
     link_list: string, // JSON stringified
     isLive: boolean,
-    animate: string
+    animate: boolean
 }
 
 export interface ButtonConfig {
@@ -68,3 +71,11 @@ export interface PlayerSliderConfig {
     player_slider_button_color: string
 }
 
+export interface ShareConfig {
+    poster: string,
+    whatsapp_msg: string,
+    twitter_msg: string,
+    telegram_msg: string,
+    url_ios: string,
+    url_android: string
+}

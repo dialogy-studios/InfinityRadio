@@ -57,6 +57,7 @@ const PlayerScreen = () => {
 
     useEffect(() => {
         handleAnimationBasedOnState(mainContext.state.ui)
+        // handleAnimationBasedOnState(UiState.LOADING)
     }, [mainContext.state.ui])
 
     const renderLoading = () => {

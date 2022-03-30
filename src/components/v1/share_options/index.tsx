@@ -1,5 +1,5 @@
 import React, {ReactNode, useCallback, useState} from "react";
-import {ActivityIndicator, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Platform, Text, TouchableOpacity, View} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Share, {
     ShareAsset,
@@ -15,6 +15,7 @@ import {useSafeShareContext} from "../../../domain/share";
 import WhatsAppIcon from "../../../resources/v1/icons/WhatsAppIcon";
 import FacebookIcon from "../../../resources/v1/icons/FacebookIcon";
 import TelegramIcon from "../../../resources/v1/icons/TelegramIcon";
+import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 
 export enum SocialType {
     INSTAGRAM = 'instagram',
@@ -68,26 +69,35 @@ function getShareOptionDataById(id: SocialType): ShareSocialItemConfig | null {
 const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
     const [uiState, setUiState] = useState(UiState.NORMAL)
     const share = useSafeShareContext()
+    const config = useSafeConfigContext()
 
-    const getMsgShareConfig = () => {
+    const getMessageByPlatform = () => Platform.OS == "ios" ? config.state.share.url_ios : config.state.share.url_android
+
+    const getMsgShareConfig = (message?: string, url?: string) => {
         return {
-            message: DEFAULT_SHARE_MESSAGE,
-            title: DEFAULT_SHARE_TITLE,
+            message: message != undefined ? message : DEFAULT_SHARE_MESSAGE,
+            title: url != undefined ? url : DEFAULT_SHARE_TITLE,
             url: "https://play.google.com/store?hl=pt_BR&gl=US"
         }
     }
 
-    const shareDefaultMsg = async () => {
+    const shareDefaultMsg = async (message?: string, url?: string) => {
         const shareConfig: ShareOpenOptions = getMsgShareConfig()
         await Share.open(shareConfig)
     }
 
     const shareTwitter = async () => {
-        await shareDefaultMsg()
+        await shareDefaultMsg(
+            config.state.share.twitter_msg,
+            getMessageByPlatform()
+        )
     }
 
     const shareWhatsapp = async () => {
-        await shareDefaultMsg()
+        await shareDefaultMsg(
+            config.state.share.whatsapp_msg,
+            getMessageByPlatform()
+        )
     }
 
     const shareInstagram = useCallback(async () => {
@@ -114,7 +124,7 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
     const shareTelegram = async () => {
         const telegramConfig: ShareSingleOptions = {
             title: DEFAULT_SHARE_TITLE,
-            message: DEFAULT_SHARE_MESSAGE,
+            message: config.state.share.telegram_msg,
             social: Social.Telegram,
         }
         await Share.open(telegramConfig)
@@ -133,7 +143,7 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
                 backgroundBottomColor: 'white',
                 backgroundTopColor: 'black',
                 stickerImage: stickerImage,
-                appId: "295287136078900",
+                appId: config.state.general.facebook_app_id,
                 method: ShareAsset.StickerImage
             }
             await share.actions.shareInstagram(facebookConfig)

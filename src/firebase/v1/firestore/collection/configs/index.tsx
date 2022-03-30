@@ -10,7 +10,7 @@ import {
     PauseButtonConfig,
     PlayButtonConfig,
     PlayerLockScreenConfig,
-    PlayerSliderConfig,
+    PlayerSliderConfig, ShareConfig,
     VolumeDownButtonConfig,
     VolumeMuteButtonConfig,
     VolumeUpButtonConfig
@@ -159,6 +159,20 @@ const useConfigContext = (): Props  => {
         }
     }
 
+    const shareScreenConfigRequestCallback: SetObserverCallback = {
+        onSuccess: (doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) => {
+            const data = doc.data() as ShareConfig
+            setConfig((prevState) => {
+                return {
+                    ...prevState,
+                    share: data
+                }
+            })
+        },
+        onError: () => {
+        }
+    }
+
     const configPayloadList: GetConfigPayload[] = [
         {document: ConfigCollectionDocuments.GENERAL_CONFIG, callback: generalConfigRequestCallback},
         {document: ConfigCollectionDocuments.MAIN_SCREEN, callback: mainScreenConfigRequestCallback},
@@ -169,6 +183,7 @@ const useConfigContext = (): Props  => {
         {document: ConfigCollectionDocuments.VOLUME_MUTE, callback: volumeMuteButtonConfigRequestCallback},
         {document: ConfigCollectionDocuments.PLAYER_SLIDER, callback: playerSliderConfigRequestCallback},
         {document: ConfigCollectionDocuments.PLAYER_LOCK_SCREEN, callback: playerLockScreenConfigRequestCallback},
+        {document: ConfigCollectionDocuments.SHARE, callback: shareScreenConfigRequestCallback},
     ]
 
     const getConfigs = async () => {

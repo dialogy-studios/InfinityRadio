@@ -2,14 +2,15 @@ import {
     ButtonConfig, ConfigsCollectionState, GeneralConfig,
     MainScreenConfig,
     PauseButtonConfig,
-    PlayButtonConfig, PlayerLockScreenConfig, PlayerSliderConfig, VolumeDownButtonConfig,
+    PlayButtonConfig, PlayerLockScreenConfig, PlayerSliderConfig, ShareConfig, VolumeDownButtonConfig,
     VolumeMuteButtonConfig,
     VolumeUpButtonConfig
 } from "./models";
 
 
 export const defaultGeneralConfig: GeneralConfig = {
-    status_bar: "light-content"
+    status_bar: "light-content",
+    facebook_app_id: ""
 }
 
 const imgDefault = "https://firebasestorage.googleapis.com/v0/b/irelandradio-e7c2d.appspot.com/o/player_poster%2FDaniel%20Infinity%20Radio.jpg?alt=media&token=80ee34c3-3539-4b0e-a518-6872034577a5"
@@ -20,7 +21,8 @@ export const defaultMainScreenConfig: MainScreenConfig = {
     header_image: imgDefault,
     isLive: false,
     link_list: "",
-    player_poster: imgDefault
+    player_poster: imgDefault,
+    animate: false
 }
 
 const defaultButtonConfig: ButtonConfig =  {color: "white", size: 46}
@@ -51,6 +53,15 @@ export const defaultPlayerLockScreenConfigState: PlayerLockScreenConfig = {
     title: "Enjoy us!"
 }
 
+export const defaultShareConfigState: ShareConfig = {
+    poster: "",
+    whatsapp_msg: "Listen infinity",
+    twitter_msg: "Listen infinity",
+    telegram_msg: "Listen infinity",
+    url_android: "",
+    url_ios: ""
+}
+
 export const defaultConfigState: ConfigsCollectionState = {
     general: defaultGeneralConfig,
     mainScreen: defaultMainScreenConfig,
@@ -60,6 +71,6 @@ export const defaultConfigState: ConfigsCollectionState = {
     playerSlider: defaultPlayerSliderConfigState,
     volumeDown: defaultVolumeDownConfigState,
     volumeMute: defaultVolumeMuteConfigState,
-    volumeUp: defaultVolumeUpConfigState
-
+    volumeUp: defaultVolumeUpConfigState,
+    share: defaultShareConfigState
 }
