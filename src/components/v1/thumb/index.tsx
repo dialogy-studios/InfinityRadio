@@ -19,11 +19,13 @@ const Thumb: React.FC<Props> = (props) => {
         return (
             <Image
                 style={{
-                    flex: 1
+                    // height: 300,
+                    flex: 1,
+                    // backgroundColor: 'red'
                 }}
                 onLoadEnd={props.onLoadEnd}
                 source={{uri: props.image != null ? props.image : config.state.mainScreen.player_poster}}
-                resizeMode={'contain'}
+                resizeMode={'stretch'}
             />
         )
     }
@@ -34,7 +36,7 @@ const Thumb: React.FC<Props> = (props) => {
             <View
                 style={[
                     {
-                        paddingVertical: 25,
+                        // paddingVertical: 25,
                         // backgroundColor: 'gray'
                     }
                 ]}
@@ -90,10 +92,17 @@ const Thumb: React.FC<Props> = (props) => {
     }
 
     return (
-        <>
+        <View
+            style={[
+                {
+                    flex: 1,
+                    // backgroundColor: 'pink'
+                }
+            ]}
+        >
             {renderPoster()}
             {renderLabels()}
-        </>
+        </View>
     )
 }
 

@@ -2,12 +2,15 @@ import React from "react";
 import Svg, {Path} from "react-native-svg";
 import {Platform} from "react-native";
 
+type GoBackTypes = 'ios' | 'android'
+
 interface Props {
+    variant?: GoBackTypes | null
     size?: number,
     color?: string
 }
 
-const GoBackIcon: React.FC<Props> = ({size = 24, color = 'white'}) => {
+const GoBackIcon: React.FC<Props> = ({size = 24, color = 'white', variant = null}) => {
     const getAndroidIcon = () => {
         return (
             <Svg height={size} viewBox="0 0 24 24" width={size} fill={color}>
@@ -26,11 +29,23 @@ const GoBackIcon: React.FC<Props> = ({size = 24, color = 'white'}) => {
         )
     }
 
-    if (Platform.OS == 'ios') {
+    if (variant == null) {
+        if (Platform.OS == 'ios') {
+            return getIOSIcon()
+        } else {
+            return getAndroidIcon()
+        }
+    }
+
+    if (variant == "ios") {
         return getIOSIcon()
-    } else {
+    }
+
+    if (variant == "android") {
         return getAndroidIcon()
     }
+
+    return null
 }
 
 export default GoBackIcon

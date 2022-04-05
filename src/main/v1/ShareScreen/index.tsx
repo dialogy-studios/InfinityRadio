@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useRef} from "react";
 import {ImageBackground, View} from "react-native";
 import Thumb from "../../../components/v1/thumb";
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -6,7 +6,7 @@ import ShareOptions, {SocialType} from "../../../components/v1/share_options";
 import ViewShot from "react-native-view-shot";
 import {mapUriToBase64} from "../../../domain/blob";
 import {useNavigation} from "@react-navigation/native";
-import {StackNavigationOptions, StackNavigationProp} from "@react-navigation/stack";
+import {StackNavigationProp} from "@react-navigation/stack";
 import ShareScreenHeader from "../../../components/v1/headers/share_screen_header";
 
 interface Props {

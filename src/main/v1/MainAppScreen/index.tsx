@@ -3,16 +3,15 @@ import PlayerTemplateRenderer, {PlayerTemplate} from "../../../components/v1/pla
 import {useSafePlayer} from "../../../components/v1/player/config/Context";
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
-import {Dimensions, ScrollView, TouchableOpacity, View} from "react-native";
-import MenuIcon from "../../../resources/v1/icons/MenuIcon";
-import {DrawerNavigationProp} from "@react-navigation/drawer/src/types";
-import {useNavigation} from "@react-navigation/native";
-import DeviceInfo from "react-native-device-info";
+import {Dimensions, ScrollView, View} from "react-native";
+import HeaderLayout from "../../../layout/header/HeaderLayout";
+import TraditionalTemplate from "../../../components/v1/player_template/traditional_template";
+
+const DEFAULT_MARGIN_HORIZONTAL = 16
 
 const MainAppScreen: React.FC<any> = () => {
     const player = useSafePlayer()
     const config = useSafeConfigContext()
-    const drawer: DrawerNavigationProp<any, any> = useNavigation()
 
     const updateTemplate = () => {
         if (!config.state.mainScreen.animate) return
@@ -33,33 +32,22 @@ const MainAppScreen: React.FC<any> = () => {
             ]}
         >
             <View
+                style={[{
+                    flex: .1,
+                    marginHorizontal: DEFAULT_MARGIN_HORIZONTAL,
+                }]}
+            >
+                <HeaderLayout />
+            </View>
+            <View
                 style={[
                     {
-                        marginHorizontal: 16,
-                        marginTop: DeviceInfo.hasNotch() ? 60 : 40,
-                        position: 'absolute',
-                        zIndex: 999
+                        flex: 2
                     }
                 ]}
             >
-                <TouchableOpacity
-                    style={[{zIndex: 999}]}
-                    onPress={() => drawer.openDrawer()}
-                >
-                    <MenuIcon size={36} />
-                </TouchableOpacity>
+                <TraditionalTemplate />
             </View>
-            <ScrollView
-            >
-                <View
-                    style={[{
-                        height: Dimensions.get('window').height,
-                        width: Dimensions.get('screen').width,
-                    }]}
-                >
-                    <PlayerTemplateRenderer template={player.state.template}/>
-                </View>
-            </ScrollView>
         </SafeAreaView>
     );
 };

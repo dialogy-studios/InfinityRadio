@@ -1,13 +1,14 @@
-import HeaderBasic from "../../../../header/v1/HeaderBasic";
 import TraditionalPlayerController from "../../player_controller/traditional";
 import React, {forwardRef, useImperativeHandle, useRef} from "react";
 import {Animated, Dimensions, View} from "react-native";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
-import DeviceInfo from "react-native-device-info";
 import LiveLabel from "../../player_controller/traditional/livelabel";
 import {useSafeConfigContext} from "../../../../firebase/v1/firestore/collection/configs";
+import Logo from "../../../../header/v1/Logo";
 
-interface Props {}
+interface Props {
+}
+
 interface TraditionalTemplateMethods {
     fade: (config: TimingAnimationConfig, autoStart: boolean) => Animated.CompositeAnimation | null
 }
@@ -17,10 +18,6 @@ const DEFAULT_MARGIN_HORIZONTAL = 16
 const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props, ref) => {
     const config = useSafeConfigContext()
     const opacity = useRef(new Animated.Value(1)).current
-    const screenDimensions = {
-        height: Dimensions.get('screen').height,
-        width: Dimensions.get('screen').width
-    }
 
     useImperativeHandle(ref, () => ({
         fade: (config: TimingAnimationConfig, autoStart: boolean): Animated.CompositeAnimation | null => {
@@ -38,9 +35,12 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
     return (
         <Animated.View
             style={[{
-                height: DeviceInfo.hasNotch() ? screenDimensions.height - 50 : screenDimensions.height-100,
-                width: screenDimensions.width,
-                position: 'absolute',
+                // height: DeviceInfo.hasNotch() ? screenDimensions.height - 50 : screenDimensions.height - 40,
+                // width: screenDimensions.width,
+                // position: 'absolute',
+                flex: 1,
+                // justifyContent: 'space-around',
+                // alignItems: 'center',
                 opacity,
                 zIndex: opacity
                     .interpolate({
@@ -49,35 +49,63 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
                     })
             }]}
         >
+
+            <View
+                style={[
+                    {
+                        flex: 1.5,
+                        marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3,
+                        flexDirection: "row"
+                    }
+                ]}
+            >
+                <View
+                    style={[
+                        {
+                            flex: 1
+                        }
+                    ]}
+                />
+                <View
+                    style={[
+                        {
+                            flex: 5
+                        }
+                    ]}
+                >
+                    <Logo/>
+                </View>
+                <View
+                    style={[
+                        {
+                            flex: 1
+                        }
+                    ]}
+                />
+            </View>
             <View
                 style={[
                     {
                         justifyContent: 'center',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        marginVertical: DEFAULT_MARGIN_HORIZONTAL / 2
                     }
                 ]}
             >
-                <HeaderBasic/>
-                <View
-                    style={[
-                        {
-                            paddingVertical: 10
-                        }
-                    ]}
-                >
-                    <LiveLabel isLive={config.state.mainScreen.isLive} variant={'dark'} />
+                <View>
+                    <LiveLabel isLive={config.state.mainScreen.isLive} variant={'dark'}/>
                 </View>
             </View>
             <View
                 style={[
                     {
-                        flex: 1,
+                        flex: 8,
                         marginHorizontal: DEFAULT_MARGIN_HORIZONTAL,
                         // backgroundColor: 'gray'
                     }
                 ]}
             >
-                <TraditionalPlayerController />
+                <TraditionalPlayerController/>
             </View>
         </Animated.View>
     )
