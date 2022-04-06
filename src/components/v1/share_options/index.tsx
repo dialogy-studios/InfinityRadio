@@ -77,7 +77,7 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
         return {
             message: message != undefined ? message : DEFAULT_SHARE_MESSAGE,
             title: url != undefined ? url : DEFAULT_SHARE_TITLE,
-            url: "https://play.google.com/store?hl=pt_BR&gl=US"
+            url: getMessageByPlatform()
         }
     }
 

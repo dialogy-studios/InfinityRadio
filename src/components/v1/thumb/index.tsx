@@ -57,7 +57,7 @@ const Thumb: React.FC<Props> = (props) => {
     const renderDescription = () => {
         if (props.variant != "thumb-with-description" && props.variant != "thumb-with-title-and-description") return null
         return (
-            <DescriptionLabel />
+            <DescriptionLabel size={20}/>
         )
     }
 

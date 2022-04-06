@@ -9,7 +9,7 @@ interface Props {
 const DescriptionLabel: React.FC<Props> = ({size = 16}) => {
     const config = useSafeConfigContext()
     return (
-        <Text style={{color: 'white', fontSize: size, opacity: .5}}>{config.state.playerLockScreen.description}</Text>
+        <Text style={{color: 'white', fontSize: size, opacity: .7}}>{config.state.playerLockScreen.description}</Text>
     )
 }
 

@@ -9,7 +9,11 @@ interface Props {
 const TitleLabel: React.FC<Props> = ({size = 24}) => {
     const config = useSafeConfigContext()
     return (
-        <Text style={{color: 'white', fontSize: size}}>{config.state.playerLockScreen.artist}</Text>
+        <Text style={{
+            color: 'white',
+            fontSize: size,
+            fontWeight: 'bold'
+        }}>{config.state.playerLockScreen.artist}</Text>
     )
 }
 
