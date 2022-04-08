@@ -62,6 +62,7 @@ const Normal: React.FC<any> = () => {
                             >
                                 <AppDrawer.Screen name={ScreensNames.MAIN} component={Content} />
                             </AppDrawer.Navigator>
+                            <Toast />
                         </PlayerProvider>
                     </ShareContextProvider>
                 </ConfigContextProvider>

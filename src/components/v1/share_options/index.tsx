@@ -136,6 +136,7 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
                 social: SocialShare.InstagramStories,
                 backgroundBottomColor: 'white',
                 backgroundTopColor: 'black',
+                attributionURL: 'https://www.infinityradioireland.com/',
                 stickerImage: stickerImage
             }
             await share.actions.shareInstagram(instagramConfig)
