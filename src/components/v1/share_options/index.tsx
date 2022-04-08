@@ -1,5 +1,5 @@
 import React, {ReactNode, useCallback, useState} from "react";
-import {ActivityIndicator, Platform, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Platform, StyleProp, Text, TextStyle, TouchableOpacity, View, ViewStyle} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Share, {
     ShareAsset,
@@ -20,13 +20,14 @@ import MoreIcon from "../../../resources/v1/icons/MoreIcon";
 import CopyLinkIcon from "../../../resources/v1/icons/CopyLinkIcon";
 import Clipboard, {useClipboard} from "@react-native-community/clipboard";
 import Toast from "react-native-toast-message";
+import Centered from "../../../resources/v1/styles/view/Centered";
 
 export enum SocialType {
-    INSTAGRAM = 'instagram',
-    TWITTER = 'twitter',
-    WHATSAPP = 'whatsapp',
-    FACEBOOK = 'facebook',
-    TELEGRAM = 'telegram'
+    INSTAGRAM = 'Instagram',
+    TWITTER = 'Twitter',
+    WHATSAPP = 'Whatsapp',
+    FACEBOOK = 'Facebook',
+    TELEGRAM = 'Telegram'
 }
 
 interface ShareSocialItemConfig {
@@ -45,7 +46,7 @@ enum UiState {
     ERROR
 }
 
-const DEFAULT_ICON_SIZE = 64
+const DEFAULT_ICON_SIZE = 48
 const DEFAULT_MARGIN_HORIZONTAL = 8
 const DEFAULT_SHARE_MESSAGE = "Listen infinity radio! https://play.google.com/store?hl=pt_BR&gl=US"
 const DEFAULT_SHARE_TITLE = ""
@@ -53,11 +54,11 @@ const DEFAULT_SHARE_TITLE = ""
 function getShareOptionDataById(id: SocialType): ShareSocialItemConfig | null {
     const shareOptionConfigDict: {[socialType: string]: ShareSocialItemConfig} = {
         [SocialType.INSTAGRAM]: {
-            icon: <InstagramIcon
+            icon:  <InstagramIcon
                 variant={'circle'}
                 logoColor={"black"}
                 circleColor={'white'}
-                size={DEFAULT_ICON_SIZE} />,
+                size={DEFAULT_ICON_SIZE} />
         },
         [SocialType.TWITTER]: {
             icon: <TwitterIcon
@@ -95,6 +96,13 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
     const [uiState, setUiState] = useState(UiState.NORMAL)
     const share = useSafeShareContext()
     const config = useSafeConfigContext()
+
+    const shareOptionTextStyle: StyleProp<TextStyle> = {
+        color: 'white',
+        fontWeight: 'bold',
+        alignContent: 'center'
+    }
+
     const getMessageByPlatform = () => Platform.OS == "ios" ? config.state.share.url_ios : config.state.share.url_android
 
     const getMsgShareConfig = (message?: string, url?: string) => {
@@ -184,16 +192,29 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
                 const shareItem = getShareOptionDataById(shareId)
                 if (shareItem == null) return null
                 return (
-                    <TouchableOpacity
-                        style={[{
-                            marginBottom: 10,
-                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3,
-                        }]}
-                        key={`${shareId}-btn`}
-                        onPress={() => shareOptionById(shareId)}
+                    <View
+                        key={shareId}
+                        style={[
+                            Centered,
+                            {
+                                marginBottom: DEFAULT_MARGIN_HORIZONTAL
+                            }
+                        ]}
                     >
-                        {shareItem.icon}
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[{
+                                marginBottom: 10,
+                                marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 4,
+                            }]}
+                            key={`${shareId}-btn`}
+                            onPress={() => shareOptionById(shareId)}
+                        >
+                            {shareItem.icon}
+                        </TouchableOpacity>
+                        <Text style={[
+                            shareOptionTextStyle
+                        ]}>{shareId}</Text>
+                    </View>
                 )
             })
     }
@@ -284,8 +305,9 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
                 <View
                     style={[
                         {
-                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3
-                        }
+                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 4,
+                        },
+                        Centered
                     ]}
                 >
                     <TouchableOpacity
@@ -303,12 +325,25 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
                             size={DEFAULT_ICON_SIZE * .8}
                         />
                     </TouchableOpacity>
+                    <Text
+                        style={
+                            [
+                                {
+                                    marginTop: DEFAULT_MARGIN_HORIZONTAL
+                                },
+                                shareOptionTextStyle,
+                            ]
+                        }
+                    >
+                        Copy
+                    </Text>
                 </View>
                 <View
                     style={[
                         {
-                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3
-                        }
+                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 4
+                        },
+                        Centered
                     ]}
                 >
                     <TouchableOpacity
@@ -321,6 +356,16 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
                             size={DEFAULT_ICON_SIZE}
                         />
                     </TouchableOpacity>
+                    <Text
+                        style={[
+                            shareOptionTextStyle,
+                            {
+                                marginTop: DEFAULT_MARGIN_HORIZONTAL
+                            }
+                        ]}
+                    >
+                        More
+                    </Text>
                 </View>
             </View>
         )

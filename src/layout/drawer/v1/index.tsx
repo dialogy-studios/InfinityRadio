@@ -7,6 +7,7 @@ import {Link} from "../../../bottom/socialBottom/v1";
 import LiveLabel from "../../../components/v1/player_controller/traditional/livelabel";
 import DrawerLabel from "../../../components/v1/drawer_label";
 import {useSafeShareContext} from "../../../domain/share";
+import Divider from "../../../components/v1/divider";
 
 const DEFAULT_SPACE = 8
 const DEFAULT_MARGIN_HORIZONTAL = DEFAULT_SPACE * 4
@@ -64,6 +65,16 @@ const DrawerLayout: React.FC<any> = ({navigation}) => {
                     </View>
                 </View>
             </TouchableOpacity>
+            <View
+                style={[
+                    {
+                        marginHorizontal: DEFAULT_MARGIN_HORIZONTAL,
+                        marginTop: DEFAULT_MARGIN_HORIZONTAL/2
+                    }
+                ]}
+            >
+                <Divider />
+            </View>
             <TouchableOpacity
                 style={[
                     {

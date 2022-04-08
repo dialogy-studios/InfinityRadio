@@ -59,7 +59,11 @@ export const defaultShareConfigState: ShareConfig = {
     twitter_msg: "Listen infinity",
     telegram_msg: "Listen infinity",
     url_android: "",
-    url_ios: ""
+    url_ios: "",
+    email_address: "",
+    email_subject: "Infinity Radio call to you!",
+    email_msg: "Listen to infinity radio: https://www.infinityradioireland.com/"
+
 }
 
 export const defaultConfigState: ConfigsCollectionState = {

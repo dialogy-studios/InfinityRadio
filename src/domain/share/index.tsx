@@ -62,11 +62,10 @@ const useShare = (): ShareProps => {
 
     const shareMail = useCallback(async () => {
         await Share.open({
-            email: '',
-            title: '',
-            message: '',
-            subject: '',
-            recipient: ''
+            email: config.state.share.email_address,
+            title: "Send to",
+            message: config.state.share.email_msg,
+            subject: config.state.share.email_subject,
         })
     }, [])
 
@@ -94,9 +93,9 @@ const useShare = (): ShareProps => {
         })
     }, [])
 
-    const getShareMsg = () => {
+    const getShareMsg = useCallback(() => {
         return config.state.share.whatsapp_msg
-    }
+    }, [])
 
     return useMemo(() => (
             {

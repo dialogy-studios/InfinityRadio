@@ -77,5 +77,8 @@ export interface ShareConfig {
     twitter_msg: string,
     telegram_msg: string,
     url_ios: string,
-    url_android: string
+    url_android: string,
+    email_address: string,
+    email_subject: string,
+    email_msg: string
 }
