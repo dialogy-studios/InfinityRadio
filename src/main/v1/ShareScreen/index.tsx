@@ -78,7 +78,7 @@ const ShareScreen: React.FC<Props> = () => {
                 <View
                     style={[
                         {
-                            flex: 1.3,
+                            flex: 1.4,
                         }
                     ]}
                 >
