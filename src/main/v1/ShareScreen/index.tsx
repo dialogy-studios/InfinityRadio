@@ -19,8 +19,6 @@ const ShareScreen: React.FC<Props> = () => {
 
     const shareSocialList = [
         SocialType.INSTAGRAM,
-        SocialType.TWITTER,
-        SocialType.WHATSAPP,
         SocialType.FACEBOOK,
         SocialType.TELEGRAM
     ]
@@ -80,7 +78,7 @@ const ShareScreen: React.FC<Props> = () => {
                 <View
                     style={[
                         {
-                            flex: 1,
+                            flex: 1.3,
                         }
                     ]}
                 >

@@ -45,27 +45,26 @@ const PlayerScreen = () => {
                 normalAnimationConfig
             )
 
-        /*Animated
+        Animated
             .sequence(
                 [
                     loadingAnimation,
                     normalAnimation
                 ]
             )
-            .start(() => {})*/
+            .start(() => {})
     }
 
     useEffect(() => {
-        // handleAnimationBasedOnState(mainContext.state.ui)
-        handleAnimationBasedOnState(UiState.LOADING)
+        handleAnimationBasedOnState(mainContext.state.ui)
+        // handleAnimationBasedOnState(UiState.LOADING)
     }, [mainContext.state.ui])
 
     const renderLoading = () => {
         return (
             <Animated.View
                 style={[{
-                    // opacity: loadingUiOpacity,
-                    opacity: 1,
+                    opacity: loadingUiOpacity,
                     width: Dimensions.get('window').width,
                     height: Dimensions.get('window').height,
                     position: 'absolute',
@@ -83,8 +82,7 @@ const PlayerScreen = () => {
                     height: Dimensions.get('screen').height,
                     width: Dimensions.get('screen').width,
                     position: 'absolute',
-                    // opacity: normalUiOpacity
-                    opacity: 0
+                    opacity: normalUiOpacity,
                 }]}>
                 <ImageBackground
                     style={[

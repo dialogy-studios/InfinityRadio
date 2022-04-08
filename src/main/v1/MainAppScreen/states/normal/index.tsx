@@ -6,11 +6,12 @@ import PlayerProvider from "../../../../../components/v1/player/config/Context";
 import Player from "../../../../../components/v1/player";
 import {NavigationContainer} from '@react-navigation/native';
 import {AppDrawer, MainScreenStack} from "../../../../../navigation/drawer/v1";
-import Drawer from "../../../../../components/v1/drawer/v1";
+import DrawerLayout from "../../../../../layout/drawer/v1";
 import ShareScreen from "../../../ShareScreen";
 import {ScreensNames} from "../../../../../navigation/drawer/v1/models";
 import {ShareContextProvider} from "../../../../../domain/share";
 import PlayerScreen from "../../../PlayerScreen";
+import Toast from "react-native-toast-message";
 
 const Content: React.FC<any> = () => {
     const mainContext = useSafeMainContext()
@@ -57,7 +58,7 @@ const Normal: React.FC<any> = () => {
                             <Player />
                             <AppDrawer.Navigator
                                 screenOptions={{header: () => null}}
-                                drawerContent={Drawer}
+                                drawerContent={DrawerLayout}
                             >
                                 <AppDrawer.Screen name={ScreensNames.MAIN} component={Content} />
                             </AppDrawer.Navigator>

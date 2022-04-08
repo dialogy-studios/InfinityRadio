@@ -1,19 +1,59 @@
-import Svg, {Circle, Path} from "react-native-svg";
+import Svg, {Path} from "react-native-svg";
 import React from "react";
+import {pickOrDefault} from "../../../domain/nullables";
+import {View} from "react-native";
+
+type MoreIconVariant = 'circle'
 
 interface Props {
-    size?: number
+    size?: number,
+    dotColor?: string,
+    circleColor?: string,
+    variant?: MoreIconVariant
 }
 
-const MoreIcon: React.FC<Props> = ({size}) => {
+function parseProps(props: Props): Props {
     return (
-        <Svg height={size} viewBox="0 0 24 24" width={size} fill="#000000">
-            <Path d="M0 0h24v24H0V0z" fill="none"/>
+        {
+            size: pickOrDefault(props.size, 24),
+            dotColor: pickOrDefault(props.dotColor, 'black'),
+            circleColor: pickOrDefault(props.circleColor, 'white'),
+            variant: pickOrDefault(props.variant, undefined),
+        }
+    )
+}
+
+const MoreIcon: React.FC<Props> = (receivedProps) => {
+    const props = parseProps(receivedProps)
+
+    if (props.variant == 'circle') {
+        return (
+            <View
+                style={[
+                    {
+                        padding: 3,
+                        borderRadius: props.size,
+                        backgroundColor: props.circleColor
+                    }
+                ]}
+            >
+                <MoreIcon {...props} variant={undefined} />
+            </View>
+        )
+    }
+
+    return (
+        <Svg
+            height={props.size}
+            viewBox="0 0 24 24"
+            width={props.size}
+            fill={props.dotColor}
+        >
+            <Path d="M0 0h24v24H0V0z"
+                  fill={'none'} />
             <Path
-                d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.97.89 1.66.89H22c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14z"/>
-            <Circle cx="9" cy="12" r="1.5"/>
-            <Circle cx="14" cy="12" r="1.5"/>
-            <Circle cx="19" cy="12" r="1.5"/>
+                fill={props.dotColor}
+                d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </Svg>
     )
 }

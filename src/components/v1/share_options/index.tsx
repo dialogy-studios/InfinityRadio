@@ -16,6 +16,10 @@ import WhatsAppIcon from "../../../resources/v1/icons/WhatsAppIcon";
 import FacebookIcon from "../../../resources/v1/icons/FacebookIcon";
 import TelegramIcon from "../../../resources/v1/icons/TelegramIcon";
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
+import MoreIcon from "../../../resources/v1/icons/MoreIcon";
+import CopyLinkIcon from "../../../resources/v1/icons/CopyLinkIcon";
+import Clipboard, {useClipboard} from "@react-native-community/clipboard";
+import Toast from "react-native-toast-message";
 
 export enum SocialType {
     INSTAGRAM = 'instagram',
@@ -31,7 +35,8 @@ interface ShareSocialItemConfig {
 
 interface Props {
     shareOptionList: SocialType[],
-    onRequestURI: () => Promise<string | null>
+    onRequestURI: () => Promise<string | null>,
+    withGradient?: boolean
 }
 
 enum UiState {
@@ -41,24 +46,44 @@ enum UiState {
 }
 
 const DEFAULT_ICON_SIZE = 64
+const DEFAULT_MARGIN_HORIZONTAL = 8
 const DEFAULT_SHARE_MESSAGE = "Listen infinity radio! https://play.google.com/store?hl=pt_BR&gl=US"
 const DEFAULT_SHARE_TITLE = ""
+
 function getShareOptionDataById(id: SocialType): ShareSocialItemConfig | null {
     const shareOptionConfigDict: {[socialType: string]: ShareSocialItemConfig} = {
         [SocialType.INSTAGRAM]: {
-            icon: <InstagramIcon size={DEFAULT_ICON_SIZE} />,
+            icon: <InstagramIcon
+                variant={'circle'}
+                logoColor={"black"}
+                circleColor={'white'}
+                size={DEFAULT_ICON_SIZE} />,
         },
         [SocialType.TWITTER]: {
-            icon: <TwitterIcon size={DEFAULT_ICON_SIZE} />,
+            icon: <TwitterIcon
+                variant={"circle"}
+                logoColor={"black"}
+                circleColor={"white"}
+                size={DEFAULT_ICON_SIZE} />,
         },
         [SocialType.WHATSAPP]:  {
-            icon: <WhatsAppIcon size={DEFAULT_ICON_SIZE} />,
+            icon: <WhatsAppIcon
+                variant={'circle'}
+                size={DEFAULT_ICON_SIZE*0.8}
+            />,
         },
         [SocialType.FACEBOOK]: {
-            icon: <FacebookIcon size={DEFAULT_ICON_SIZE} />,
+            icon: <FacebookIcon
+                variant={"circle"}
+                size={DEFAULT_ICON_SIZE} />,
         },
         [SocialType.TELEGRAM]: {
-            icon: <TelegramIcon size={DEFAULT_ICON_SIZE} />
+            icon: <TelegramIcon
+                variant={"circle"}
+                circleColor={'white'}
+                logoColor={'black'}
+                logoShadowColor={'#636363'}
+                size={DEFAULT_ICON_SIZE} />
         }
     }
     const shareOptionConfig = shareOptionConfigDict[id]
@@ -66,11 +91,10 @@ function getShareOptionDataById(id: SocialType): ShareSocialItemConfig | null {
     else return shareOptionConfig
 }
 
-const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
+const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradient = false}) => {
     const [uiState, setUiState] = useState(UiState.NORMAL)
     const share = useSafeShareContext()
     const config = useSafeConfigContext()
-
     const getMessageByPlatform = () => Platform.OS == "ios" ? config.state.share.url_ios : config.state.share.url_android
 
     const getMsgShareConfig = (message?: string, url?: string) => {
@@ -160,6 +184,10 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
                 if (shareItem == null) return null
                 return (
                     <TouchableOpacity
+                        style={[{
+                            marginBottom: 10,
+                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3,
+                        }]}
                         key={`${shareId}-btn`}
                         onPress={() => shareOptionById(shareId)}
                     >
@@ -246,14 +274,53 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
                     {
                         flex: 1,
                         flexDirection: 'row',
-                        justifyContent: 'space-around',
                         flexWrap: 'wrap',
-                        alignItems: 'center',
                         marginTop: 10
                     }
                 ]}
             >
                 {renderShareOptions()}
+                <View
+                    style={[
+                        {
+                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3
+                        }
+                    ]}
+                >
+                    <TouchableOpacity
+                        onPress={() => {
+                            Clipboard.setString(share.actions.getShareMsg())
+                            Toast.show({
+                                type: 'success',
+                                text1: 'Success',
+                                text2: 'The link was copied to clipboard!'
+                            })
+                        }}
+                    >
+                        <CopyLinkIcon
+                            variant={"circle"}
+                            size={DEFAULT_ICON_SIZE * .8}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={[
+                        {
+                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3
+                        }
+                    ]}
+                >
+                    <TouchableOpacity
+                        onPress={() => {
+                            share.actions.shareMessage()
+                        }}
+                    >
+                        <MoreIcon
+                            variant={"circle"}
+                            size={DEFAULT_ICON_SIZE}
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -269,21 +336,25 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI}) => {
         return renderer()
     }
 
-    return (
-        <LinearGradient
-            style={[
-                {
-                    flex: 1
-                }
-            ]}
-            colors={[
-                "#000",
-                "#fff"
-            ]}
-        >
-            {render()}
-        </LinearGradient>
-    )
+    if (withGradient) {
+        return (
+            <LinearGradient
+                style={[
+                    {
+                        flex: 1
+                    }
+                ]}
+                colors={[
+                    "#000",
+                    "#fff"
+                ]}
+            >
+                {render()}
+            </LinearGradient>
+        )
+    }
+
+    return render()
 }
 
 export default ShareOptions

@@ -9,6 +9,9 @@ interface ShareActions {
     share: (shareOptions: ShareOptions) => Promise<void>,
     sharePlayerPoster: () => Promise<void>,
     shareInstagram: (config: ShareSingleOptions) => Promise<void>,
+    shareMail: () => Promise<void>,
+    shareMessage: () => Promise<void>,
+    getShareMsg: () => string,
     updateShareURI: (uri: string) => void
 }
 
@@ -57,13 +60,54 @@ const useShare = (): ShareProps => {
         setShareURI(uri)
     },[setShareURI])
 
+    const shareMail = useCallback(async () => {
+        await Share.open({
+            email: '',
+            title: '',
+            message: '',
+            subject: '',
+            recipient: ''
+        })
+    }, [])
+
+    const shareMessage = useCallback(async () => {
+        const base64 = await getBase64Image(config.state.share.poster)
+        await Share.open({
+            activityItemSources: [
+                {
+                    placeholderItem: {
+                        type: 'url',
+                        // content: config.state.share.poster
+                        content: base64
+                    },
+                    item: {
+                        default: {
+                            type: 'url',
+                            content: base64
+                        },
+                    },
+                    linkMetadata: {
+                        title: 'Listen to Infinity Radio live'
+                    }
+                },
+            ],
+        })
+    }, [])
+
+    const getShareMsg = () => {
+        return config.state.share.whatsapp_msg
+    }
+
     return useMemo(() => (
             {
                 actions: {
                     share,
                     sharePlayerPoster,
                     shareInstagram,
-                    updateShareURI
+                    updateShareURI,
+                    shareMail,
+                    shareMessage,
+                    getShareMsg
                 },
                 state: {
                     shareURI
@@ -74,7 +118,9 @@ const useShare = (): ShareProps => {
             share,
             sharePlayerPoster,
             shareInstagram,
-            shareURI
+            shareURI,
+            shareMail,
+            shareMessage
         ]
     )
 }
