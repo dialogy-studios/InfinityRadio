@@ -4,6 +4,7 @@ import {useArtist} from "../artist";
 import {getBase64Image} from "../blob";
 import {useSafeConfigContext} from "../../firebase/v1/firestore/collection/configs";
 import React, {createContext, useCallback, useContext, useMemo, useState} from "react";
+import {Platform} from "react-native";
 
 interface ShareActions {
     share: (shareOptions: ShareOptions) => Promise<void>,
@@ -34,6 +35,10 @@ const useShare = (): ShareProps => {
     const share = async (shareOptions: ShareOptions) => {
         await Share.open(shareOptions)
     }
+
+    const getShareUrl = useCallback(() => {
+        return  Platform.OS == "ios" ? config.state.share.url_ios : config.state.share.url_android
+    }, [config.state.share.url_ios, config.state.share.url_android])
 
     const sharePlayerPoster = useCallback(async () => {
         const imageBase64: string | null = await getBase64Image(config.state.mainScreen.player_poster)
@@ -71,7 +76,8 @@ const useShare = (): ShareProps => {
 
     const shareMessage = useCallback(async () => {
         const base64 = await getBase64Image(config.state.share.poster)
-        await Share.open({
+
+        const iosConfig: ShareOptions = {
             activityItemSources: [
                 {
                     placeholderItem: {
@@ -89,9 +95,20 @@ const useShare = (): ShareProps => {
                         title: 'Listen to Infinity Radio live'
                     }
                 },
-            ],
-        })
-    }, [])
+            ]
+        }
+
+        const androidConfig: ShareOptions = {
+            title: 'Share to',
+            message: config.state.share.whatsapp_msg,
+            url: getShareUrl()
+        }
+
+        const getConfig = () => Platform.OS == "ios" ? iosConfig : androidConfig
+
+        await Share.open(getConfig())
+
+    }, [config])
 
     const getShareMsg = useCallback(() => {
         return config.state.share.whatsapp_msg

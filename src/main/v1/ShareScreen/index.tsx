@@ -17,12 +17,6 @@ const ShareScreen: React.FC<Props> = () => {
     const viewShot = useRef<ViewShot | null>(null)
     const navigation: StackNavigationProp<any> = useNavigation()
 
-    const shareSocialList = [
-        SocialType.INSTAGRAM,
-        SocialType.FACEBOOK,
-        SocialType.TELEGRAM
-    ]
-
     const generateShareURI = async (): Promise<string | null> => {
         if (viewShot.current == null) return null
         try {
@@ -83,7 +77,6 @@ const ShareScreen: React.FC<Props> = () => {
                     ]}
                 >
                     <ShareOptions
-                        shareOptionList={shareSocialList}
                         onRequestURI={generateShareURI}
                     />
                 </View>

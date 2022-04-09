@@ -31,7 +31,7 @@ const InstagramIcon: React.FC<Props> = (receivedProps ) => {
             <View
                 style={[
                     {
-                        padding: 5,
+                        padding: 3,
                         borderRadius: props.size,
                         backgroundColor: props.circleColor
                     }

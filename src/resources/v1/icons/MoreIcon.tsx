@@ -31,7 +31,7 @@ const MoreIcon: React.FC<Props> = (receivedProps) => {
             <View
                 style={[
                     {
-                        padding: 3,
+                        padding: 2,
                         borderRadius: props.size,
                         backgroundColor: props.circleColor
                     }

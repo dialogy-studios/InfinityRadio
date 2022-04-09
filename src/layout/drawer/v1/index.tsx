@@ -87,7 +87,7 @@ const DrawerLayout: React.FC<any> = ({navigation}) => {
                 }}
             >
                 <DrawerLabel>
-                    Contact Us
+                    Contact
                 </DrawerLabel>
             </TouchableOpacity>
         </DrawerContentScrollView>

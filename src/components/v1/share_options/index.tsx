@@ -1,5 +1,15 @@
 import React, {ReactNode, useCallback, useState} from "react";
-import {ActivityIndicator, Platform, StyleProp, Text, TextStyle, TouchableOpacity, View, ViewStyle} from "react-native";
+import {
+    ActivityIndicator,
+    FlatList,
+    Platform,
+    StyleProp,
+    Text,
+    TextStyle,
+    TouchableOpacity,
+    View,
+    ViewStyle
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Share, {
     ShareAsset,
@@ -21,21 +31,19 @@ import CopyLinkIcon from "../../../resources/v1/icons/CopyLinkIcon";
 import Clipboard, {useClipboard} from "@react-native-community/clipboard";
 import Toast from "react-native-toast-message";
 import Centered from "../../../resources/v1/styles/view/Centered";
+import ShareButtonRenderer from "../../../layout/share_button_container";
 
 export enum SocialType {
     INSTAGRAM = 'Instagram',
     TWITTER = 'Twitter',
     WHATSAPP = 'Whatsapp',
     FACEBOOK = 'Facebook',
-    TELEGRAM = 'Telegram'
-}
-
-interface ShareSocialItemConfig {
-    icon: Element,
+    TELEGRAM = 'Telegram',
+    COPY = 'Copy',
+    MORE = 'More'
 }
 
 interface Props {
-    shareOptionList: SocialType[],
     onRequestURI: () => Promise<string | null>,
     withGradient?: boolean
 }
@@ -46,91 +54,11 @@ enum UiState {
     ERROR
 }
 
-const DEFAULT_ICON_SIZE = 48
-const DEFAULT_MARGIN_HORIZONTAL = 8
-const DEFAULT_SHARE_MESSAGE = "Listen infinity radio! https://play.google.com/store?hl=pt_BR&gl=US"
-const DEFAULT_SHARE_TITLE = ""
+const DEFAULT_ICON_SIZE = 52
 
-function getShareOptionDataById(id: SocialType): ShareSocialItemConfig | null {
-    const shareOptionConfigDict: {[socialType: string]: ShareSocialItemConfig} = {
-        [SocialType.INSTAGRAM]: {
-            icon:  <InstagramIcon
-                variant={'circle'}
-                logoColor={"black"}
-                circleColor={'white'}
-                size={DEFAULT_ICON_SIZE} />
-        },
-        [SocialType.TWITTER]: {
-            icon: <TwitterIcon
-                variant={"circle"}
-                logoColor={"black"}
-                circleColor={"white"}
-                size={DEFAULT_ICON_SIZE} />,
-        },
-        [SocialType.WHATSAPP]:  {
-            icon: <WhatsAppIcon
-                variant={'circle'}
-                size={DEFAULT_ICON_SIZE*0.8}
-            />,
-        },
-        [SocialType.FACEBOOK]: {
-            icon: <FacebookIcon
-                variant={"circle"}
-                size={DEFAULT_ICON_SIZE} />,
-        },
-        [SocialType.TELEGRAM]: {
-            icon: <TelegramIcon
-                variant={"circle"}
-                circleColor={'white'}
-                logoColor={'black'}
-                logoShadowColor={'#636363'}
-                size={DEFAULT_ICON_SIZE} />
-        }
-    }
-    const shareOptionConfig = shareOptionConfigDict[id]
-    if (shareOptionConfig == null) return null
-    else return shareOptionConfig
-}
-
-const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradient = false}) => {
+const ShareOptions: React.FC<Props> = ({ onRequestURI, withGradient = false}) => {
     const [uiState, setUiState] = useState(UiState.NORMAL)
     const share = useSafeShareContext()
-    const config = useSafeConfigContext()
-
-    const shareOptionTextStyle: StyleProp<TextStyle> = {
-        color: 'white',
-        fontWeight: 'bold',
-        alignContent: 'center'
-    }
-
-    const getMessageByPlatform = () => Platform.OS == "ios" ? config.state.share.url_ios : config.state.share.url_android
-
-    const getMsgShareConfig = (message?: string, url?: string) => {
-        return {
-            message: message != undefined ? message : DEFAULT_SHARE_MESSAGE,
-            title: url != undefined ? url : DEFAULT_SHARE_TITLE,
-            url: getMessageByPlatform()
-        }
-    }
-
-    const shareDefaultMsg = async (message?: string, url?: string) => {
-        const shareConfig: ShareOpenOptions = getMsgShareConfig()
-        await Share.open(shareConfig)
-    }
-
-    const shareTwitter = async () => {
-        await shareDefaultMsg(
-            config.state.share.twitter_msg,
-            getMessageByPlatform()
-        )
-    }
-
-    const shareWhatsapp = async () => {
-        await shareDefaultMsg(
-            config.state.share.whatsapp_msg,
-            getMessageByPlatform()
-        )
-    }
 
     const shareInstagram = useCallback(async () => {
         try {
@@ -154,85 +82,18 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
         }
     }, [setUiState])
 
-    const shareTelegram = async () => {
-        const telegramConfig: ShareSingleOptions = {
-            title: DEFAULT_SHARE_TITLE,
-            message: config.state.share.telegram_msg,
-            social: Social.Telegram,
-        }
-        await Share.open(telegramConfig)
+    const copyMessageToClipboard = () => {
+        Clipboard.setString(share.actions.getShareMsg())
+        Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: 'The link was copied to clipboard!'
+        })
     }
 
-    const shareFacebook = async () => {
-        try {
-            setUiState(UiState.LOADING)
-            const stickerImage = await onRequestURI()
-            if (stickerImage == null) {
-                setUiState(UiState.ERROR)
-                return
-            }
-            const facebookConfig: ShareSingleOptions = {
-                social: SocialShare.FacebookStories,
-                backgroundBottomColor: 'white',
-                backgroundTopColor: 'black',
-                stickerImage: stickerImage,
-                appId: config.state.general.facebook_app_id,
-                method: ShareAsset.StickerImage
-            }
-            await share.actions.shareInstagram(facebookConfig)
-            setUiState(UiState.NORMAL)
-        } catch (error) {
-            setUiState(UiState.ERROR)
-        }
+    const shareMessage = () => {
+        share.actions.shareMessage()
     }
-
-    const renderShareOptions = () => {
-        return shareOptionList
-            .map((shareId) => {
-                const shareItem = getShareOptionDataById(shareId)
-                if (shareItem == null) return null
-                return (
-                    <View
-                        key={shareId}
-                        style={[
-                            Centered,
-                            {
-                                marginBottom: DEFAULT_MARGIN_HORIZONTAL
-                            }
-                        ]}
-                    >
-                        <TouchableOpacity
-                            style={[{
-                                marginBottom: 10,
-                                marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 4,
-                            }]}
-                            key={`${shareId}-btn`}
-                            onPress={() => shareOptionById(shareId)}
-                        >
-                            {shareItem.icon}
-                        </TouchableOpacity>
-                        <Text style={[
-                            shareOptionTextStyle
-                        ]}>{shareId}</Text>
-                    </View>
-                )
-            })
-    }
-
-    const shareOptionById = useCallback((shareId: SocialType) => {
-        const shareActionDict: {[id: string]: () => void} = {
-            [SocialType.INSTAGRAM]: shareInstagram,
-            [SocialType.TWITTER]: shareTwitter,
-            [SocialType.WHATSAPP]: shareWhatsapp,
-            [SocialType.TELEGRAM]: shareTelegram,
-            [SocialType.FACEBOOK]: shareFacebook,
-
-        }
-        const action = shareActionDict[shareId]
-        if (action != null) {
-            action()
-        }
-    }, [shareInstagram, shareTwitter])
 
     const renderLoading = () => {
         return (
@@ -295,77 +156,62 @@ const ShareOptions: React.FC<Props> = ({shareOptionList, onRequestURI, withGradi
                 style={[
                     {
                         flex: 1,
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        marginTop: 10
+                        paddingVertical: 10,
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
                     }
                 ]}
             >
-                {renderShareOptions()}
                 <View
                     style={[
                         {
-                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 4,
-                        },
-                        Centered
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            alignItems: 'center'
+                        }
                     ]}
                 >
-                    <TouchableOpacity
-                        onPress={() => {
-                            Clipboard.setString(share.actions.getShareMsg())
-                            Toast.show({
-                                type: 'success',
-                                text1: 'Success',
-                                text2: 'The link was copied to clipboard!'
-                            })
-                        }}
-                    >
-                        <CopyLinkIcon
-                            variant={"circle"}
-                            size={DEFAULT_ICON_SIZE * .8}
-                        />
-                    </TouchableOpacity>
-                    <Text
-                        style={
-                            [
-                                {
-                                    marginTop: DEFAULT_MARGIN_HORIZONTAL
-                                },
-                                shareOptionTextStyle,
-                            ]
-                        }
-                    >
-                        Copy
-                    </Text>
+                    <ShareButtonRenderer
+                        onPress={shareInstagram}
+                        icon={() => (<InstagramIcon size={DEFAULT_ICON_SIZE} circleColor={'white'} logoColor={'black'} variant={'circle'} /> )}
+                        label={SocialType.INSTAGRAM}
+                    />
+                    <ShareButtonRenderer
+                        onPress={shareInstagram}
+                        icon={() => (<FacebookIcon size={DEFAULT_ICON_SIZE} circleColor={'white'} logoColor={'black'} variant={'circle'} /> )}
+                        label={SocialType.FACEBOOK}
+                    />
+                    <ShareButtonRenderer
+                        onPress={shareInstagram}
+                        icon={() => (<TelegramIcon size={DEFAULT_ICON_SIZE} circleColor={'white'} logoColor={'black'} variant={'circle'} /> )}
+                        label={SocialType.TELEGRAM}
+                    />
                 </View>
                 <View
                     style={[
                         {
-                            marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 4
-                        },
-                        Centered
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            alignItems: 'center'
+                        }
                     ]}
                 >
-                    <TouchableOpacity
-                        onPress={() => {
-                            share.actions.shareMessage()
-                        }}
-                    >
-                        <MoreIcon
-                            variant={"circle"}
-                            size={DEFAULT_ICON_SIZE}
-                        />
-                    </TouchableOpacity>
-                    <Text
-                        style={[
-                            shareOptionTextStyle,
-                            {
-                                marginTop: DEFAULT_MARGIN_HORIZONTAL
-                            }
-                        ]}
-                    >
-                        More
-                    </Text>
+                    <ShareButtonRenderer
+                        onPress={copyMessageToClipboard}
+                        icon={() => (<CopyLinkIcon size={DEFAULT_ICON_SIZE} circleColor={'white'} linkColor={'black'} variant={'circle'} /> )}
+                        label={SocialType.COPY}
+                    />
+                    <ShareButtonRenderer
+                        onPress={shareMessage}
+                        icon={() => (<MoreIcon size={DEFAULT_ICON_SIZE} circleColor={'white'} dotColor={'black'} variant={"circle"} />)}
+                        label={SocialType.MORE}
+                    />
+                    <ShareButtonRenderer
+                        onPress={shareInstagram}
+                        icon={() => <View style={[{height: DEFAULT_ICON_SIZE, width: DEFAULT_ICON_SIZE}]} />}
+                        label={""}
+                    />
                 </View>
             </View>
         )
