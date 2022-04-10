@@ -1,5 +1,5 @@
 import {ShareOptions} from "react-native-share/src/types";
-import Share, {ShareSingleOptions} from "react-native-share";
+import Share, {ShareSingleOptions, Social} from "react-native-share";
 import {useArtist} from "../artist";
 import {getBase64Image} from "../blob";
 import {useSafeConfigContext} from "../../firebase/v1/firestore/collection/configs";
@@ -11,6 +11,7 @@ interface ShareActions {
     sharePlayerPoster: () => Promise<void>,
     shareInstagram: (config: ShareSingleOptions) => Promise<void>,
     shareMail: () => Promise<void>,
+    shareTelegram: () => void,
     shareMessage: () => Promise<void>,
     getShareMsg: () => string,
     updateShareURI: (uri: string) => void
@@ -74,6 +75,15 @@ const useShare = (): ShareProps => {
         })
     }, [])
 
+    const shareTelegram = useCallback(() => {
+        Share.shareSingle(
+            {
+                message: config.state.share.telegram_msg,
+                social: Social.Telegram
+            }
+        )
+    }, [])
+
     const shareMessage = useCallback(async () => {
         const base64 = await getBase64Image(config.state.share.poster)
 
@@ -122,6 +132,7 @@ const useShare = (): ShareProps => {
                     shareInstagram,
                     updateShareURI,
                     shareMail,
+                    shareTelegram,
                     shareMessage,
                     getShareMsg
                 },
@@ -136,6 +147,7 @@ const useShare = (): ShareProps => {
             shareInstagram,
             shareURI,
             shareMail,
+            shareTelegram,
             shareMessage
         ]
     )

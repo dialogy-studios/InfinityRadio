@@ -53,7 +53,7 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
             <View
                 style={[
                     {
-                        flex: 1.5,
+                        flex: 1,
                         marginHorizontal: DEFAULT_MARGIN_HORIZONTAL * 3,
                         flexDirection: "row"
                     }
@@ -69,7 +69,7 @@ const TraditionalTemplate = forwardRef<TraditionalTemplateMethods, Props>((props
                 <View
                     style={[
                         {
-                            flex: 5
+                            flex: 2
                         }
                     ]}
                 >

@@ -14,8 +14,10 @@ import java.util.List;
 import com.facebook.react.bridge.JSIModulePackage;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
+import cl.json.ShareApplication;
 
-public class MainApplication extends Application implements ReactApplication {
+
+public class MainApplication extends Application implements ReactApplication, ShareApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -87,4 +89,9 @@ public class MainApplication extends Application implements ReactApplication {
       }
     }
   }
+
+    @Override
+    public String getFileProviderAuthority() {
+        return BuildConfig.APPLICATION_ID + ".provider";
+    }
 }

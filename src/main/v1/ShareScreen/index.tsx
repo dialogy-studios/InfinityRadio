@@ -1,5 +1,5 @@
 import React, {useRef} from "react";
-import {ImageBackground, View} from "react-native";
+import {Dimensions, ImageBackground, ScrollView, View} from "react-native";
 import Thumb from "../../../components/v1/thumb";
 import {SafeAreaView} from "react-native-safe-area-context";
 import ShareOptions, {SocialType} from "../../../components/v1/share_options";
@@ -47,19 +47,16 @@ const ShareScreen: React.FC<Props> = () => {
                 edges={["top"]}
             >
                 <ShareScreenHeader navigation={navigation}/>
-                <View
-                    style={[
-                        {
-                            flex: 3
-                        }
-                    ]}
+                <ScrollView
                 >
                     <ViewShot
                         ref={viewShot}
                         options={{ format: "png", quality: 0.9 }}
                         style={[
                             {
-                                flex: 1,
+                                marginTop: 20,
+                                height: 450,
+                                width: Dimensions.get('window').width,
                                 backgroundColor: 'transparent'
                             }
                         ]}
@@ -68,18 +65,18 @@ const ShareScreen: React.FC<Props> = () => {
                             variant={"share-thumb"}
                         />
                     </ViewShot>
-                </View>
-                <View
-                    style={[
-                        {
-                            flex: 1.4,
-                        }
-                    ]}
-                >
-                    <ShareOptions
-                        onRequestURI={generateShareURI}
-                    />
-                </View>
+                    <View
+                        style={[
+                            {
+                                flex: 1,
+                            }
+                        ]}
+                    >
+                        <ShareOptions
+                            onRequestURI={generateShareURI}
+                        />
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         </ImageBackground>
     )

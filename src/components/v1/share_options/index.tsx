@@ -1,36 +1,17 @@
 import React, {ReactNode, useCallback, useState} from "react";
-import {
-    ActivityIndicator,
-    FlatList,
-    Platform,
-    StyleProp,
-    Text,
-    TextStyle,
-    TouchableOpacity,
-    View,
-    ViewStyle
-} from "react-native";
+import {ActivityIndicator, Platform, Text, View} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import Share, {
-    ShareAsset,
-    ShareOptions as ShareOpenOptions,
-    ShareSingleOptions,
-    Social,
-    Social as SocialShare
-} from "react-native-share";
+import {ShareAsset, ShareSingleOptions, Social as SocialShare} from "react-native-share";
 import InstagramIcon from "../../../resources/v1/icons/InstagramIcon";
-import TwitterIcon from "../../../resources/v1/icons/TwitterIcon";
 import GoBackBtn from "../go_back_btn";
 import {useSafeShareContext} from "../../../domain/share";
-import WhatsAppIcon from "../../../resources/v1/icons/WhatsAppIcon";
 import FacebookIcon from "../../../resources/v1/icons/FacebookIcon";
 import TelegramIcon from "../../../resources/v1/icons/TelegramIcon";
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 import MoreIcon from "../../../resources/v1/icons/MoreIcon";
 import CopyLinkIcon from "../../../resources/v1/icons/CopyLinkIcon";
-import Clipboard, {useClipboard} from "@react-native-community/clipboard";
+import Clipboard from "@react-native-community/clipboard";
 import Toast from "react-native-toast-message";
-import Centered from "../../../resources/v1/styles/view/Centered";
 import ShareButtonRenderer from "../../../layout/share_button_container";
 
 export enum SocialType {
@@ -58,6 +39,7 @@ const DEFAULT_ICON_SIZE = 52
 
 const ShareOptions: React.FC<Props> = ({ onRequestURI, withGradient = false}) => {
     const [uiState, setUiState] = useState(UiState.NORMAL)
+    const config = useSafeConfigContext()
     const share = useSafeShareContext()
 
     const shareInstagram = useCallback(async () => {
@@ -82,8 +64,40 @@ const ShareOptions: React.FC<Props> = ({ onRequestURI, withGradient = false}) =>
         }
     }, [setUiState])
 
+    const shareTelegram = useCallback(() => {
+        share.actions.shareTelegram()
+    }, [])
+
+    const shareFacebook = useCallback(async() => {
+        try {
+            setUiState(UiState.LOADING)
+            const stickerImage = await onRequestURI()
+            if (stickerImage == null) {
+                setUiState(UiState.ERROR)
+                return
+            }
+            const instagramConfig: ShareSingleOptions = {
+                social: SocialShare.FacebookStories,
+                method: ShareAsset.StickerImage,
+                backgroundBottomColor: 'white',
+                backgroundTopColor: 'black',
+                appId: '295287136078900',
+                attributionURL: 'https://www.infinityradioireland.com/',
+                stickerImage: stickerImage
+            }
+            await share.actions.shareInstagram(instagramConfig)
+            setUiState(UiState.NORMAL)
+        } catch (error) {
+            setUiState(UiState.ERROR)
+        }
+    }, [])
+
+    const getShareUrl = () => {
+        return Platform.OS == "ios" ? config.state.share.url_ios : config.state.share.url_android
+    }
+
     const copyMessageToClipboard = () => {
-        Clipboard.setString(share.actions.getShareMsg())
+        Clipboard.setString(`${share.actions.getShareMsg()} ${getShareUrl()}`)
         Toast.show({
             type: 'success',
             text1: 'Success',
@@ -177,12 +191,12 @@ const ShareOptions: React.FC<Props> = ({ onRequestURI, withGradient = false}) =>
                         label={SocialType.INSTAGRAM}
                     />
                     <ShareButtonRenderer
-                        onPress={shareInstagram}
+                        onPress={shareFacebook}
                         icon={() => (<FacebookIcon size={DEFAULT_ICON_SIZE} circleColor={'white'} logoColor={'black'} variant={'circle'} /> )}
                         label={SocialType.FACEBOOK}
                     />
                     <ShareButtonRenderer
-                        onPress={shareInstagram}
+                        onPress={shareTelegram}
                         icon={() => (<TelegramIcon size={DEFAULT_ICON_SIZE} circleColor={'white'} logoColor={'black'} variant={'circle'} /> )}
                         label={SocialType.TELEGRAM}
                     />
