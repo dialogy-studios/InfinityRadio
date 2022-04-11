@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.irelandradio",
+    "sha256_cert_fingerprints":
+    ["0A:A4:27:E0:DE:94:19:5E:27:12:9D:8C:0C:69:88:35:BE:61:17:7A:3D:02:48:69:2B:72:C5:A2:F7:6E:08:D3"]
+  }
+}]
