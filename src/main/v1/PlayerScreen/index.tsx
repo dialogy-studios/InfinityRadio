@@ -3,7 +3,7 @@ import LoadingAnimated from "../../../components/v1/loading_animated";
 import MainAppScreen from "../MainAppScreen";
 import React, {useEffect, useRef} from "react";
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
-import {UiState, useSafeMainContext} from "../config/MainContext";
+import {UiState, useSafeMainContext} from "../MainAppScreen/context/MainContext";
 import TimingAnimationConfig = Animated.TimingAnimationConfig;
 
 const PlayerScreen = () => {

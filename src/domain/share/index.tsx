@@ -37,6 +37,32 @@ const useShare = (): ShareProps => {
         await Share.open(shareOptions)
     }
 
+    const getIOSThumbConfig = async (): Promise<ShareOptions> => {
+        const base64 = await getBase64Image(config.state.share.poster)
+
+        return (
+        {
+            activityItemSources: [
+                {
+                    placeholderItem: {
+                        type: 'url',
+                        content: base64
+                    },
+                    item: {
+                        default: {
+                            type: 'url',
+                            content: base64
+                        },
+                    },
+                    linkMetadata: {
+                        title: 'Listen to Infinity Radio live'
+                    }
+                },
+            ]
+        }
+        )
+    }
+
     const getShareUrl = useCallback(() => {
         return  Platform.OS == "ios" ? config.state.share.url_ios : config.state.share.url_android
     }, [config.state.share.url_ios, config.state.share.url_android])
@@ -85,39 +111,20 @@ const useShare = (): ShareProps => {
     }, [])
 
     const shareMessage = useCallback(async () => {
-        const base64 = await getBase64Image(config.state.share.poster)
 
-        const iosConfig: ShareOptions = {
-            activityItemSources: [
-                {
-                    placeholderItem: {
-                        type: 'url',
-                        // content: config.state.share.poster
-                        content: base64
-                    },
-                    item: {
-                        default: {
-                            type: 'url',
-                            content: base64
-                        },
-                    },
-                    linkMetadata: {
-                        title: 'Listen to Infinity Radio live'
-                    }
-                },
-            ]
+        let shareOptions: ShareOptions
+
+        if (Platform.OS == "ios") {
+            shareOptions = await getIOSThumbConfig()
+        } else {
+            shareOptions = {
+                title: 'Share to',
+                message: config.state.share.whatsapp_msg,
+                url: getShareUrl()
+            }
         }
 
-        const androidConfig: ShareOptions = {
-            title: 'Share to',
-            message: config.state.share.whatsapp_msg,
-            url: getShareUrl()
-        }
-
-        const getConfig = () => Platform.OS == "ios" ? iosConfig : androidConfig
-
-        await Share.open(getConfig())
-
+        await Share.open(shareOptions)
     }, [config])
 
     const getShareMsg = useCallback(() => {

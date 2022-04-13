@@ -1,5 +1,6 @@
 import React, {createContext, useCallback, useContext, useEffect, useMemo, useState,} from 'react';
 import {PlayerTemplate} from "../../player_template";
+import {useSafeNetworkContext} from "../../../../context/NetworkContextProvider";
 
 interface PlayerState {
     paused: boolean;
@@ -14,7 +15,8 @@ interface PlayerState {
 
 export enum PlayerUiState {
     NORMAL,
-    ERROR
+    ERROR,
+    BUFFERING
 }
 
 interface VolumeActions {
@@ -50,8 +52,9 @@ function usePlayer(): Player {
     const [longPressing, setLongPressing] = useState(false);
     const [maxVolume, setMaxVolume] = useState(10);
     const [minVolume, setMinVolume] = useState(0);
-    const [playerUiState, setPlayerUiState] = useState<PlayerUiState>(PlayerUiState.NORMAL)
+    const [playerUiState, setPlayerUiState] = useState<PlayerUiState>(PlayerUiState.BUFFERING)
     const [template, setTemplate] = useState<PlayerTemplate>(PlayerTemplate.TRADITIONAL)
+    const network = useSafeNetworkContext()
 
     const pause = useCallback(() => {
         setPaused(!paused);
@@ -116,6 +119,14 @@ function usePlayer(): Player {
         }
 
     }, [volume]);
+
+    useEffect(() => {
+        if (!network.actions.isConnected()) {
+            setPlayerUiState(PlayerUiState.ERROR)
+        } else {
+            setPlayerUiState(PlayerUiState.BUFFERING)
+        }
+    }, [network.state.networkState])
 
     return useMemo(
         () => ({

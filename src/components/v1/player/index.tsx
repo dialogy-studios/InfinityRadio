@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {UiState, useSafeMainContext} from "../../../main/v1/config/MainContext";
+import {UiState, useSafeMainContext} from "../../../main/v1/MainAppScreen/context/MainContext";
 import {useSafeConfigContext} from "../../../firebase/v1/firestore/collection/configs";
 import MusicControl, {Command} from "react-native-music-control";
 import {Platform, View} from "react-native";
@@ -13,6 +13,7 @@ const Player: React.FC<any> = () => {
     const config = useSafeConfigContext();
     const remoteURL =
         'https://urbanradioireland.out.airtime.pro:8000/urbanradioireland_c?_ga=2.35923040.1587061543.1641428521-1929476278.1640869959';
+
 
     const setPlayer = () => {
         MusicControl.enableBackgroundMode(true);
@@ -88,11 +89,13 @@ const Player: React.FC<any> = () => {
 
     useEffect(() => {
         var newState = MusicControl.STATE_BUFFERING
-        if (mainContext.state.ui == UiState.ERROR) {
+        // if (mainContext.state.ui == UiState.ERROR) {
+        if (player.state.uiState == PlayerUiState.ERROR) {
             newState = MusicControl.STATE_ERROR
-        } else if (mainContext.state.ui == UiState.LOADING) {
+        // } else if (mainContext.state.ui == UiState.LOADING) {
+        } else if (player.state.uiState == PlayerUiState.BUFFERING) {
             newState = MusicControl.STATE_BUFFERING
-        } else if (mainContext.state.ui == UiState.NORMAL) {
+        } else if (player.state.uiState == PlayerUiState.NORMAL) {
             newState = MusicControl.STATE_PLAYING
         }
 
@@ -125,6 +128,7 @@ const Player: React.FC<any> = () => {
                 }} // Store reference
                 onLoad={() => {
                     mainContext.methods.updateUiState(UiState.NORMAL)
+                    player.actions.updateUiState(PlayerUiState.NORMAL)
                     MusicControl.setNowPlaying({
                         title: config.state.playerLockScreen.title,
                         artwork: config.state.playerLockScreen.image, // URL or RN's image require()
@@ -145,7 +149,8 @@ const Player: React.FC<any> = () => {
 
                 }} // Callback when remote video is buffering
                 onError={(error: Error) => {
-                    mainContext.methods.updateUiState(UiState.ERROR)
+                    // mainContext.methods.updateUiState(UiState.ERROR)
+                    player.actions.updateUiState(PlayerUiState.ERROR)
                 }} // Callback when video cannot be loaded
             />
         </View>

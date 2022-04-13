@@ -15,6 +15,7 @@ import {
     VolumeMuteButtonConfig,
     VolumeUpButtonConfig
 } from "./models";
+import {useSafeNetworkContext} from "../../../../../context/NetworkContextProvider";
 
 interface Props {
     state: ConfigsCollectionState,
@@ -40,6 +41,7 @@ interface GetConfigPayload {
 
 const useConfigContext = (): Props  => {
     const [config, setConfig] = useState<ConfigsCollectionState>(defaultConfigState)
+    const networkContext = useSafeNetworkContext()
 
     const generalConfigRequestCallback: SetObserverCallback = {
         onSuccess(doc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>) {
@@ -186,16 +188,18 @@ const useConfigContext = (): Props  => {
         {document: ConfigCollectionDocuments.SHARE, callback: shareScreenConfigRequestCallback},
     ]
 
-    const getConfigs = async () => {
-        configPayloadList
-            .forEach(({document, callback}) => {
-                Config.getRealtimeConfig(document, callback)
-            })
-    }
+    const getConfigs = useCallback( async () => {
+        if (networkContext.actions.isConnected()) {
+            configPayloadList
+                .forEach(({document, callback}) => {
+                    Config.getRealtimeConfig(document, callback)
+                })
+        }
+    }, [networkContext])
 
     useEffect(() => {
         getConfigs()
-    }, [])
+    }, [networkContext.state.networkState])
 
     return useMemo(() => (
         {
