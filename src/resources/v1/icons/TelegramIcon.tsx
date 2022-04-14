@@ -35,7 +35,9 @@ const TelegramIcon: React.FC<Props> = (receivedProps) => {
                     {
                         padding: 3,
                         borderRadius: props.size,
-                        backgroundColor: props.circleColor
+                        backgroundColor: props.circleColor,
+                        height: props.size,
+                        width: props.size
                     }
                 ]}
             >
@@ -46,7 +48,7 @@ const TelegramIcon: React.FC<Props> = (receivedProps) => {
 
     return (
         <Svg
-            viewBox="0 0 48 48"
+            viewBox="0 0 55 55"
             width={props.size}
             height={props.size}>
             <Path fill={props.circleColor} d="M24 4A20 20 0 1 0 24 44A20 20 0 1 0 24 4Z"/>

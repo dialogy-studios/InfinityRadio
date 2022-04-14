@@ -12,7 +12,7 @@ import MoreIcon from "../../../resources/v1/icons/MoreIcon";
 import CopyLinkIcon from "../../../resources/v1/icons/CopyLinkIcon";
 import Clipboard from "@react-native-community/clipboard";
 import Toast from "react-native-toast-message";
-import ShareButtonRenderer from "../../../layout/share_button_container";
+import ShareButtonRenderer from "../../../layout/share_button_renderer";
 
 export enum SocialType {
     INSTAGRAM = 'Instagram',
@@ -35,7 +35,7 @@ enum UiState {
     ERROR
 }
 
-const DEFAULT_ICON_SIZE = 52
+const DEFAULT_ICON_SIZE = 64
 
 const ShareOptions: React.FC<Props> = ({ onRequestURI, withGradient = false}) => {
     const [uiState, setUiState] = useState(UiState.NORMAL)
@@ -170,6 +170,7 @@ const ShareOptions: React.FC<Props> = ({ onRequestURI, withGradient = false}) =>
                 style={[
                     {
                         flex: 1,
+                        // backgroundColor: 'red',
                         paddingVertical: 10,
                         flexDirection: 'column',
                         justifyContent: 'space-around',

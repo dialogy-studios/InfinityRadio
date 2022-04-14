@@ -7,15 +7,13 @@ interface Props {
     label: string
 }
 
-const DEFAULT_MARGIN = 8
-
 const ShareButtonRenderer: React.FC<Props> = (props) => {
 
     const shareOptionTextStyle: StyleProp<TextStyle> = {
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 12,
+        fontSize: 14,
         marginTop: 0
     }
 
@@ -26,7 +24,8 @@ const ShareButtonRenderer: React.FC<Props> = (props) => {
             <TouchableOpacity
                 style={[
                     {
-                        marginVertical: 5
+                        marginVertical: 5,
+                        alignItems: 'center'
                     }
                 ]}
                 onPress={props.onPress}

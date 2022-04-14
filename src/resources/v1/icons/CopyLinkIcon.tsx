@@ -31,9 +31,11 @@ const CopyLinkIcon: React.FC<Props> = (receivedProps) => {
             <View
                 style={[
                     {
-                        padding: 2,
+                        padding: 3,
                         backgroundColor: props.circleColor,
-                        borderRadius: props.size
+                        borderRadius: props.size,
+                        height: props.size,
+                        width: props.size
                     }
                 ]}
             >
@@ -46,7 +48,7 @@ const CopyLinkIcon: React.FC<Props> = (receivedProps) => {
         <Svg
             width={props.size}
             height={props.size}
-            viewBox={"-12 -12 48 48"}
+            viewBox={"-12 -12 52 52"}
             fill-rule="evenodd" clip-rule="evenodd">
             <Path
                 fill={props.linkColor}

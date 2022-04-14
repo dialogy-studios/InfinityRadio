@@ -33,7 +33,9 @@ const InstagramIcon: React.FC<Props> = (receivedProps ) => {
                     {
                         padding: 3,
                         borderRadius: props.size,
-                        backgroundColor: props.circleColor
+                        backgroundColor: props.circleColor,
+                        width: props.size,
+                        height: props.size
                     }
                 ]}
             >
@@ -43,7 +45,7 @@ const InstagramIcon: React.FC<Props> = (receivedProps ) => {
     }
 
     return (
-        <Svg height={props.size} width={props.size} viewBox="0 0 128 128">
+        <Svg height={props.size} width={props.size} viewBox="0 0 140 145">
             <Path
                 fill={props.logoColor}
                 d="M83,23a22,22,0,0,1,22,22V83a22,22,0,0,1-22,22H45A22,22,0,0,1,23,83V45A22,22,0,0,1,45,23H83m0-8H45A30.09,30.09,0,0,0,15,45V83a30.09,30.09,0,0,0,30,30H83a30.09,30.09,0,0,0,30-30V45A30.09,30.09,0,0,0,83,15Z"/>

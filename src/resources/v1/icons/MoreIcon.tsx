@@ -33,7 +33,9 @@ const MoreIcon: React.FC<Props> = (receivedProps) => {
                     {
                         padding: 2,
                         borderRadius: props.size,
-                        backgroundColor: props.circleColor
+                        backgroundColor: props.circleColor,
+                        height: props.size,
+                        width: props.size
                     }
                 ]}
             >
@@ -45,7 +47,7 @@ const MoreIcon: React.FC<Props> = (receivedProps) => {
     return (
         <Svg
             height={props.size}
-            viewBox="0 0 24 24"
+            viewBox="0 0 25 26"
             width={props.size}
             fill={props.dotColor}
         >

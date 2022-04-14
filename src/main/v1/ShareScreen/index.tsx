@@ -68,7 +68,8 @@ const ShareScreen: React.FC<Props> = () => {
                     <View
                         style={[
                             {
-                                flex: 1,
+                                height: 300,
+                                // backgroundColor: 'pink'
                             }
                         ]}
                     >
